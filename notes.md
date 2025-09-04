@@ -1,6 +1,6 @@
 # CS 260 Notes
 
-here is my edit
+seemed good I learned about git .add and commit and push and pull, but also how I can do it from in the vs ide so that is a bit easier and good to know.
 
 [My startup - Simon](https://simon.cs260.click)
 
