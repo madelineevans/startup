@@ -1,5 +1,7 @@
 # CS 260 Notes
 
+here is my edit
+
 [My startup - Simon](https://simon.cs260.click)
 
 ## Helpful links
