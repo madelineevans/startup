@@ -54,7 +54,7 @@ sequenceDiagram
 
 I am going to use the required technologies in the following ways.
 
-- **HTML** - Correct HTML structure. A login page, a page with a map for you to find players nearby, a page for connecting with other players, a chat page.
+- **HTML** - Correct HTML structure. A login page, create account page, a page with a map for you to find players nearby, a page for connecting with other players, a chat page.
 - **CSS** - Looks pretty, works on different screens/devices.
 - **React** - Lets you login, lets you follow or look at other players, record games/rate players and other react routing components.
 - **Service** - Match algorithm, login/logout authentication, storing recorded game, and send chat.
