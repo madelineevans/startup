@@ -1,9 +1,7 @@
-# Mae's startup
+# Pickleball App
 
 [My Notes](notes.md)
 
-Blah blach blah
-I do not say blah blah blah
 A brief description of the application here. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
 
@@ -28,7 +26,7 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 ### Elevator pitch
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+Pickleball has been taking over the nation and thousands of people have begun playing the sport. But what if you don't have anyone to play with or want to meet new people? Thats where (insert app name here) comes into play. This app helps you connect with other pickleball players based on a variety of factors to help you find a well matched player, follow your friends, or just find people nearby to play with!
 
 ### Design
 
@@ -45,20 +43,23 @@ sequenceDiagram
 
 ### Key features
 
-- Describe your key feature
-- Describe your key feature
-- Describe your key feature
+- Authentication/secure login
+- Shows you other pickleball players (and courts??) around you actively playing
+- A ranking system that starts off based on an intro survey you fill out and continues based on game scores and other's reviews of you
+- Shows you other players you might want to play with based on ranking's and locations
+- A chat function that allows you to communicate with other players
+- A way to follow other players (and recieve updates of their games? Or if actively playing?)
 
 ### Technologies
 
 I am going to use the required technologies in the following ways.
 
-- **HTML** - Description here
-- **CSS** - Description here
-- **React** - Description here
-- **Service** - Description here
-- **DB/Login** - Description here
-- **WebSocket** - Description here
+- **HTML** - Correct HTML structure. A login page, a page with a map for you to find players nearby, a page for connecting with other players, a chat page.
+- **CSS** - Looks pretty, works on different screens/devices.
+- **React** - Lets you login, lets you follow or look at other players, record games/rate players and other react routing components.
+- **Service** - Match algorithm, login/logout authentication, storing recorded game, and send chat.
+- **DB/Login** - Stores recorded games, chat history, social networks, and login info.
+- **WebSocket** - Live chat functionality, live locations, and reminders/friend updates (if time).
 
 ## 🚀 AWS deliverable
 
