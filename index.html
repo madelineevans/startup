@@ -1,11 +1,24 @@
 <body>
     <header>
-        <h1>PicklePlayer</h1>
-        <p>Welcome!</p>
+        <h1><img src="images/question_mark.png" alt="logo" width="75"> PicklePlayer</h1>
+        <p>Welcome! This is the login page</p>
     </header>
     <main>
-    <p>
-        this is the login page
-    </p>
+        <p>
+            <!-- username button -->
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username">
+            <br>
+            <!-- password button -->
+            <label for="password">Password:</label>
+            <input type="text" id="password" name="password">
+        </p>
     </main>
+    <footer>
+        <!-- login button -->
+        <button onclick="location.href='match.html'">Login</button>
+        <br>
+        <!-- newAccount button -->
+         <button onclick="location.href='newAccount.html'">Create New Account</button>
+    </footer>
 </body>

@@ -30,7 +30,7 @@ Pickleball has been taking over the nation and thousands of people have begun pl
 
 ### Design
 
-![Design image](PageOutline.png)
+![Design image](Images/PageOutline.png)
 
 ### Key features
 
@@ -56,21 +56,60 @@ I am going to use the required technologies in the following ways.
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Server deployed and accessible with custom domain name** - [My server link](https://yourdomainnamehere.click).
+- [x] **Server deployed and accessible with custom domain name** - [My server link](https://yourdomainnamehere.click).
 
 ## 🚀 HTML deliverable
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **HTML pages** - I did not complete this part of the deliverable.
-- [ ] **Proper HTML element usage** - I did not complete this part of the deliverable.
-- [ ] **Links** - I did not complete this part of the deliverable.
-- [ ] **Text** - I did not complete this part of the deliverable.
-- [ ] **3rd party API placeholder** - I did not complete this part of the deliverable.
-- [ ] **Images** - I did not complete this part of the deliverable.
-- [ ] **Login placeholder** - I did not complete this part of the deliverable.
-- [ ] **DB data placeholder** - I did not complete this part of the deliverable.
-- [ ] **WebSocket placeholder** - I did not complete this part of the deliverable.
+- [x] **HTML pages** 
+        Chloe Added:
+            - Login, New Account, and match pages
+        Mae Added:
+            - 
+- [x] **Proper HTML element usage**
+        Chloe Added:
+            - yes
+        Mae Added:
+            - 
+- [x] **Links**
+        Chloe Added:
+            - button link from login page to match page
+            - button link from create account page to match page
+            - button link from match page to chat page
+        Mae Added:
+            - 
+- [x] **Text**
+        Chloe Added:
+            - Text in Match page to display player information
+        Mae Added:
+            - 
+- [ ] **3rd party API placeholder**
+        Chloe Added:
+            - Didn't add this to my pages
+        Mae Added:
+            - 
+- [x] **Images**
+        Chloe Added:
+            - Added Logo placeholder image to index page
+            - Added profile picture placeholder image to match page
+        Mae Added:
+            - 
+- [x] **Login placeholder**
+        Chloe Added:
+            - Added input fields for username and password on index page
+        Mae Added:
+            - 
+- [x] **DB data placeholder**
+        Chloe Added:
+            - Added place for database info to populate on match page
+        Mae Added:
+            - 
+- [x] **WebSocket placeholder**
+        Chloe Added:
+            - Added live feed placeholder for number of matches on match page
+        Mae Added:
+            - 
 
 ## 🚀 CSS deliverable
 
