@@ -30,7 +30,7 @@ Pickleball has been taking over the nation and thousands of people have begun pl
 
 ### Design
 
-![Design image](PageOutline.png)
+![Design image](Images/PageOutline.png)
 
 ### Key features
 
