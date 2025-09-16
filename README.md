@@ -79,11 +79,12 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
             - button link from match page to chat page
         Mae Added:
             - button link from map page to match page
+            - button links to individual chats from chat_list page
 - [x] **Text**
         Chloe Added:
             - Text in Match page to display player information
         Mae Added:
-            - 
+            - Added headers on all my pages
 - [ ] **3rd party API placeholder**
         Chloe Added:
             - Didn't add this to my pages
@@ -99,17 +100,19 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
         Chloe Added:
             - Added input fields for username and password on index page
         Mae Added:
-            - 
+            - Didn't add in my pages
 - [x] **DB data placeholder**
         Chloe Added:
             - Added place for database info to populate on match page
         Mae Added:
             - Added person name and picture at the top of chat page that will come from the db
+            - Added list of chats the history of which and person to whom you're chatting will come from db
 - [x] **WebSocket placeholder**
         Chloe Added:
             - Added live feed placeholder for number of matches on match page
         Mae Added:
             - Added a mock point on the map that would populate based on the person's location
+            - Added a placeholder for the chats that you can have with people
 
 ## 🚀 CSS deliverable
 
