@@ -66,19 +66,19 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
         Chloe Added:
             - Login, New Account, and match pages
         Mae Added:
-            - 
+            - Map and Chat pages
 - [x] **Proper HTML element usage**
         Chloe Added:
             - yes
         Mae Added:
-            - 
+            - yes
 - [x] **Links**
         Chloe Added:
             - button link from login page to match page
             - button link from create account page to match page
             - button link from match page to chat page
         Mae Added:
-            - 
+            - button link from map page to match page
 - [x] **Text**
         Chloe Added:
             - Text in Match page to display player information
@@ -88,13 +88,13 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
         Chloe Added:
             - Didn't add this to my pages
         Mae Added:
-            - 
+            - Added the map to the map page
 - [x] **Images**
         Chloe Added:
             - Added Logo placeholder image to index page
             - Added profile picture placeholder image to match page
         Mae Added:
-            - 
+            - Added profile picture placeholder to chat page.
 - [x] **Login placeholder**
         Chloe Added:
             - Added input fields for username and password on index page
@@ -109,7 +109,7 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
         Chloe Added:
             - Added live feed placeholder for number of matches on match page
         Mae Added:
-            - 
+            - Added a mock point on the map that would populate based on the person's location
 
 ## 🚀 CSS deliverable
 
