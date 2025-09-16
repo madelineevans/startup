@@ -104,7 +104,7 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
         Chloe Added:
             - Added place for database info to populate on match page
         Mae Added:
-            - 
+            - Added person name and picture at the top of chat page that will come from the db
 - [x] **WebSocket placeholder**
         Chloe Added:
             - Added live feed placeholder for number of matches on match page
