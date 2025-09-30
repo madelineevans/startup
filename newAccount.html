@@ -48,7 +48,7 @@
                     <!-- SkillLevel Input -->
                      <div>
                         <select class="form-select" aria-label="skillLevel">
-                            <option selected>Select Skill Level</option>
+                            <option selected>Skill Level</option>
                             <option value="1">Never Played</option>
                             <option value="2">Beginner</option>
                             <option value="3">Intermediate</option>
@@ -56,47 +56,36 @@
                             <option value="5">Pro</option>
                         </select>
                     </div>
-                    <br>
-                    <!-- SkillLevel Input -->
-                    <fieldset>
-                    <legend>How long have you been playing pickelball?</legend>
-                    <label for="0">Never Played</label>
-                    <input type="radio" id="0" name="timePlayed" value="0" checked />
-                    <label for="1">Couple Weeks</label>
-                    <input type="radio" id="1" name="timePlayed" value="1" checked />
-                    <label for="2">Couple Months</label>
-                    <input type="radio" id="2" name="timePlayed" value="2" checked />
-                    <label for="3">1-2 Years</label>
-                    <input type="radio" id="3" name="timePlayed" value="3" checked />
-                    <label for="4">2+ Years</label>
-                    <input type="radio" id="4" name="timePlayed" value="4" checked />
-                    </fieldset>
-                    <br>
-                    <!-- SkillLevel Input -->
-                    <fieldset>
-                    <legend>How often do you play pickelball?</legend>
-                    <label for="0">Never Played</label>
-                    <input type="radio" id="0" name="playFrequency" value="0" checked />
-                    <label for="1">Nothing Consistent</label>
-                    <input type="radio" id="1" name="playFrequency" value="1" checked />
-                    <label for="2">Every Couple Months</label>
-                    <input type="radio" id="2" name="playFrequency" value="2" checked />
-                    <label for="3">Every Couple Weeks</label>
-                    <input type="radio" id="3" name="playFrequency" value="3" checked />
-                    <label for="4">Every Week</label>
-                    <input type="radio" id="4" name="playFrequency" value="4" checked />
-                    </fieldset>
-                    <br>
-                    <!-- SkillLevel Input -->
-                    <fieldset>
-                    <legend>How did you learn about us?</legend>
-                    <label for="friend">Through a friend</label>
-                    <input type="radio" id="friend" name="foundSite" value="friend" checked />
-                    <label for="online">Online</label>
-                    <input type="radio" id="online" name="foundSite" value="online" checked />
-                    <label for="other">Other</label>
-                    <input type="radio" id="other" name="foundSite" value="other" checked />
-                    </fieldset>
+                    <!-- time since starting -->
+                    <div>
+                        <select class="form-select" aria-label="timePlayed">
+                            <option selected>Time Since Starting</option>
+                            <option value="1">Never Played</option>
+                            <option value="2">Couple Weeks</option>
+                            <option value="3">Couple Months</option>
+                            <option value="4">1-2 Years</option>
+                            <option value="5">2+ Years</option>
+                        </select>
+                    </div>
+                    <!--  -->
+                    <div>
+                        <select class="form-select" aria-label="playFrequency">
+                            <option selected>Frequency of Play</option>
+                            <option value="1">Never Played</option>
+                            <option value="2">Nothing Consistent</option>
+                            <option value="3">Every Couple Months</option>
+                            <option value="4">Every Couple Weeks</option>
+                            <option value="5">Every Week</option>
+                        </select>
+                    </div>
+                    <div>
+                        <select class="form-select" aria-label="foundSite">
+                            <option selected>How did you hear about us?</option>
+                            <option value="1">Through a friend</option>
+                            <option value="2">Online</option>
+                            <option value="3">Other</option>
+                        </select>
+                    </div>
                     <br>
                     <button class="btn btn-primary btn-sm" type="button" onclick="
                         this.classList.add('spinning'); 
