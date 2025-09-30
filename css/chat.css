@@ -1,0 +1,69 @@
+body {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  height: 100vh;
+}
+
+#chatbox {
+    border: 2px solid black;
+    height: 100%;
+    width: 95%;
+    overflow: auto;
+    margin-bottom: 10px;
+}
+
+input[type="search"] {
+  width: 90%;
+  padding: 8px;
+  margin: 10px auto;
+  display: block;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+header {
+  flex: 0 80px;
+  background: hsl(223, 57%, 38%);
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+}
+
+header h1 {
+  display: flex;
+  align-items: center;
+  gap: 10px;           
+  color: black;        
+  font-size: 2em;      
+  margin: 0;           
+}
+
+footer {
+  flex: 0 30px;
+  background: hsl(180, 10%, 10%);
+}
+
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: stretch;
+  padding: 0;
+}
+
+/* @media (orientation: portrait) {
+  main {
+    flex-direction: column;
+  }
+}
+
+@media (max-height: 700px) {
+  header {
+    display: none;
+  }
+  footer {
+    display: none;
+  }
+} */
