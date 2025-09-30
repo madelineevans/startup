@@ -1,5 +1,5 @@
 # Node modules
-js/
+node_modules
 
 # Build output
 dist/
