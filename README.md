@@ -118,12 +118,43 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Header, footer, and main content body** - I did not complete this part of the deliverable.
-- [ ] **Navigation elements** - I did not complete this part of the deliverable.
-- [ ] **Responsive to window resizing** - I did not complete this part of the deliverable.
-- [ ] **Application elements** - I did not complete this part of the deliverable.
-- [ ] **Application text content** - I did not complete this part of the deliverable.
-- [ ] **Application images** - I did not complete this part of the deliverable.
+- [x] **Header, footer, and main content body**
+    Chloe Added:
+        - Added navigation footer on inside pages (match, map, chat) (done through bootstrap in html files)
+        - Added a centered header to login, newAccount, and match pages (done through bootstrap in html files)
+        - Formatted main content bodies for login, newAccount, and match pages (done through bootstrap in html files).
+    Mae Added:
+        - 
+- [x] **Navigation elements** 
+    Chloe Added:
+        - Added navbar to bottom of match, map, and chat pages that sticks to bottom of the screen
+    Mae Added:
+        - 
+- [x] **Responsive to window resizing**
+    Chloe Added:
+        - Made sure the following pages are responsive to resizing. I mostly did this through bootstrap in the html file mostly (did also add a header margin rule to index.css and match.css)
+    Mae Added:
+        - 
+- [x] **Application elements**
+    Chloe Added:
+        - Added loading indications when button is pressed to communicate with the user
+        - Grayed out and disabled the page in the navbar that the user is currently on to
+        communicate current location to user
+        - Cleaned up login page (made sure password input was type password to prevent it from showing)
+        - Cleaned up newAccount page by making survey more clear and prettier
+    Mae Added:
+        - 
+- [x] **Application text content** 
+    Chloe Added:
+        - Added more details to match.html using sample data.
+        - Initial Survey input on newAccount page has actual survey questions and fields
+    Mae Added:
+        - 
+- [x] **Application images** 
+    Chloe Added:
+        - Added application logo
+    Mae Added:
+        - 
 
 ## 🚀 React part 1: Routing deliverable
 

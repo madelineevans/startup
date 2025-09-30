@@ -46,3 +46,28 @@
 header {
     margin-top: 10vh;
 }
+
+.btn-primary,
+.bg-primary {
+  background-color: #8C33B6 !important; /* your new primary color */
+  border-color: #8C33B6 !important;
+}
+
+.btn-success,
+.bg-success {
+  background-color: #60d0b2 !important; /* your new primary color */
+  border-color: #60d0b2 !important;
+}
+
+.text-primary {
+  color: #ff5722 !important;
+}
+
+.text-success {
+  color: #000000
+}
+
+/* 
+PURPLE: 8C33B6
+GREEN: 60d0b2
+*/

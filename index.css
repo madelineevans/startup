@@ -46,3 +46,17 @@
 header {
     margin-top: 10vh;
 }
+
+.btn-primary,
+.bg-primary {
+  background-color: #8C33B6 !important; /* your new primary color */
+  border-color: #ff5722 !important;
+}
+
+.text-primary {
+  color: #ff5722 !important;
+}
+/* 
+PURPLE: 8C33B6
+GREEN: 60d0b2
+*/
