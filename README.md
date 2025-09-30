@@ -152,7 +152,7 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
         - 
 - [x] **Application images** 
     Chloe Added:
-        - Added application logo
+        - Added application logo to index and newAccount pages (sized and placed it accordingly)
     Mae Added:
         - 
 
