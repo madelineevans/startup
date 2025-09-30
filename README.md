@@ -85,7 +85,7 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
             - Text in Match page to display player information
         Mae Added:
             - Added headers on all my pages
-- [ ] **3rd party API placeholder**
+- [x] **3rd party API placeholder**
         Chloe Added:
             - Didn't add this to my pages
         Mae Added:

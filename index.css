@@ -50,7 +50,7 @@ header {
 .btn-primary,
 .bg-primary {
   background-color: #8C33B6 !important; /* your new primary color */
-  border-color: #ff5722 !important;
+  border-color: #8C33B6 !important;
 }
 
 .text-primary {
