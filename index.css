@@ -35,11 +35,11 @@
   color: #000000;
 }
 
-p {
-  color:red;
-  
-  /* animation-duration: 3s;
-  animation-name: slidein;
-  animation-iteration-count: 3; */
+.spinner-border {
+    display: none;
+}
+
+.spinning .spinner-border {
+    display: inline-block;
 }
 
