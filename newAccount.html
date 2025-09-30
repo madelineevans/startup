@@ -43,21 +43,19 @@
                         <label for="passowrd2" class="form-label">Verify Password:</label>
                         <input type="password" id="passowrd2" name="passowrd2" class="form-control">
                     </div>
-                    <!-- Toggle states bootstrap -->
+                    <br>
+                    <h3>Initial Survey:</h3>
                     <!-- SkillLevel Input -->
-                    <fieldset>
-                    <legend>Which of the following best describes your pickleball skill level?</legend>
-                    <label for="0">Never Played</label>
-                    <input type="radio" id="0" name="skillLevel" value="0" checked />
-                    <label for="1">Beginner</label>
-                    <input type="radio" id="1" name="skillLevel" value="1" checked />
-                    <label for="2">Intermediate</label>
-                    <input type="radio" id="2" name="skillLevel" value="2" checked />
-                    <label for="3">Advanced</label>
-                    <input type="radio" id="3" name="skillLevel" value="3" checked />
-                    <label for="4">Pro</label>
-                    <input type="radio" id="4" name="skillLevel" value="4" checked />
-                    </fieldset>
+                     <div>
+                        <select class="form-select" aria-label="skillLevel">
+                            <option selected>Select Skill Level</option>
+                            <option value="1">Never Played</option>
+                            <option value="2">Beginner</option>
+                            <option value="3">Intermediate</option>
+                            <option value="4">Advanced</option>
+                            <option value="5">Pro</option>
+                        </select>
+                    </div>
                     <br>
                     <!-- SkillLevel Input -->
                     <fieldset>
