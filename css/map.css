@@ -1,9 +1,10 @@
-header {
-  flex: 0 80px;
-  background: #8C33B6 !important;
+header h1, header span {
+  flex: 0 8%;
+  color: #8C33B6 !important;
   display: flex;
   align-items: center;
-  padding-left: 20px;
+  padding-left: 10px;
+  padding-bottom: 1px;
 }
 
 #map {
@@ -14,6 +15,12 @@ header {
     margin: 0 auto;
 }
 
-#search{
-    
+.my-btn {
+  background-color: #60d0b2;
+  color: #020202;
+  border: none;
+}
+
+input[type="search"].form-control {
+    margin-bottom: 60px; /* Add space above the footer */
 }
