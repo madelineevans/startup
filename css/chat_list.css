@@ -1,0 +1,18 @@
+header {
+  flex: 0 80px;
+  background: #8C33B6 !important;
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+}
+
+.my-btn {
+  background-color: #60d0b2;
+  color: #020202;
+  border: none;
+}
+
+.my-btn:hover {
+  background-color: #4cab92;
+  color: #ffff
+}

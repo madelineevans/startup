@@ -37,7 +37,7 @@ input[type="search"] {
 
 header {
   flex: 0 80px;
-  background: hsl(223, 57%, 38%);
+  background:#8C33B6 !important;
   display: flex;
   align-items: center;
   padding-left: 20px;
