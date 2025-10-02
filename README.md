@@ -124,17 +124,19 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
         - Added a centered header to login, newAccount, and match pages (done through bootstrap in html files)
         - Formatted main content bodies for login, newAccount, and match pages (done through bootstrap in html files).
     Mae Added:
-        - 
+        - Added a username and page name header for chat_list, chat, and map pages
+        - Formatted main content bodies and elements for the chat_list, chat, and map pages
+        - Edited the footer to point to the chat list page instead of chats
 - [x] **Navigation elements** 
     Chloe Added:
         - Added navbar to bottom of match, map, and chat pages that sticks to bottom of the screen
     Mae Added:
-        - 
+        - Edited the footer to point to the chat list page instead of chats
 - [x] **Responsive to window resizing**
     Chloe Added:
         - Made sure the following pages are responsive to resizing. I mostly did this through bootstrap in the html file mostly (did also add a header margin rule to index.css and match.css)
     Mae Added:
-        - 
+        - Created css for the chat_list, chat, and map pages to allow them to resize 
 - [x] **Application elements**
     Chloe Added:
         - Added loading indications when button is pressed to communicate with the user
@@ -143,18 +145,20 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
         - Cleaned up login page (made sure password input was type password to prevent it from showing)
         - Cleaned up newAccount page by making survey more clear and prettier
     Mae Added:
-        - 
+        - Added coloring to pages and buttons to match our logo
+        - Formatted the text boxes for typing and searching on the chat and map pages using bootstrap
+        - Made the buttons on the chat_list page change color and font color when hovered over
 - [x] **Application text content** 
     Chloe Added:
         - Added more details to match.html using sample data.
         - Initial Survey input on newAccount page has actual survey questions and fields
     Mae Added:
-        - 
+        - Made the buttons on the chat_list page change color and font color when hovered over
 - [x] **Application images** 
     Chloe Added:
         - Added application logo to index and newAccount pages (sized and placed it accordingly)
     Mae Added:
-        - 
+        - Added temporary profile photo for the player on the chat page, made it in the header and located correctly
 
 ## 🚀 React part 1: Routing deliverable
 
