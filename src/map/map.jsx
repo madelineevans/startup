@@ -1,7 +1,7 @@
 import React from 'react';
 import './map.css';
 
-export function map() {
+export function Map() {
   return (
     <main className="container-fluid bg-secondary text-center">
       <div>map displayed here</div>
