@@ -8,27 +8,27 @@ export default function App() {
       <header className="container-fluid">
         <nav className="navbar fixed-top navbar-dark">
           <div className="navbar-brand">
-            Simon<sup>&reg;</sup>
+            Pickleplay<sup>&reg;</sup>
           </div>
           <menu className="navbar-nav">
             <li className="nav-item">
-              <a className="nav-link" href="index.html">
-                Home
+              <a className="nav-link" href="login.html">
+                Login
               </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="play.html">
-                Play
+              <a className="nav-link" href="chat_list.html">
+                Chat List
               </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="scores.html">
-                Scores
+              <a className="nav-link" href="map.html">
+                Map
               </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="about.html">
-                About
+              <a className="nav-link" href="match.html">
+                Match
               </a>
             </li>
           </menu>
