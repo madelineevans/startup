@@ -12,22 +12,22 @@ export default function App() {
           </div>
           <menu className="navbar-nav">
             <li className="nav-item">
-              <a className="nav-link" href="login.html">
+              <a className="nav-link" href="login.jsx">
                 Login
               </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="chat_list.html">
-                Chat List
+              <a className="nav-link" href="chat_list.jsx">
+                Chats
               </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="map.html">
+              <a className="nav-link" href="map.jsx">
                 Map
               </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="match.html">
+              <a className="nav-link" href="match.jsx">
                 Match
               </a>
             </li>
