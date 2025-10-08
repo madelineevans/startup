@@ -41,19 +41,19 @@ export function Chat() {
           <div className="container-fluid">
             <ul className="navbar-nav mx-auto d-flex flex-row gap-3">
               <li className="nav-item">
-                <button className="nav-link active btn btn-link" onClick={() => navigate('/login')}>Logout</button>
+                <button type="button" className="nav-link active btn btn-link" onClick={() => navigate('/login')}>Logout</button>
               </li>
               <li className="nav-item">
-                <button className="nav-link active btn btn-link" onClick={() => navigate('/match')}>Match</button>
+                <button type="button" className="nav-link active btn btn-link" onClick={() => navigate('/match')}>Match</button>
               </li>
               <li className="nav-item">
-                <button className="nav-link active btn btn-link" onClick={() => navigate('/map')}>Map</button>
+                <button type="button" className="nav-link active btn btn-link" onClick={() => navigate('/map')}>Map</button>
               </li>
               <li className="nav-item">
-                <button className="nav-link active btn btn-link" onClick={() => navigate('/chat_list')}>Chats</button>
+                <button type="button" className="nav-link active btn btn-link" onClick={() => navigate('/chat_list')}>Chats</button>
               </li>
               {/* <li className="nav-item">
-                <button className="nav-link active btn btn-link" onClick={() => navigate('/profile')}>Profile</button>
+                <button type="button" className="nav-link active btn btn-link" onClick={() => navigate('/profile')}>Profile</button>
               </li> */}
             </ul>
           </div>

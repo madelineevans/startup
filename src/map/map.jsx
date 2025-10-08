@@ -56,17 +56,20 @@ export function Map() {
           <div className="container-fluid">
             <ul className="navbar-nav mx-auto d-flex flex-row gap-3">
               <li className="nav-item">
-                <NavLink className="nav-link active" to="/login">Logout</NavLink>
+                <button type="button" className="nav-link active btn btn-link" onClick={() => navigate('/login')}>Logout</button>
               </li>
               <li className="nav-item">
-                <NavLink className="nav-link active" to="/match">Match</NavLink>
+                <button type="button" className="nav-link active btn btn-link" onClick={() => navigate('/match')}>Match</button>
               </li>
               <li className="nav-item">
-                <NavLink className="nav-link disabled text-secondary" to="/map">Map</NavLink>
+                <button type="button" className="nav-link btn btn-link text-secondary disabled" disabled>Map</button>
               </li>
               <li className="nav-item">
-                <NavLink className="nav-link active" to="/chat_list">Chat</NavLink>
+                <button type="button" className="nav-link active btn btn-link" onClick={() => navigate('/chat_list')}>Chats</button>
               </li>
+              {/* <li className="nav-item">
+                <button type="button" className="nav-link active btn btn-link" onClick={() => navigate('/profile')}>Profile</button>
+              </li> */}
             </ul>
           </div>
         </nav>
