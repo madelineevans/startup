@@ -6,12 +6,12 @@ export function Chat_list() {
   const navigate = useNavigate();
 
   return (
-    <div className="d-flex flex-column min-vh-100">
+    <div className="container-fluid px-4 d-flex flex-column min-vh-100">
       <header className="text-center py-3">
         <h1>Chats</h1>
       </header>
 
-      <main className="container flex-grow-1 d-flex flex-column align-items-center">
+      <main className="container-fluid px-4 flex-grow-1 d-flex flex-column align-items-center">
         <div className="mb-3">
           {/* list of chats will appear here */}
           <button

@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import './login.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate } from 'react-router-dom';
-import pickle_logo from '../Images/pickle_logo.png';
 
 
 export function Login() {
@@ -11,12 +10,12 @@ export function Login() {
   const [isCreatingAccount, setIsCreatingAccount] = useState(false);
 
   return (
-    <div className="d-flex flex-column min-vh-100 roboto-flex">
+    <div className="container-fluid px-4 d-flex flex-column min-vh-100 roboto-flex">
       <header className="d-flex justify-content-center align-items-center gap-2 py-3">
-        <img src={pickleLogo} className="img-fluid" alt="logo" style={{ height: "90px" }} />
+        <img src="/pickle_logo.png" className="img-fluid" alt="logo" style={{ height: "90px" }} />
         <h1 className="fascinate-inline-regular">PicklePlayer</h1>
       </header>
-      <main className="container flex-grow-1 d-flex justify-content-center align-items-center">
+      <main className="container-fluid px-4 flex-grow-1 d-flex justify-content-center align-items-center">
         <div className="w-100" style={{ maxWidth: "400px" }}>
           <form className="d-flex flex-column gap-3">
             <div>

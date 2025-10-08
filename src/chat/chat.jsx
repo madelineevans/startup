@@ -2,21 +2,20 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './chat.css';
 import { useNavigate } from 'react-router-dom';
-import question_mark from '../Images/question_mark.png';
 
 export function Chat() {
   const navigate = useNavigate();
 
   return (
     <div className="d-flex flex-column min-vh-100">
-      <header className="d-flex justify-content-between py-3 px-4" style={{ background: '#8C33B6' }}>
+      <header className="container-fluid px-4 d-flex justify-content-between py-3 px-4" style={{ background: '#8C33B6' }}>
         <h1>
-          <img src={question_mark} alt="logo" width="50" /> Joe Mamma
+          <img src="/question_mark.png" alt="logo" width="50" /> Joe Mamma
         </h1>
         <span className="fw" style={{ color: '#000000', alignSelf: 'flex-start' }}>username</span>
       </header>
 
-      <main className="flex-grow-1 container py-3">
+      <main className="container-fluid px-4">
         <div id="chatbox" className="mb-3">
           <div>
             <strong>Joe Mamma:</strong> Hey PicklePlayer! Want to play some pickleball this weekend?

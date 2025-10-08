@@ -12,7 +12,7 @@ import { NewAccount } from './newAccount/newAccount';
 export default function App() {
   return (
     <BrowserRouter>
-      <main>
+      <main className="container-fluid px-4">
         <Routes>
           <Route path='/' element={<Login />} />
           <Route path='/login' element={<Login />} />

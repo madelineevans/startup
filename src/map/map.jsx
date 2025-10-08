@@ -35,8 +35,8 @@ export function Map() {
 
 
   return (
-    <div className="d-flex flex-column min-vh-100">
-      <header className="text-center py-3">
+    <div className="container-fluid px-4 d-flex flex-column min-vh-100">
+      <header className="container-fluid px-4 text-center py-3">
         <h1>Map</h1>
       </header>
 

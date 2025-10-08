@@ -8,13 +8,13 @@ export function NewAccount() {
   const navigate = useNavigate();
 
   return (
-    <div className="d-flex flex-column min-vh-100">
-      <header className="d-flex justify-content-center align-items-center gap-2 py-3">
-        <img src="Images/pickle_logo.png" className="img-fluid" alt="logo" style={{ height: '90px' }} />
+    <div className="container-fluid px-4 d-flex flex-column min-vh-100">
+      <header className="container-fluid px-4 d-flex justify-content-center align-items-center gap-2 py-3">
+        <img src="/pickle_logo.png" className="img-fluid" alt="logo" style={{ height: '90px' }} />
         <h1 className="merriweather mb-0">PicklePlayer</h1>
       </header>
 
-      <main className="container flex-grow-1 d-flex justify-content-center align-items-center">
+      <main className="container-fluid px-4 flex-grow-1 d-flex justify-content-center align-items-center">
         <div className="w-100" style={{ maxWidth: '400px' }}>
           <form className="d-flex flex-column gap-3">
             <div>
