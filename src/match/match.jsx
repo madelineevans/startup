@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './match.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate } from 'react-router-dom';
+import question_mark from '../Images/question_mark.png';
 
 export function Match() {
   const [isNextSpinning, setIsNextSpinning] = useState(false);
@@ -12,7 +13,7 @@ export function Match() {
     <div className="d-flex flex-column min-vh-100">
       <header className="d-flex justify-content-center align-items-center gap-4 py-3">
         <h1>
-          <img src="Images/question_mark.png" alt="PlayerImg" width="75" /> John Doe
+          <img src={question_mark} alt="PlayerImg" width="75" /> John Doe
         </h1>
       </header>
 

@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import './login.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate } from 'react-router-dom';
+import pickle_logo from '../Images/pickle_logo.png';
+
 
 export function Login() {
   const navigate = useNavigate();
@@ -11,7 +13,7 @@ export function Login() {
   return (
     <div className="d-flex flex-column min-vh-100 roboto-flex">
       <header className="d-flex justify-content-center align-items-center gap-2 py-3">
-        <img src="Images/pickle_logo.png" className="img-fluid" alt="logo" style={{ height: "90px" }} />
+        <img src={pickleLogo} className="img-fluid" alt="logo" style={{ height: "90px" }} />
         <h1 className="fascinate-inline-regular">PicklePlayer</h1>
       </header>
       <main className="container flex-grow-1 d-flex justify-content-center align-items-center">
