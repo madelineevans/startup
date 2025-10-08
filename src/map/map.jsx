@@ -56,16 +56,16 @@ export function Map() {
           <div className="container-fluid">
             <ul className="navbar-nav mx-auto d-flex flex-row gap-3">
               <li className="nav-item">
-                <a className="nav-link active" href="/login">Logout</a>
+                <NavLink className="nav-link active" to="/login">Logout</NavLink>
               </li>
               <li className="nav-item">
-                <a className="nav-link active" href="/match">Match</a>
+                <NavLink className="nav-link active" to="/match">Match</NavLink>
               </li>
               <li className="nav-item">
-                <a className="nav-link disabled text-secondary" href="/map">Map</a>
+                <NavLink className="nav-link disabled text-secondary" to="/map">Map</NavLink>
               </li>
               <li className="nav-item">
-                <a className="nav-link active" href="/chat_list">Chat</a>
+                <NavLink className="nav-link active" to="/chat_list">Chat</NavLink>
               </li>
             </ul>
           </div>

@@ -4,6 +4,7 @@ import './app.css';
 import { BrowserRouter, NavLink, Route, Routes } from 'react-router-dom';
 import { Login } from './login/login';
 import { Chat_list } from './chat_list/chat_list';
+import { Chat } from './chat/chat';
 import { Map } from './map/map';
 import { Match } from './match/match';
 import { NewAccount } from './newAccount/newAccount';
@@ -19,6 +20,7 @@ export default function App() {
           <Route path='/chat_list' element={<Chat_list />} />
           <Route path='/map' element={<Map />} />
           <Route path='/match' element={<Match />} />
+          <Route path='/chat' element={<Chat />} />
           <Route path='*' element={<NotFound />} />
         </Routes>
       </main>

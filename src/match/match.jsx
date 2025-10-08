@@ -59,7 +59,7 @@ export function Match() {
             onClick={() => {
               setIsChatSpinning(true);
               setTimeout(() => {
-                navigate('/chat_list');
+                navigate('/chat');
               }, 500);
             }}
             disabled={isChatSpinning}
@@ -75,20 +75,20 @@ export function Match() {
           <div className="container-fluid">
             <ul className="navbar-nav mx-auto d-flex flex-row gap-3">
               <li className="nav-item">
-                <a className="nav-link active" aria-current="page" href="/login">Logout</a>
+                <button className="nav-link active btn btn-link" onClick={() => navigate('/login')}>Logout</button>
               </li>
               <li className="nav-item">
-                <a className="nav-link disabled text-secondary" aria-current="page" href="/match">Match</a>
+                <button className="nav-link active btn btn-link" onClick={() => navigate('/match')}>Match</button>
               </li>
               <li className="nav-item">
-                <a className="nav-link active" aria-current="page" href="/map">Map</a>
+                <button className="nav-link active btn btn-link" onClick={() => navigate('/map')}>Map</button>
               </li>
               <li className="nav-item">
-                <a className="nav-link active" aria-current="page" href="/chat_list">Chats</a>
+                <button className="nav-link active btn btn-link" onClick={() => navigate('/chat_list')}>Chats</button>
               </li>
-              {/* <li className="nav-item">
-                <a className="nav-link active" aria-current="page" href="/profile">Profile</a>
-              </li> */}
+              <li className="nav-item">
+                <button className="nav-link active btn btn-link" onClick={() => navigate('/profile')}>Profile</button>
+              </li>
             </ul>
           </div>
         </nav>
