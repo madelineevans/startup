@@ -1,0 +1,13 @@
+#map {
+  height: 400px;
+  width: 95%;
+  max-height: calc(100vh - 200px); /* prevents overflow, increased to account for search bar */
+}
+
+#search {
+  margin-bottom: 2rem;
+}
+
+main {
+  padding-bottom: 80px; /* adjust based on footer height */
+}
