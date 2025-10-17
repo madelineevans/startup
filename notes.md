@@ -359,3 +359,191 @@ Reject handled -> shows error via catch
 
 ### Javascript Async/Await
 `async` and `await` are keywords in JavaScript that simplify working with Promises.
+
+
+#### Practice 1: 
+## index.html
+<!DOCTYPE html>
+<html>
+<!-- how to initialize html file -->
+  <head>
+    <meta charset="fill it here">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Form Example</title>
+    <!-- <link >  how to do a link to the css files -->
+      <link rel="stylesheet" href="style.css">
+  </head>
+
+  <body>
+    <form id="emailForm">
+      <h2>Put your email below</h2>
+      <input type="text" id="email" placeholder="Enter your email">
+      <button type="submit">Submit</button>
+    </form>
+
+    <p id="message"></p>
+
+    
+    <!-- how to do a link to javascript --> //js goes at the end
+    <script src="email.js"></script>
+  </body>
+  </html>
+
+## style.css
+  body{
+  font-family: Arial;
+  padding:20px;
+  background-color: grey;
+}
+
+/* how to make  message bold? */
+#message {
+      font-weight: bold;
+}
+
+## email.js
+// how to get a form from the html file
+// how to get a message from html file
+const form = document.getElementById('emailForm')
+const message = document.getElementById('message')
+
+form.addEventListener("submit", (e) => {
+  e.preventDefault()
+  const email = document.getElementById('email').value;
+  if (email.includes('@')){
+    message.textContent = "Eamil accepted";
+    message.style.color = 'green'
+  }
+  else{
+    // how to set a message to "Please, enter valid email"
+    message.textContent = "Please, enter valid email"
+    // how to get a red color to the message
+    message.style.color = 'red'
+  }
+  
+})
+
+#### Practice 2:
+## index.html
+<!-- how to set up html file -->
+<!DOCTYPE html>
+<html lang="en">
+    <!-- put head here -->
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title> Click Counter</title>
+        <!-- how to make a link to the style.css -->
+            <link rel="stylesheet" href="style.css">
+    <!-- put head here -->
+      </head>
+    <body>
+        <!-- how to make a form with id counterForm-->
+          <form type="click" id="counterForm">
+            <p id="number">0</p>
+            <button type="button" id="plus">+</button>
+            <button type="button" id="minus">-</button>
+            <button type="button" id="minus5">-5</button>
+            <!-- make +5 button -->
+                <button type="button" id="plus5">+5</button>
+        <!-- form goes here -->
+          </form>
+
+        <!-- how to initilize javascript file here -->
+        <script src="counter.js"></script>
+    </body>
+<!-- how to set up html -->
+</html>
+## counter.js 
+const form = document.getElementById('counterForm')
+const number = document.getElementById('number')
+
+let count = 0
+console.log(number)
+
+// how to make +1 for counter onclick?
+document.getElementById("plus").onclick = () => {
+    count++
+    number.textContent = count
+}
+
+document.getElementById("minus").onclick = () => {
+    if(count < 1){
+        number.textContent = count
+    }
+    else {
+    count--
+    number.textContent = count
+    }
+}
+
+document.getElementById("minus5").onclick = () => {
+    if(count < 5){
+        number.textContent = count
+    }
+    else {
+    count = count -5;
+    number.textContent = count
+    }
+}
+
+//  how to make +5?
+document.getElementById("plus5").onclick = () => {
+    count = count +5;
+    number.textContent = count
+}
+
+## style.css
+/* how to make body arail and padding 20px? */
+body{
+  font-family: Arial;
+  padding:20px;
+  background-color: grey;
+}
+#message{
+  font-weight: bold;
+}
+
+#### Practice 3:
+## index.html
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>background-change</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
+
+## background.js
+const colors = document.getElementById('background')
+
+// maake event listener
+colors.addEventListener('change', () =>{
+    const color = colors.value;
+    console.log(color)
+    
+    document.body.style.background = color;
+    document.body.style.color = 'yellow'
+})
+## style.css
+body{
+    font-family:Arial, Helvetica, sans-serif;
+    padding: 5%;
+}
+
+select {
+  background-color: yellowgreen; /* changes the box color */
+  color: black;                /* keeps the text readable */
+  border: 1px solid gray;      /* optional: makes it look nicer */
+  padding: 5px;
+  border-radius: 5px;
+}
+select:focus {
+  background-color: skyblue;
+}
