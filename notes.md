@@ -103,23 +103,55 @@ Handling the toggling of the checkboxes was particularly interesting.
 ## Midterm Study Guide:
 ### Link Element:
 The `<link>` element is used to link external resources to the HTML document, such as stylesheets. It is placed within the `<head>` section of the document.
+ex. <link rel="stylesheet" href="styles.css"> applies styles from styles.css to page
 
 ### Div Tag
 The `<div>` tag is a block-level container used to group and style sections of HTML content. It does not inherently convey any meaning about its content. 
+<div>
+  <p>This is inside a div</p>
+</div>
 
 ### Title and .grid
-The `<title>` element defines the title of the HTML document, which is displayed in the browser's title bar or tab. The `.grid` class is often used in CSS to create a grid layout for arranging elements in rows and columns.
+The `<title>` element defines the title of the HTML document, which is displayed in the browser's title bar or tab. The `.grid` class is often used in CSS to create a grid layout for arranging elements in rows and columns. Title is by id (unique) grid is by class (multiple elements could be)
 
 ### padding vs margin
-Padding is the space between the content of an element and its border, while margin is the space outside the border that separates the element from other elements.
+Padding is the space between the content of an element and its border (internal spacing), while margin is the space outside the border that separates the element from other elements.
+ex.   //this adds 20 pixels of space inside the div, between content and it's border.
+div {
+  padding: 20px;
+}
+ex. padding: 10px 20px   - 10 to top and bottom, 20 to left right, inside element
 
 ### flex
 Flexbox is a CSS layout model that allows for the arrangement of elements in a flexible and responsive manner, either in rows or columns. It provides control over alignment, spacing, and distribution of items within a container.
+if container uses display flex, images = displayed by default in row, side by side, unless flex-direction: column is specified
 <!-- TODO: ADD MORE HERE -->
 
 ### arrow syntax
-Arrow functions provide a concise syntax for writing functions in JavaScript. They are often used for shorter function expressions and do not have their own `this` context.
+Arrow functions provide a concise syntax for writing functions in JavaScript. They are often used for shorter function expressions and do not have their own `this` context so not suitable for constructors.
+const greet = (name) => {       //defines arrow function named greet with one argument name, returns greeting string
+  return 'Hello, " + name;
+}
+console.log(greet('Amur'));
 
+### Map with an Array output
+basically just applies a function to each element in an array, returns new array
+const numbers = [1, 2, 3];
+const doubled = numbers.map(n => n*2);
+console.log(doubled)
+
+### getElementById and addEventListener
+const button = document.getElementById('myButton');   //selects html element for specified id
+button.addEventListener('click', () => {        //addEventListener waits for event (ie. click) and runs function when triggered, "listens"
+  alert('Button clicked!');                   //listens for change in input field and logs message when value changes
+});
+const form = document.getElementById('loginForm');
+form.addEventListener('submit' e => {
+  e.preventDefault();                               //prevents form refresh on submit and handles event using js
+  console.log('Form submitted');
+})
+const heading = document.gtElementById('title');    //changes color of element with title = 'id' to green
+heading.style.color = 'green'
 ### HTML span
 The `<span>` tag is an inline container used to group and style text or other inline elements without affecting the layout of the document. It is often used for applying styles or scripts to a specific portion of text.
 <!-- TODO: add default display property -->
@@ -132,6 +164,10 @@ The Document Object Model (DOM) is a programming interface for web documents. It
 
 ### Image Display
 The `display` property in CSS determines how an element is displayed on the page. Common values include `block`, `inline`, `inline-block`, `flex`, and `grid`. For images, the default display is `inline`, but it can be changed to `block` or other values as needed.
+
+<a href="https://www.example.com">
+  <img src="images/photo.jpg" alt="Example image">    //wraps image in hyperlink, clicking image takes us to page
+</a>                          //could be src="https://exampoewofi/image.png" alt="External image" for external
 
 <!-- add code with hyperlink -->
 
@@ -240,7 +276,7 @@ a JSON object
 }
 ```
 
-### Console Command chmod
+### Console Command chmod 
 The `chmod` command in the console is used to change the file permissions of a file or directory. It can set read, write, and execute permissions for the owner, group, and others. For example, `chmod 755 filename` sets the permissions to read, write, and execute for the owner, and read and execute
 
 ### Console Command pwd
@@ -274,7 +310,7 @@ The `rm` command in the console stands for "remove." It is used to delete files 
 The `man` command in the console stands for "manual." It is used to display the manual pages for other commands, providing detailed information about their usage, options, and examples. For example, `man ls` shows the manual for the `ls` command.
 
 ### Console Command ssh
-The `ssh` command in the console stands for "secure shell." It is used to securely connect to a remote server or computer over a network. For example, `ssh user@hostname` connects to the specified host using the provided username.
+The `ssh` command in the console stands for "secure shell." It is used to securely connect to a remote server or computer over a network. For example, `ssh user@hostname` connects to the specified host using the provided username. remopte shell session
 
 ### Console Command ps
 The `ps` command in the console stands for "process status." It is used to display information about the currently running processes on the system. For example, `ps aux` shows a detailed list of all processes, including their user, CPU usage, memory usage, and more.
@@ -282,7 +318,7 @@ The `ps` command in the console stands for "process status." It is used to displ
 ### Console Command wget
 The `wget` command in the console is used to download files from the internet. It supports various protocols, including HTTP, HTTPS, and FTP. For example, `wget http://example.com/file.zip` downloads the specified file to the current directory.
 
-### Console Command sudo
+### Console Command sudo (run as admin)
 The `sudo` command in the console stands for "superuser do." It allows a permitted user to execute a command as the superuser or another user, as specified by the security policy. It is commonly used to perform administrative tasks that require elevated privileges. For example, `sudo apt-get update` runs the update command with superuser privileges.
 
 ### Console Command -la
@@ -293,12 +329,15 @@ banana.fruit.bozo.click
 top-level = click 
 Root domain = bozo (bozo.click)
 subdomains = banana, fruit (banana.fruit.bozo.click)
+TLD: .click
+root domain: bozo.click
+subdomain: fruit.bozo.click
 
 ### HTTPS VS HTTP
-HTTPS (HyperText Transfer Protocol Secure) is the secure version of HTTP (HyperText Transfer Protocol). The main difference is that HTTPS uses encryption (SSL/TLS) to protect data transmitted between the user's browser and the web server, ensuring confidentiality and integrity. HTTP does not provide this level of security, making it vulnerable. HTTPS requires a web certificate.
+HTTPS (HyperText Transfer Protocol Secure) is the secure version of HTTP (HyperText Transfer Protocol). The main difference is that HTTPS uses encryption (SSL/TLS) to protect data transmitted between the user's browser and the web server, ensuring confidentiality and integrity. HTTP does not provide this level of security, making it vulnerable. HTTPS requires a web certificate (valid ssl/tls certificate)
 
 ### DNS A Record
-A DNS A Record can point to only an IP address
+A DNS A Record can point to only an IP address, not another a record
 
 ### Port 443
 Port 443 is the default port for HTTPS — the protocol that encrypts web traffic using TLS/SSL.
@@ -311,6 +350,12 @@ Port 22 is the default port for SSH (Secure Shell) — the protocol used to secu
 
 ### Javascript Promises
 A JavaScript Promise is an object that represents the eventual completion (or failure) of an asynchronous operation and its resulting value. Promises provide a way to handle asynchronous tasks in a more manageable and readable way compared to traditional callback functions.
+Promise.resolve('Done').then(console.log) -> 'Done'
+Promise.reject('Error').catch(console.error) -> 'Error
+new Promise(res => setTimeout(() => res('Hi'),1000)).then(console.log) -> 'Hi' after 1s
+Async function returns value -> printed when awaited or .then
+Promise chain: Promise.resolve(2).then(x=>x*2).then(x=>x+1).then(console.log) -> 5
+Reject handled -> shows error via catch
 
 ### Javascript Async/Await
 `async` and `await` are keywords in JavaScript that simplify working with Promises.
