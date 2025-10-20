@@ -32,6 +32,8 @@ export function Login() {
                 type="button"
                 onClick={() => {
                   setIsLoggingIn(true);
+                  // TODO: Replace with api call to log in
+                  sessionStorage.setItem('userName', 'Billy-Joel');
                   setTimeout(() => {
                     navigate('/match');
                   }, 500);
