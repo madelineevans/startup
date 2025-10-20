@@ -1,0 +1,10 @@
+What API's do we need?
+
+pages:
+- login
+    - send (put? post?)
+- newAccount
+- match
+- map
+- chat
+- chat_list
