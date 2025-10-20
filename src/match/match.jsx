@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import './match.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useNavigation } from 'react-router-dom';
 
 export function Match() {
   const [isNextSpinning, setIsNextSpinning] = useState(false);
   const [isChatSpinning, setIsChatSpinning] = useState(false);
   const navigate = useNavigate();
+  const navigation = useNavigation();
+  const isRouting = navigation.state !== 'idle';
 
   return (
     <div className="container-fluid px-4 d-flex flex-column min-vh-100">

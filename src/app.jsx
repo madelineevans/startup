@@ -1,31 +1,33 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './app.css';
-import { BrowserRouter, NavLink, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, createBrowserRouter, NavLink, Route, Router, RouterProvider, Routes } from 'react-router-dom';
 import { Login } from './login/login';
 import { Chat_list } from './chat_list/chat_list';
 import { Chat } from './chat/chat';
 import { Map } from './map/map';
 import { Match } from './match/match';
 import { NewAccount } from './newAccount/newAccount';
+import { RootLayout } from './layouts/RootLayout';
+
+const router = createBrowserRouter([
+  {
+    element: <RootLayout />,
+    children: [
+      {path: '/match', element: <Match />},
+    ],
+  },
+  {path:'/', element: <Login />},
+  {path:'/login', element: <Login />},
+  {path:'/newAccount', element: <NewAccount />},
+  {path:'/chat_list', element: <Chat_list />},
+  {path:'/map', element: <Map />},
+  {path:'/chat', element: <Chat />},
+  {path:'*', element: <NotFound />},
+]);
 
 export default function App() {
-  return (
-    <BrowserRouter>
-      <main className="container-fluid px-4">
-        <Routes>
-          <Route path='/' element={<Login />} />
-          <Route path='/login' element={<Login />} />
-          <Route path='/newAccount' element={<NewAccount />} />
-          <Route path='/chat_list' element={<Chat_list />} />
-          <Route path='/map' element={<Map />} />
-          <Route path='/match' element={<Match />} />
-          <Route path='/chat' element={<Chat />} />
-          <Route path='*' element={<NotFound />} />
-        </Routes>
-      </main>
-    </BrowserRouter>
-  );
+  return <RouterProvider router={router} />;
 }
 
 function NotFound() {
