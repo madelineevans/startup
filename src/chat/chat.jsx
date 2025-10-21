@@ -1,5 +1,4 @@
 import React from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import './chat.css';
 import { useNavigate, useParams, Navigate } from 'react-router-dom';
 
