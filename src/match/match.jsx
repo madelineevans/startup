@@ -1,5 +1,4 @@
 import React, { useState, useCallback } from 'react';
-import './match.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate, useNavigation } from 'react-router-dom';
 
