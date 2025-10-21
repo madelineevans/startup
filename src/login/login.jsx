@@ -9,6 +9,18 @@ export function Login() {
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [isCreatingAccount, setIsCreatingAccount] = useState(false);
 
+  const handleLogin = () => {
+    setIsLoggingIn(true);
+    // TODO: Implement login endpoint and logic
+    sessionStorage.setItem('userName', 'Billy-Joel');
+    navigate('/match');
+  }
+
+  const handleCreateAccount = () => {
+    setIsCreatingAccount(true);
+    navigate('/newAccount');
+  }
+
   return (
     <div className="container-fluid px-4 d-flex flex-column min-vh-100 roboto-flex">
       <header className="d-flex justify-content-center align-items-center gap-2 py-3">
@@ -30,12 +42,7 @@ export function Login() {
               <button
                 className={`btn btn-primary btn-sm ${isLoggingIn ? 'spinning' : ''}`}
                 type="button"
-                onClick={() => {
-                  setIsLoggingIn(true);
-                  setTimeout(() => {
-                    navigate('/match');
-                  }, 500);
-                }}
+                onClick={handleLogin}
                 disabled={isLoggingIn}
               >
                 <span className="spinner-border spinner-border-sm" aria-hidden="true"></span>
@@ -44,12 +51,7 @@ export function Login() {
               <button
                 className={`btn btn-secondary btn-sm ${isCreatingAccount ? 'spinning' : ''}`}
                 type="button"
-                onClick={() => {
-                  setIsCreatingAccount(true);
-                  setTimeout(() => {
-                    navigate('/newAccount');
-                  }, 500);
-                }}
+                onClick={handleCreateAccount}
                 disabled={isCreatingAccount}
               >
                 <span className="spinner-border spinner-border-sm" aria-hidden="true"></span>

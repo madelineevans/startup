@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,100..1000&display=swap');
+
+.roboto-flex {
+  font-family: "Roboto Flex", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400; /* choose a weight like 400, 500, 700 */
+  font-style: normal;
+  font-variation-settings:
+    "slnt" 0,
+    "wdth" 100,
+    "GRAD" 0,
+    "XOPQ" 96,
+    "XTRA" 468,
+    "YOPQ" 79,
+    "YTAS" 750,
+    "YTDE" -203,
+    "YTFI" 738,
+    "YTLC" 514,
+    "YTUC" 712;
+
+    color: #1a1a1a;
+}
+
+.text-primary {
+  font-family: "Roboto Flex", sans-serif;
+  color: #343a40 !important;
+}
+.text-secondary {
+  font-family: "Roboto Flex", sans-serif;
+  color: #dee2e6;
+  font-weight: 300 !important;
+}
+
+.text-success {
+  color: #000000
+}
+
+/* 
+PURPLE: 8C33B6
+GREEN: 60d0b2
+*/

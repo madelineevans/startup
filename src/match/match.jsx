@@ -1,18 +1,60 @@
-import React, { useState } from 'react';
-import './match.css';
+import React, { useState, useCallback } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useNavigation } from 'react-router-dom';
+
+function generatePlayer() {
+  const usernames = ['Alice12', 'Bob23', 'Charlie34', 'Diana56', 'Ethan78'];
+  const ages = [22, 25, 30, 28, 35];
+  const locations = ['New York, NY', 'Los Angeles, CA', 'Chicago, IL', 'Houston, TX', 'Miami, FL'];
+  const skillLevels = ['Beginner', 'Intermediate', 'Advanced', 'Pro'];
+  const signatureMoves = ['The Smash', 'The Drop Shot', 'The Lob', 'The Volley'];
+  const competitionLevels = ['Casual', 'Competitive', 'Professional'];
+  const matchesPlayed = Math.floor(Math.random() * 20);
+  const matchesWon = Math.floor(Math.random() * (matchesPlayed + 1));
+
+  return {
+    username: usernames[Math.floor(Math.random() * usernames.length)],
+    age: ages[Math.floor(Math.random() * ages.length)],
+    location: locations[Math.floor(Math.random() * locations.length)],
+    skillLevel: skillLevels[Math.floor(Math.random() * skillLevels.length)],
+    signatureMove: signatureMoves[Math.floor(Math.random() * signatureMoves.length)],
+    competitionLevel: competitionLevels[Math.floor(Math.random() * competitionLevels.length)],
+    rating: (Math.random() * 5).toFixed(1),
+    matchesPlayed,
+    matchesWon
+  };
+}
 
 export function Match() {
+  const [player, setPlayer] = useState(() => generatePlayer());
   const [isNextSpinning, setIsNextSpinning] = useState(false);
   const [isChatSpinning, setIsChatSpinning] = useState(false);
+
   const navigate = useNavigate();
+  const navigation = useNavigation();
+  const isRouting = navigation.state !== 'idle';
+
+  const handleNextPlayer = useCallback(() => {
+    setIsNextSpinning(true);
+    setPlayer(generatePlayer());
+    setIsNextSpinning(false);
+  }, []);
+
+  const handleChat = useCallback(() => {
+    setIsChatSpinning(true);
+    // TODO: implement chat endpoint and logic
+    // 1. does a session already exist? (this could be
+    // true if the player was clicked on through the map or chat pages)
+    // 2. if not, create a new chat session between the two players
+    setIsChatSpinning(false);
+    navigate('/chat');
+  }, [player]);
 
   return (
     <div className="container-fluid px-4 d-flex flex-column min-vh-100">
       <header className="container-fluid px-4 d-flex justify-content-center align-items-center gap-4 py-3">
         <h1>
-          <img src="/question_mark.png" alt="PlayerImg" width="75" /> John Doe
+          <img src="/question_mark.png" alt="PlayerImg" width="75" /> {player.username}
         </h1>
       </header>
 
@@ -20,20 +62,20 @@ export function Match() {
         <div className="mb-4" style={{ maxWidth: '400px', width: '100%' }}>
           <h3>About</h3>
           <div>
-            <strong>Age:</strong> 25 <br />
-            <strong>Location:</strong> Provo, UT<br />
-            <strong>Skill Level:</strong> Intermediate<br />
-            <strong>Signature move:</strong> The Dink<br />
-            <strong>Competition Level:</strong> I want to have fun<br />
+            <strong>Age:</strong> {player.age} <br />
+            <strong>Location:</strong> {player.location}<br />
+            <strong>Skill Level:</strong> {player.skillLevel}<br />
+            <strong>Signature move:</strong> {player.signatureMove}<br />
+            <strong>Competition Level:</strong> {player.competitionLevel}<br />
           </div>
           <br />
           <h3>Player Stats</h3>
           <div>
-            <strong>Player Rating:</strong> 4.5 (websocket data)<br />
+            <strong>Player Rating:</strong> {player.rating} (websocket data)<br />
             <strong>Matches Played This Week:</strong>{' '}
-            <span id="matchesPlayed">5 (websocket data)</span><br />
+            <span id="matchesPlayed">{player.matchesPlayed} (websocket data)</span><br />
             <strong>Matches Won This Week:</strong>{' '}
-            <span id="matchesWon">3 (websocket data)</span><br />
+            <span id="matchesWon">{player.matchesWon} (websocket data)</span><br />
           </div>
         </div>
 
@@ -41,58 +83,24 @@ export function Match() {
           <button
             className={`btn btn-primary btn-sm ${isNextSpinning ? 'spinning' : ''}`}
             type="button"
-            onClick={() => {
-              setIsNextSpinning(true);
-              setTimeout(() => {
-                navigate('/match');
-              }, 500);
-            }}
-            disabled={isNextSpinning}
+            onClick={handleNextPlayer}
+            disabled={isNextSpinning || isRouting}
           >
-            <span className="spinner-border spinner-border-sm" aria-hidden="true"></span>
+            {isNextSpinning && <span className="spinner-border spinner-border-sm" aria-hidden="true"></span>}
             <span role="status">Next Player</span>
           </button>
 
           <button
             className={`btn btn-success btn-sm ${isChatSpinning ? 'spinning' : ''}`}
             type="button"
-            onClick={() => {
-              setIsChatSpinning(true);
-              setTimeout(() => {
-                navigate('/chat');
-              }, 500);
-            }}
-            disabled={isChatSpinning}
+            onClick={handleChat}
+            disabled={isChatSpinning || isRouting}
           >
-            <span className="spinner-border spinner-border-sm" aria-hidden="true"></span>
+            {isChatSpinning && <span className="spinner-border spinner-border-sm" aria-hidden="true"></span>}
             <span role="status">Chat with Player</span>
           </button>
         </div>
       </main>
-
-      <footer>
-        <nav className="navbar navbar-expand-lg bg-body-tertiary fixed-bottom">
-          <div className="container-fluid">
-            <ul className="navbar-nav mx-auto d-flex flex-row gap-3">
-              <li className="nav-item">
-                <button type="button" className="nav-link active btn btn-link" onClick={() => navigate('/login')}>Logout</button>
-              </li>
-              <li className="nav-item">
-                <button type="button" className="nav-link btn btn-link text-secondary disabled" disabled>Match</button>
-              </li>
-              <li className="nav-item">
-                <button type="button" className="nav-link active btn btn-link" onClick={() => navigate('/map')}>Map</button>
-              </li>
-              <li className="nav-item">
-                <button type="button" className="nav-link active btn btn-link" onClick={() => navigate('/chat_list')}>Chats</button>
-              </li>
-              {/* <li className="nav-item">
-                <button type="button" className="nav-link active btn btn-link" onClick={() => navigate('/profile')}>Profile</button>
-              </li> */}
-            </ul>
-          </div>
-        </nav>
-      </footer>
     </div>
   );
 }

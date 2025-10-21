@@ -60,7 +60,8 @@ header {
 }
 
 .text-primary {
-  color: #ff5722 !important;
+  font-family: "Roboto Flex", sans-serif;
+  color: #343a40 !important;
 }
 
 .text-success {
@@ -70,4 +71,4 @@ header {
 /* 
 PURPLE: 8C33B6
 GREEN: 60d0b2
-*/
+ */

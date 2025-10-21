@@ -12,7 +12,7 @@ export function Chat() {
         <h1>
           <img src="/question_mark.png" alt="logo" width="50" /> Joe Mamma
         </h1>
-        <span className="fw" style={{ color: '#000000', alignSelf: 'flex-start' }}>username</span>
+        <span className="fw" style={{ color: '#000000', alignSelf: 'flex-start' }}>{sessionStorage.getItem('userName')}</span>
       </header>
 
       <main className="container-fluid px-4">
