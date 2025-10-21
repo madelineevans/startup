@@ -16,13 +16,13 @@ const router = createBrowserRouter([
     children: [
       {path: '/match', element: <Match />},
       {path:'/chat_list', element: <Chat_list />},
+      {path:'chat/:chatId', element: <Chat />},
     ],
   },
   {path:'/', element: <Login />},
   {path:'/login', element: <Login />},
   {path:'/newAccount', element: <NewAccount />},
   {path:'/map', element: <Map />},
-  {path:'/chat', element: <Chat />},
   {path:'*', element: <NotFound />},
 ]);
 
