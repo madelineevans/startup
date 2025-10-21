@@ -11,24 +11,6 @@ function generateChatList() {
     { id: 5, name: 'VolleyQueen' }
   ];
 }
-function get_chat_name(chatId) {
-  if (chatId === 1) {
-    return 'Joe Mamma';
-  }
-  else if (chatId === 2) {
-    return 'PicklePlayer';
-  }
-  else if (chatId === 3) {
-    return 'AceGamer';
-  }
-  else if (chatId === 4) {
-    return 'SmashMaster';
-  }
-  else if (chatId === 5) {
-    return 'VolleyQueen';
-  }
-  return 'Unknown User';
-}
 
 export function Chat_list() {
   const [chatList, setChatList] = React.useState(() => generateChatList());
@@ -42,9 +24,8 @@ export function Chat_list() {
   const handleChatClick = useCallback((chatId) => {
     // TODO: implement chat session retrieval logic
     // navigate(`/chat/${chatId}`);
-    get_chat_name(chatId);
     navigate(`/chat/${chatId}`);
-  });
+  }, [navigate]);
 
   return (
     <div className="container-fluid px-4 d-flex flex-column min-vh-100">
