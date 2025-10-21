@@ -10,6 +10,7 @@ function generatePlayer() {
   const competitionLevels = ['Casual', 'Competitive', 'Professional'];
   const matchesPlayed = Math.floor(Math.random() * 20);
   const matchesWon = Math.floor(Math.random() * (matchesPlayed + 1));
+  const chatIds = [1, 2, 3, 4, 5];
 
   return {
     username: usernames[Math.floor(Math.random() * usernames.length)],
@@ -20,7 +21,8 @@ function generatePlayer() {
     competitionLevel: competitionLevels[Math.floor(Math.random() * competitionLevels.length)],
     rating: (Math.random() * 5).toFixed(1),
     matchesPlayed,
-    matchesWon
+    matchesWon,
+    chatId: chatIds[Math.floor(Math.random() * chatIds.length)],
   };
 }
 
@@ -46,7 +48,7 @@ export function Match() {
     // true if the player was clicked on through the map or chat pages)
     // 2. if not, create a new chat session between the two players
     setIsChatSpinning(false);
-    navigate('/chat');
+    navigate(`/chat/${player.chatId}`);
   }, [player]);
 
   return (
