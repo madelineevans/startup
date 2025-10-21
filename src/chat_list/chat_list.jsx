@@ -1,9 +1,30 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css';
+
+function generateChatList() {
+  return [
+    { id: 1, name: 'Joe Mamma' },
+    { id: 2, name: 'PicklePlayer' },
+    { id: 3, name: 'AceGamer' },
+    { id: 4, name: 'SmashMaster' },
+    { id: 5, name: 'VolleyQueen' }
+  ];
+}
 
 export function Chat_list() {
+  const [chatList, setChatList] = React.useState(() => generateChatList());
   const navigate = useNavigate();
+
+  const get_chat_list = useCallback(() => {
+    // TODO: implement chat list retrieval logic
+    setChatList(generateChatList());
+  }, []);
+
+  const handleChatClick = useCallback((chatId) => {
+    // TODO: implement chat session retrieval logic
+    // navigate(`/chat/${chatId}`);
+    navigate(`/chat/${chatId}`);
+  }, [navigate]);
 
   return (
     <div className="container-fluid px-4 d-flex flex-column min-vh-100">
@@ -13,20 +34,16 @@ export function Chat_list() {
 
       <main className="container-fluid px-4 flex-grow-1 d-flex flex-column align-items-center">
         <div className="mb-3">
-          {/* list of chats will appear here */}
-          <button
-            className="btn btn-primary mb-2"
-            onClick={() => navigate('/chat')}
-          >
-            Chat with Joe Mamma
-          </button>
-          <br />
-          <button
-            className="btn btn-primary"
-            onClick={() => navigate('/chat')}
-          >
-            Chat with PicklePlayer
-          </button>
+          {/* Render chat buttons dynamically */}
+          {chatList.map((chat) => (
+            <button
+              key={chat.id}
+              className="btn btn-primary mb-2 w-100"
+              onClick={() => handleChatClick(chat.id)}
+            >
+              Chat with {chat.name}
+            </button>
+          ))}
         </div>
       </main>
     </div>
