@@ -44,7 +44,7 @@ export function Footer() {
               <button
                 type="button"
                 className={`nav-link btn btn-link ${
-                  isActive('/map') ? 'text-primary fw-bold' : 'text-primary'
+                  isActive('/map') ? 'text-secondary fw-bold' : 'text-primary'
                 }`}
                 onClick={() => navigate('/map')}
               >
@@ -57,7 +57,7 @@ export function Footer() {
               <button
                 type="button"
                 className={`nav-link btn btn-link ${
-                  isActive('/chat_list') ? 'text-primary fw-bold' : 'text-primary'
+                  isActive('/chat_list') ? 'text-secondary fw-bold' : 'text-primary'
                 }`}
                 onClick={() => navigate('/chat_list')}
               >

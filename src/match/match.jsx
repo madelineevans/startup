@@ -73,12 +73,12 @@ export function Match() {
           <br />
           <h3>Player Stats</h3>
           <div>
-            <strong>Player Rating:</strong> {player.rating} (websocket data)<br />
-            <strong>Player Rating:</strong> {player.rating} (websocket data)<br />
+            <strong>Player Rating:</strong> {player.rating}<br />
+            <strong>Player Rating:</strong> {player.rating}<br />
             <strong>Matches Played This Week:</strong>{' '}
-            <span id="matchesPlayed">{player.matchesPlayed} (websocket data)</span><br />
+            <span id="matchesPlayed">{player.matchesPlayed}</span><br />
             <strong>Matches Won This Week:</strong>{' '}
-            <span id="matchesWon">{player.matchesWon} (websocket data)</span><br />
+            <span id="matchesWon">{player.matchesWon}</span><br />
           </div>
         </div>
 
