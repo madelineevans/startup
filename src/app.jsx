@@ -15,12 +15,12 @@ const router = createBrowserRouter([
     element: <RootLayout />,
     children: [
       {path: '/match', element: <Match />},
+      {path:'/chat_list', element: <Chat_list />},
     ],
   },
   {path:'/', element: <Login />},
   {path:'/login', element: <Login />},
   {path:'/newAccount', element: <NewAccount />},
-  {path:'/chat_list', element: <Chat_list />},
   {path:'/map', element: <Map />},
   {path:'/chat', element: <Chat />},
   {path:'*', element: <NotFound />},
