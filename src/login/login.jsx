@@ -51,12 +51,7 @@ export function Login() {
               <button
                 className={`btn btn-secondary btn-sm ${isCreatingAccount ? 'spinning' : ''}`}
                 type="button"
-                onClick={() => {
-                  setIsCreatingAccount(true);
-                  setTimeout(() => {
-                    navigate('/newAccount');
-                  }, 500);
-                }}
+                onClick={handleCreateAccount}
                 disabled={isCreatingAccount}
               >
                 <span className="spinner-border spinner-border-sm" aria-hidden="true"></span>

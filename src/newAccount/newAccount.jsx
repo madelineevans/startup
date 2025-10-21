@@ -7,6 +7,13 @@ export function NewAccount() {
   const [isSpinning, setIsSpinning] = useState(false);
   const navigate = useNavigate();
 
+  const handleCreateAccount = () => {
+    setIsSpinning(true);
+    // TODO: Implement account creation endpoint
+    sessionStorage.setItem('userName', 'Billy-Joel');
+    navigate('/match');
+  };
+
   return (
     <div className="container-fluid px-4 d-flex flex-column min-vh-100">
       <header className="container-fluid px-4 d-flex justify-content-center align-items-center gap-2 py-3">
@@ -98,12 +105,7 @@ export function NewAccount() {
             <button
               className={`btn btn-primary btn-sm ${isSpinning ? 'spinning' : ''}`}
               type="button"
-              onClick={() => {
-                setIsSpinning(true);
-                setTimeout(() => {
-                  navigate('/match');
-                }, 500);
-              }}
+              onClick={handleCreateAccount}
               disabled={isSpinning}
             >
               <span className="spinner-border spinner-border-sm" aria-hidden="true"></span>
