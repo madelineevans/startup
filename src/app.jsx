@@ -2,7 +2,6 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './app.css';
 import { BrowserRouter, createBrowserRouter, NavLink, Route, Router, RouterProvider, Routes } from 'react-router-dom';
-import { BrowserRouter, createBrowserRouter, NavLink, Route, Router, RouterProvider, Routes } from 'react-router-dom';
 import { Login } from './login/login';
 import { Chat_list } from './chat_list/chat_list';
 import { Chat } from './chat/chat';

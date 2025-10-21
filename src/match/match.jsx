@@ -28,7 +28,6 @@ function generatePlayer() {
 
 export function Match() {
   const [player, setPlayer] = useState(() => generatePlayer());
-  const [player, setPlayer] = useState(() => generatePlayer());
   const [isNextSpinning, setIsNextSpinning] = useState(false);
   const [isChatSpinning, setIsChatSpinning] = useState(false);
 
@@ -58,7 +57,6 @@ export function Match() {
       <header className="container-fluid px-4 d-flex justify-content-center align-items-center gap-4 py-3">
         <h1>
           <img src="/question_mark.png" alt="PlayerImg" width="75" /> {player.username}
-          <img src="/question_mark.png" alt="PlayerImg" width="75" /> {player.username}
         </h1>
       </header>
 
@@ -66,11 +64,6 @@ export function Match() {
         <div className="mb-4" style={{ maxWidth: '400px', width: '100%' }}>
           <h3>About</h3>
           <div>
-            <strong>Age:</strong> {player.age} <br />
-            <strong>Location:</strong> {player.location}<br />
-            <strong>Skill Level:</strong> {player.skillLevel}<br />
-            <strong>Signature move:</strong> {player.signatureMove}<br />
-            <strong>Competition Level:</strong> {player.competitionLevel}<br />
             <strong>Age:</strong> {player.age} <br />
             <strong>Location:</strong> {player.location}<br />
             <strong>Skill Level:</strong> {player.skillLevel}<br />
@@ -84,9 +77,7 @@ export function Match() {
             <strong>Player Rating:</strong> {player.rating} (websocket data)<br />
             <strong>Matches Played This Week:</strong>{' '}
             <span id="matchesPlayed">{player.matchesPlayed} (websocket data)</span><br />
-            <span id="matchesPlayed">{player.matchesPlayed} (websocket data)</span><br />
             <strong>Matches Won This Week:</strong>{' '}
-            <span id="matchesWon">{player.matchesWon} (websocket data)</span><br />
             <span id="matchesWon">{player.matchesWon} (websocket data)</span><br />
           </div>
         </div>
@@ -98,12 +89,7 @@ export function Match() {
             onClick={handleNextPlayer}
             disabled={isNextSpinning || isRouting}
           >
-            {isNextSpinning && <span className="spinner-border spinner-border-sm" aria-hidden="true"></span>}
-            onClick={handleNextPlayer}
-            disabled={isNextSpinning || isRouting}
-          >
-            {isNextSpinning && <span className="spinner-border spinner-border-sm" aria-hidden="true"></span>}
-            <span role="status">Next Player</span>
+            Next Player
           </button>
 
           <button
@@ -112,12 +98,7 @@ export function Match() {
             onClick={handleChat}
             disabled={isChatSpinning || isRouting}
           >
-            {isChatSpinning && <span className="spinner-border spinner-border-sm" aria-hidden="true"></span>}
-            onClick={handleChat}
-            disabled={isChatSpinning || isRouting}
-          >
-            {isChatSpinning && <span className="spinner-border spinner-border-sm" aria-hidden="true"></span>}
-            <span role="status">Chat with Player</span>
+            Chat with Player
           </button>
         </div>
       </main>
