@@ -44,12 +44,50 @@ export function PlayerMap() {
   const markersRef = useRef(new window.Map());
   const playersRef = useRef([]);
   const tickTimerRef = useRef(null);
+  const searchInputRef = useRef(null);
+  const highlightRef = useRef(null);
 
   const handleChatClick = useCallback((playerId) => {
     // change to a get from player profile database later
     console.log(`Clicked viewPlayer with id: ${playerId}`);
     navigate(`/match/${playerId}`);
   }, [navigate]);
+
+  function focusPlayerByName(query) {
+    if (!query || !mapRef.current) return;
+    const q = query.trim().toLowerCase();
+
+    // find first name that includes the query
+    const match = playersRef.current.find(p => p.name.toLowerCase().includes(q));
+    if (!match) {
+      // could todo: show a toast/alert here
+      return;
+    }
+
+    const marker = markersRef.current.get(match.id);
+    if (!marker) return;
+
+    mapRef.current.setView([match.lat, match.lng], Math.max(mapRef.current.getZoom(), 15), { animate: true });
+    marker.openPopup();
+
+    if (highlightRef.current) {
+      mapRef.current.removeLayer(highlightRef.current);
+    }
+    highlightRef.current = L.circleMarker([match.lat, match.lng], {
+      radius: 18,
+      color: '#2a81ea',
+      weight: 3,
+      opacity: 0.9,
+      fillOpacity: 0.1,
+    }).addTo(mapRef.current);
+
+    setTimeout(() => {
+      if (highlightRef.current) {
+        mapRef.current.removeLayer(highlightRef.current);
+        highlightRef.current = null;
+      }
+    }, 2000);
+  }
 
   useEffect(() => {
     // Initialize map with default center and zoom
@@ -158,7 +196,29 @@ export function PlayerMap() {
       <main className="container flex-grow-1 d-flex flex-column align-items-center" style={{ paddingBottom: '80px' }}>
         <div className="w-100 mb-3" style={{ maxWidth: '600px' }}>
           <label htmlFor="search" className="form-label">Find a friend:</label>
-          <input type="search" id="search" name="varSearch" className="form-control" />
+          <div className="d-flex gap-2">
+            <input
+              ref={searchInputRef}
+              type="search"
+              id="search"
+              name="varSearch"
+              className="form-control"
+              placeholder="Type a name, e.g., AceGamer"
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  focusPlayerByName(e.currentTarget.value);
+                }
+              }}
+            />
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={() => focusPlayerByName(searchInputRef.current?.value || '')}
+              style={{ whiteSpace: 'nowrap' }}
+            >
+              Find
+            </button>
+          </div>
         </div>
 
         <div className="w-100" style={{ height: '400px', maxWidth: '95%' }}>
