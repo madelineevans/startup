@@ -1,12 +1,23 @@
 #chatbox {
-    flex: 1;
-    border: 2px solid black;
-    height: 100%;
-    width: 100%;
-    overflow: auto;
-    margin-bottom: 50px; /* Space for footer */
-    padding: 5px;
-    box-sizing: border-box;
+  flex: 1 1 auto;
+  border: 2px solid black;
+  overflow: auto;
+  margin-top: 20px;
+  padding: 5px;
+  box-sizing: border-box;
+  min-height: 300px;
+  max-height: 60vh;
+  overflow-y: auto;
+  background: #fff;
+  flex-shrink: 0;
+}
+
+main.container-fluid {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;      
+  padding-bottom: 70px;
 }
 
 header {

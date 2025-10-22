@@ -23,6 +23,7 @@ export function Chat_list() {
   const handleChatClick = useCallback((chatId) => {
     // TODO: implement chat session retrieval logic
     // navigate(`/chat/${chatId}`);
+    console.log(`Clicked chat with id: ${chatId}`);
     navigate(`/chat/${chatId}`);
   }, [navigate]);
 
