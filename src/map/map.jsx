@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useCallback } from 'react';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import './map.css';
@@ -45,6 +45,12 @@ export function PlayerMap() {
   const playersRef = useRef([]);
   const tickTimerRef = useRef(null);
 
+  const handleChatClick = useCallback((playerId) => {
+    // change to a get from player profile database later
+    console.log(`Clicked viewPlayer with id: ${playerId}`);
+    navigate(`/match/${playerId}`);
+  }, [navigate]);
+
   useEffect(() => {
     // Initialize map with default center and zoom
     const baseCenter = get_curr_loc();
@@ -85,7 +91,7 @@ export function PlayerMap() {
 
       const btn = L.DomUtil.create('button', 'btn btn-sm btn-primary mt-1', popupDiv);
       btn.innerText = 'View Player';
-      btn.onclick = () => navigate('/match');
+      btn.onclick = () => handleChatClick(player.id);
 
       marker.bindPopup(popupDiv);
       markersRef.current.set(player.id, marker);

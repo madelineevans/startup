@@ -1,5 +1,18 @@
-import React, { useState, useCallback } from 'react';
-import { useNavigate, useNavigation } from 'react-router-dom';
+import React, { useState, useCallback, useEffect } from 'react';
+import { useNavigate, useNavigation, useParams } from 'react-router-dom';
+
+async function fetchPlayerById(playerId) {
+  // Replace with actual API call to player database
+  const players = {
+    1: { id: 1, username: 'Joe Mama', age: 28, location: 'Provo, UT', skillLevel: 'Advanced', signatureMove: 'The Smash', competitionLevel: 'Competitive', rating: 4.5, matchesPlayed: 15, matchesWon: 10, chatId: 1 },
+    2: { id: 2, username: 'PicklePlayer', age: 25, location: 'Provo, UT', skillLevel: 'Intermediate', signatureMove: 'The Drop Shot', competitionLevel: 'Casual', rating: 3.8, matchesPlayed: 12, matchesWon: 7, chatId: 2 },
+    3: { id: 3, username: 'AceGamer', age: 30, location: 'Provo, UT', skillLevel: 'Pro', signatureMove: 'The Volley', competitionLevel: 'Professional', rating: 4.9, matchesPlayed: 20, matchesWon: 18, chatId: 3 },
+    4: { id: 4, username: 'SmashMaster', age: 27, location: 'Provo, UT', skillLevel: 'Advanced', signatureMove: 'The Lob', competitionLevel: 'Competitive', rating: 4.2, matchesPlayed: 14, matchesWon: 9, chatId: 4 },
+    5: { id: 5, username: 'VolleyQueen', age: 32, location: 'Provo, UT', skillLevel: 'Pro', signatureMove: 'The Drop Shot', competitionLevel: 'Professional', rating: 4.7, matchesPlayed: 18, matchesWon: 15, chatId: 5 },
+  };
+  
+  return players[playerId] || null;
+}
 
 function generatePlayer() {
   const usernames = ['Alice12', 'Bob23', 'Charlie34', 'Diana56', 'Ethan78'];
@@ -27,14 +40,29 @@ function generatePlayer() {
 }
 
 export function Match() {
+  const { playerId } = useParams();
   const [player, setPlayer] = useState(() => generatePlayer());
   const [isNextSpinning, setIsNextSpinning] = useState(false);
   const [isChatSpinning, setIsChatSpinning] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
 
   const navigate = useNavigate();
   const navigation = useNavigation();
   const isRouting = navigation.state !== 'idle';
+
+  useEffect(() => {
+    if (playerId) {
+      setIsLoading(true);
+      fetchPlayerById(parseInt(playerId))
+        .then(fetchedPlayer => {
+          if (fetchedPlayer) {
+            setPlayer(fetchedPlayer);
+          }
+        })
+        .finally(() => setIsLoading(false));
+    }
+  }, [playerId]);
 
   const handleNextPlayer = useCallback(() => {
     setIsNextSpinning(true);
@@ -50,7 +78,15 @@ export function Match() {
     // 2. if not, create a new chat session between the two players
     setIsChatSpinning(false);
     navigate(`/chat/${player.chatId}`);
-  }, [player]);
+  }, [player, navigate]);
+
+  if (isLoading) {
+    return (
+      <div className="container-fluid px-4 d-flex flex-column min-vh-100 justify-content-center align-items-center">
+        <div>Loading player...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="container-fluid px-4 d-flex flex-column min-vh-100">
