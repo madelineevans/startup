@@ -16,7 +16,7 @@ L.Icon.Default.mergeOptions({
 
 function get_curr_loc() {
   // replace with actual geolocation API call or stored user location
-  return { lat: 40.2338, lng: -111.6585 };
+  return [40.2338, -111.6585 ];
 }
 
 async function fetchPlayersNear() {
@@ -30,22 +30,49 @@ async function fetchPlayersNear() {
   ];
 }
 
-export function Map() {
+function jitterLatLng(lat, lng, meters = 12) {
+  // mimic how we'll want the to be live locations
+  const dLat = (Math.random() - 0.5) * (meters / 111);
+  const dLng = (Math.random() - 0.5) * (meters / (111 * Math.cos((lat * Math.PI) / 180)));
+  return [lat + dLat, lng + dLng];
+}
+
+export function PlayerMap() {
   const navigate = useNavigate();
   const mapRef = useRef(null);
   const markerLayerRef = useRef(null);
+  const markersRef = useRef(new window.Map());
+  const playersRef = useRef([]);
+  const tickTimerRef = useRef(null);
 
   useEffect(() => {
-    const currentUserLoc = get_curr_loc();
+    // Initialize map with default center and zoom
+    const baseCenter = get_curr_loc();
+    const mapDiv = L.map('map').setView(baseCenter, 13);
+    mapRef.current = mapDiv;
 
-    const map = L.map('map').setView(currentUserLoc, 13);
-    mapRef.current = map;
-
+    // Add tile layer
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
-    }).addTo(map);
+    }).addTo(mapDiv);
 
-    const layer = L.layerGroup().addTo(map);
+    // Try to get user's actual location
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((pos) => {
+        const userCenter = [pos.coords.latitude, pos.coords.longitude];
+        mapDiv.setView(userCenter, 13);
+        L.marker(userCenter, { title: 'You are here' })
+          .addTo(mapDiv)
+          .bindPopup("<b>You</b>");
+      },
+      (error) => {
+        console.log('Geolocation error:', error);
+      },
+      { enableHighAccuracy: true, timeout: 5000 }
+      );
+    }
+
+    const layer = L.layerGroup().addTo(mapDiv);
     markerLayerRef.current = layer;
 
     function addPlayerMarker(player) {
@@ -61,12 +88,12 @@ export function Map() {
       btn.onclick = () => navigate('/match');
 
       marker.bindPopup(popupDiv);
-      return marker;
+      markersRef.current.set(player.id, marker);
     }
 
     (async () => {
       const players = await fetchPlayersNear();
-      if (!players?.length) return;
+      playersRef.current = players.map((p) => ({...p }));
 
       const bounds = L.latLngBounds([]);
       players.forEach((p) => {
@@ -74,14 +101,45 @@ export function Map() {
         bounds.extend([p.lat, p.lng]);
       });
 
-      if (bounds.isValid()) map.fitBounds(bounds.pad(0.2));
+      if (bounds.isValid()) mapDiv.fitBounds(bounds.pad(0.2));
     })();
 
-    //cleanup
+    const movers = new Set();
+
+    function chooseMovers() {
+      const all = playersRef.current.map(p => p.id);
+      while (movers.size < Math.ceil(all.length / 2)) {
+        movers.add(all[Math.floor(Math.random() * all.length)]);
+      }
+    }
+    chooseMovers();
+
+    function tick() {
+      playersRef.current.forEach((p) => {
+        if (!movers.has(p.id)) return;
+        const [lat, lng] = jitterLatLng(p.lat, p.lng, 30 + Math.random() * 50);
+        p.lat = lat;
+        p.lng = lng;
+
+        const marker = markersRef.current.get(p.id);
+        if (marker) marker.setLatLng([lat, lng]);
+      });
+
+      tickTimerRef.current = setTimeout(tick, 800 + Math.random() * 1200);
+    }
+    tickTimerRef.current = setTimeout(tick, 1000);
+
+    // Cleanup
     return () => {
-      map.remove();
+      if (tickTimerRef.current) {
+        clearTimeout(tickTimerRef.current);
+      }
+      if (mapRef.current) {
+        mapRef.current.remove();
+      }
       mapRef.current = null;
       markerLayerRef.current = null;
+      markersRef.current.clear();
     };
   }, [navigate]);
 
@@ -118,9 +176,6 @@ export function Map() {
               <li className="nav-item">
                 <button type="button" className="nav-link active btn btn-link" onClick={() => navigate('/chat_list')}>Chats</button>
               </li>
-              {/* <li className="nav-item">
-                <button type="button" className="nav-link active btn btn-link" onClick={() => navigate('/profile')}>Profile</button>
-              </li> */}
             </ul>
           </div>
         </nav>

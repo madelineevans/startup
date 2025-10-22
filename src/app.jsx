@@ -5,7 +5,7 @@ import { BrowserRouter, createBrowserRouter, NavLink, Route, Router, RouterProvi
 import { Login } from './login/login';
 import { Chat_list } from './chat_list/chat_list';
 import { Chat } from './chat/chat';
-import { Map } from './map/map';
+import { PlayerMap } from './map/map';
 import { Match } from './match/match';
 import { NewAccount } from './newAccount/newAccount';
 import { RootLayout } from './layouts/RootLayout';
@@ -22,7 +22,7 @@ const router = createBrowserRouter([
   {path:'/', element: <Login />},
   {path:'/login', element: <Login />},
   {path:'/newAccount', element: <NewAccount />},
-  {path:'/map', element: <Map />},
+  {path:'/map', element: <PlayerMap />},
   {path:'*', element: <NotFound />},
 ]);
 
