@@ -157,7 +157,7 @@ export function PlayerMap() {
 
       <main className="container flex-grow-1 d-flex flex-column align-items-center" style={{ paddingBottom: '80px' }}>
         <div className="w-100 mb-3" style={{ maxWidth: '600px' }}>
-          <label htmlFor="search" className="form-label">SearchBar Standin:</label>
+          <label htmlFor="search" className="form-label">Find a friend:</label>
           <input type="search" id="search" name="varSearch" className="form-control" />
         </div>
 
