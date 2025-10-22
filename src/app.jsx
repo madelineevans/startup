@@ -15,6 +15,7 @@ const router = createBrowserRouter([
     element: <RootLayout />,
     children: [
       {path: '/match/:playerId', element: <Match />},
+      {path: '/match', element: <Match />},
       {path:'/chat_list', element: <Chat_list />},
       {path:'chat/:chatId', element: <Chat />},
     ],

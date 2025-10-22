@@ -172,8 +172,23 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **All functionality implemented or mocked out** - I did not complete this part of the deliverable.
-- [ ] **Hooks** - I did not complete this part of the deliverable.
+- [x] **All functionality implemented or mocked out** - I did not complete this part of the deliverable.
+    Mae Added:
+        - mocked out call to chat history database
+        - mock get call to get user's name and the person we're chatting with's name
+        - mocked out websocket chat functionality (listening/getting and sending messages)
+        - mock post/put call to send message we sent to store in the database
+        - mock location tracking/api call
+        - mock api get call to player database to populate the map
+        - mock api call to get current/self location to determine where to orient the map
+        - mock get api call to get info for a player based on their ID when we click button to navigate to match
+- [x] **Hooks** - I did not complete this part of the deliverable.
+    Mae Added:
+        - use hook to store the retrieved chat history
+        - use hook to store the message the user types
+        - use hook (useRef) to help with scrolling through chat functionality
+        - use a hook to refer to websocket object and within it to mimic websocket functionality
+        - use hooks to store map, along with the contained retrieved player locations, current location, etc.
 
 ## 🚀 Service deliverable
 
