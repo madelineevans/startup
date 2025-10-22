@@ -172,7 +172,7 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [x] **All functionality implemented or mocked out** - I did not complete this part of the deliverable.
+- [x] **All functionality implemented or mocked out**
     Mae Added:
         - mocked out call to chat history database
         - mock get call to get user's name and the person we're chatting with's name
@@ -182,14 +182,23 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
         - mock api get call to player database to populate the map
         - mock api call to get current/self location to determine where to orient the map
         - mock get api call to get info for a player based on their ID when we click button to navigate to match
-- [x] **Hooks** - I did not complete this part of the deliverable.
+    Chloe Added:
+        - mocked out call to chat list in database
+        - mocked out call to login and locally store username for display
+        - mocked out call to get a new player to display on the match page
+        - chats in chat_list are dynamically listed
+        - footer consistency added accross internal pages
+- [x] **Hooks**
     Mae Added:
         - use hook to store the retrieved chat history
         - use hook to store the message the user types
         - use hook (useRef) to help with scrolling through chat functionality
         - use a hook to refer to websocket object and within it to mimic websocket functionality
         - use hooks to store map, along with the contained retrieved player locations, current location, etc.
-
+    Chloe Added:
+        - used hook to store username upon login/create account
+        - used hook to store player information on the match page
+        - used hook to send chatID to chat page and populate chat data
 ## 🚀 Service deliverable
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
