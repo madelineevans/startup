@@ -17,3 +17,5 @@ Thumbs.db
 
 # VS Code settings
 .vscode/
+
+dbConfig.json

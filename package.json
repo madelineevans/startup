@@ -2,6 +2,7 @@
   "dependencies": {
     "bootstrap": "^5.3.8",
     "leaflet": "^1.9.4",
+    "mongodb": "^6.20.0",
     "react": "^19.2.0",
     "react-bootstrap": "^2.10.10",
     "react-dom": "^19.2.0",
