@@ -1,0 +1,76 @@
+const bcrypt = require('bcryptjs');
+const uuid = require('uuid');
+const authRepository = require('./authRepository.js');
+
+const authCookieName = 'token';
+
+function setAuthCookie(res, authToken) {
+  res.cookie(authCookieName, authToken, {
+    maxAge: 1000 * 60 * 60 * 24 * 365,
+    secure: true,
+    httpOnly: true,
+    sameSite: 'strict',
+  });
+}
+
+async function findUser(field, value) {
+  if (!value) return null;
+
+  if (field === 'token') {
+    return authRepository.getUserByToken(value);
+  }
+  return authRepository.getUserByEmail(value);
+}
+
+async function createAuth(req, res) {
+  if (await findUser('email', req.body.email)) {
+    res.status(409).send({ msg: 'Existing user' });
+  } else {
+    const passwordHash = await bcrypt.hash(req.body.password, 10);
+
+    const user = {
+      email: req.body.email,
+      password: passwordHash,
+      token: uuid.v4(),
+    };
+    await authRepository.addUser(user);
+
+    setAuthCookie(res, user.token);
+    res.send({ email: user.email });
+  }
+}
+
+async function login(req, res) {
+  const user = await findUser('email', req.body.email);
+  if (user) {
+    if (await bcrypt.compare(req.body.password, user.password)) {
+      user.token = uuid.v4();
+      await authRepository.updateUser(user);
+      setAuthCookie(res, user.token);
+      res.send({ email: user.email });
+      return;
+    }
+  }
+  res.status(401).send({ msg: 'Unauthorized' });
+}
+
+async function logout(req, res) {
+  const user = await findUser('token', req.cookies[authCookieName]);
+  if (user) {
+    delete user.token;
+    await authRepository.updateUser(user);
+  }
+  res.clearCookie(authCookieName);
+  res.status(204).end();
+}
+
+async function verifyAuth(req, res, next) {
+  const user = await findUser('token', req.cookies[authCookieName]);
+  if (user) {
+    next();
+  } else {
+    res.status(401).send({ msg: 'Unauthorized' });
+  }
+}
+
+module.exports = { createAuth, login, logout, verifyAuth, authCookieName };
