@@ -2,9 +2,19 @@ What API's do we need?
 
 pages:
 - login
-    - send (put? post?)
+    - auth (get auth)
 - newAccount
+    - send (put? post?)
 - match
+    - GET newMatch
+    - POST newChat
+    - POST markAsSeen
 - map
+    - GET allAvailbleLocations
+    - (make a toggle thats like location seen)
+    - POST turnOnLocation Puts just the location for three hours but does not move location
+    - GET playerMatch (opens player match page based from their pin)
 - chat
+    - Get messageHistory(chat)
 - chat_list
+    - GET allChats
