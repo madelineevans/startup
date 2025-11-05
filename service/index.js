@@ -14,11 +14,11 @@ app.use(express.json());
 app.use(cookieParser());
 
 // Serve up the applications static content
-app.use(express.static('public'));
+app.use(express.static('../public'));
 
 // Router for service endpoints
 const apiRouter = express.Router();
-app.use(`/api`, apiRouter);
+app.use(`/`, apiRouter);
 
 // auth routes
 apiRouter.post('/auth/create', handler.createAuth);     //new account
