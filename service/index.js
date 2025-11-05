@@ -30,15 +30,15 @@ apiRouter.get('/match', handler.getMatch);
 apiRouter.post('/chat/:playerID', handler.postChat)
 
 // Map routes
-apiRouter.get('/map/players', handler.fetchAllPlayers);
-apiRouter.get('/map/player', handler.fetchPlayerById);   //pass in id here? where?
+// apiRouter.get('/map/players', handler.fetchAllPlayers);
+// apiRouter.get('/map/player', handler.fetchPlayerById);   //pass in id here? where?
 
 // Chat routes
-apiRouter.get('/chat/history', handler.fetchChatHistoryById); //pass in id here? where?
-apiRouter.post('/chat/send', handler.sendMessage);
+// apiRouter.get('/chat/history', handler.fetchChatHistoryById); //pass in id here? where?
+// apiRouter.post('/chat/send', handler.sendMessage);
 
 // Chat_list routes
-apiRouter.get('/chat/list', handler.listMessages);
+// apiRouter.get('/chat/list', handler.listMessages);
 
 // Default error handler
 app.use(function (err, req, res, next) {

@@ -1,7 +1,11 @@
 import {MatchBusiness} from './business/match.js';
-const bcrypt = require('bcryptjs');
-const uuid = require('uuid');
-const authRepository = require('./authRepository.js'); 
+import bcrypt from 'bcryptjs';
+import authRepository from './repo/auth.js';
+import { v4 as uuidv4 } from 'uuid';
+
+// const bcrypt = require('bcryptjs');
+// const uuid = require('uuid');
+// const authRepository = require('./authRepository.js'); 
 
 const authCookieName = 'token';
 
@@ -32,7 +36,7 @@ async function createAuth(req, res) {
     const user = {
       email: req.body.email,
       password: passwordHash,
-      token: uuid.v4(),
+      token: uuidv4(),
     };
     await authRepository.addUser(user);
 
@@ -42,22 +46,24 @@ async function createAuth(req, res) {
 }
 
 async function getMatch(req, res) {
+  const user = await findUser('token', req.cookies[authCookieName]);
   if (user) {
     const record = await MatchBusiness.getNewMatch();
     res.send(record);
+    return;
   } else {
     res.status(401).send({ msg: 'Unauthorized' });
   }
 }
 async function postChat(req, res) {
-  
+  return;
 }
 
 async function login(req, res) {
   const user = await findUser('email', req.body.email);
   if (user) {
     if (await bcrypt.compare(req.body.password, user.password)) {
-      user.token = uuid.v4();
+      user.token = uuidv4();
       await authRepository.updateUser(user);
       setAuthCookie(res, user.token);
       res.send({ email: user.email });
@@ -86,4 +92,6 @@ async function verifyAuth(req, res, next) {
   }
 }
 
-module.exports = { createAuth, login, logout, verifyAuth, authCookieName, getMatch, postChat};
+export {createAuth, login, logout, verifyAuth, getMatch, postChat};
+
+// /*authCookieName,*/
