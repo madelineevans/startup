@@ -96,7 +96,10 @@ export function NewAccount() {
                 <option defaultValue>How did you hear about us?</option>
                 <option value="1">Through a friend</option>
                 <option value="2">Online</option>
-                <option value="3">Other</option>
+                <option value="3">Coach</option>
+                <option value="4">Ad</option>
+                <option value="5">Event</option>
+                <option value="6">Other</option>
               </select>
             </div>
 

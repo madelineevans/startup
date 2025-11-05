@@ -1,24 +1,14 @@
-export class PlayerInfoRepo {
-  async getPlayerInfo(playerId) {
+// const { data } = require('react-router-dom');
+// const DB = require('../database.js');
+
+export class PlayerRepo {
+  static async getPlayerInfo(playerId) {
     // fake_data_generator will be replaced with a db call
-    const player = fake_data_generator("player", { playerId });
-    const score  = fake_data_generator("score",  { playerId: player.playerID });
-
-    const record = {
-      playerID: player.playerID,
-      dob: player.dob,
-      name: player.name,
-      age: player.age,
-      location: player.location,
-      skill_level: player.skill_level,
-      signature_move: player.signature_move,
-      competition_level: player.competition_level,
-      player_rating: score.player_rating,
-      matches_played: score.matches_played,
-      matches_won: score.matches_won,
-    };
-
-    return record;
+    return fake_data_generator("player", { playerId });
+  }
+  static async getPlayerScore(playerId) {
+    // fake_data_generator will be replaced with a db call
+    return fake_data_generator("score", { playerId });
   }
 }
 
@@ -38,11 +28,11 @@ function fake_data_generator(data_type, opts = {}) {
 
   if (data_type === "player") {
     const names = ["Alex Carter", "Jamie Lee", "Taylor Morgan", "Jordan Smith", "Casey Brown"];
-    const locations = ["New York", "London", "Sydney", "Toronto", "Tokyo"];
-    const skills = ["Beginner", "Intermediate", "Advanced", "Pro"];
+    const locations = ["New York", "London", "Sydney", "Toronto", "Tokyo", "Provo", "Orem"];
+    const skills = ["Never Played","Beginner", "Intermediate", "Advanced", "Pro"];
     const foundBy = ["Friend", "Coach", "Ad", "Event"];
     const moves = ["Spin shot", "Curve ball", "Power serve", "Precision strike"];
-    const competitionLevels = ["Casual", "Amateur", "Semi-Pro", "Professional"];
+    const competitionLevels = ["I just need someone to learn with", "I just want to have fun", "I want it to be a little competitive", "I want it to be competitive", "Do or die"];
 
     const dob = randomDate(new Date(1980, 0, 1), new Date(2010, 0, 1));
     const age = new Date().getFullYear() - new Date(dob).getFullYear();
@@ -76,5 +66,3 @@ function fake_data_generator(data_type, opts = {}) {
 
   return null;
 }
-
-module.exports = PlayerInfoRepo;

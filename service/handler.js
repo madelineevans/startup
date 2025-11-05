@@ -1,6 +1,7 @@
+import {MatchBusiness} from './business/match.js';
 const bcrypt = require('bcryptjs');
 const uuid = require('uuid');
-const authRepository = require('./authRepository.js');
+const authRepository = require('./authRepository.js'); 
 
 const authCookieName = 'token';
 
@@ -42,7 +43,8 @@ async function createAuth(req, res) {
 
 async function getMatch(req, res) {
   if (user) {
-    
+    const record = await MatchBusiness.getNewMatch();
+    res.send(record);
   } else {
     res.status(401).send({ msg: 'Unauthorized' });
   }
@@ -84,4 +86,4 @@ async function verifyAuth(req, res, next) {
   }
 }
 
-module.exports = { createAuth, login, logout, verifyAuth, authCookieName };
+module.exports = { createAuth, login, logout, verifyAuth, authCookieName, getMatch, postChat};
