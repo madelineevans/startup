@@ -7,8 +7,28 @@ pages:
     - send (put? post?)
 - match
     - GET newMatch
+        - return body:
+        {
+            playerID: 'exampleID'
+            name: 'name',
+            age: 'player age'
+            location: 'player location'
+            skill_level: 'intermediate'
+            signature_move: 'sig move',
+            competition_level: 'competitive'
+            player_rating: '3'
+            matches_played: '11'
+            matches_won: '10'
+        }
     - POST newChat
+        - request body:
+        {
+            playerID: 'exampleID',
+        }
     - POST markAsSeen
+        {
+            playerID: 'exampleID',
+        }
 - map
     - GET allAvailbleLocations
     - (make a toggle thats like location seen)

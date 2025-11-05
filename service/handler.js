@@ -40,6 +40,17 @@ async function createAuth(req, res) {
   }
 }
 
+async function getMatch(req, res) {
+  if (user) {
+    
+  } else {
+    res.status(401).send({ msg: 'Unauthorized' });
+  }
+}
+async function postChat(req, res) {
+  
+}
+
 async function login(req, res) {
   const user = await findUser('email', req.body.email);
   if (user) {

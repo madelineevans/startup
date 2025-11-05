@@ -26,7 +26,8 @@ apiRouter.post('/auth/login', handler.login);
 apiRouter.delete('/auth/logout', handler.logout);
 
 // Match routes ---figure out implementation here
-
+apiRouter.get('/match', handler.getMatch);
+apiRouter.post('/chat/:playerID', handler.postChat)
 
 // Map routes
 apiRouter.get('/map/players', handler.fetchAllPlayers);

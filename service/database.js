@@ -22,6 +22,10 @@ function getUser(email) {
   return userCollection.findOne({ email: email });
 }
 
+function getPlayerInfo(playerId) {
+  return userCollection.findOne({ playerId: playerId });
+}
+
 function getUserByToken(token) {
   return userCollection.findOne({ token: token });
 }
