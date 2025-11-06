@@ -1,6 +1,5 @@
 //all the interactions with the database will be here
 
-const { data } = require('react-router-dom');
 const DB = require('../database.js');
 
 class AuthRepository {

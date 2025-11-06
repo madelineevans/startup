@@ -35,7 +35,8 @@ async function addUser(user) {
 }
 
 async function updateUser(user) {
-  await userCollection.updateOne({ email: user.email }, { $set: user });
+  const { email, ...rest } = user;
+  return userCollection.updateOne({ email }, { $set: rest });
 }
 
 async function addScore(score) {

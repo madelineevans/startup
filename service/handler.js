@@ -30,22 +30,34 @@ async function findUser(field, value) {
 }
 
 async function createAuth(req, res) {
-    console.log("in createAuth");
-  if (await findUser('email', req.body.email)) {
-    res.status(409).send({ msg: 'Existing user' });
-  } else {
-    const passwordHash = await bcrypt.hash(req.body.password, 10);
+  const { email, password, profile } = req.body || {};
+  if (!email || !password) return res.status(400).send({ msg: 'Email and password are required' });
+  if (await findUser('email', email)) return res.status(409).send({ msg: 'Existing user' });
 
-    const user = {
-      email: req.body.email,
-      password: passwordHash,
-      token: uuidv4(),
-    };
-    await authRepository.addUser(user);
+  const passwordHash = await bcrypt.hash(password, 10);
 
-    setAuthCookie(res, user.token);
-    res.send({ email: user.email });
-  }
+  const user = {
+    email,
+    password: passwordHash,
+    token: uuidv4(),
+    profile: {
+      firstName: profile?.firstName ?? '',
+      lastName: profile?.lastName ?? '',
+      birthDate: profile?.birthDate ?? '',
+      survey: {
+        skillLevel: profile?.survey?.skillLevel ?? '',
+        timePlayed: profile?.survey?.timePlayed ?? '',
+        playFrequency: profile?.survey?.playFrequency ?? '',
+        competitiveLevel: profile?.survey?.competitiveLevel ?? '',
+        foundSite: profile?.survey?.foundSite ?? '',
+      },
+    },
+    createdAt: new Date(),
+  };
+
+  await authRepository.addUser(user);
+  setAuthCookie(res, user.token);
+  res.send({ email: user.email });
 }
 
 async function getMatch(req, res) {
