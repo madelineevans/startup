@@ -1,11 +1,8 @@
 import {MatchBusiness} from './business/match.js';
+import {ChatBusiness} from './business/chat.js';
 import bcrypt from 'bcryptjs';
 import authRepository from './repo/auth.js';
 import { v4 as uuidv4 } from 'uuid';
-
-// const bcrypt = require('bcryptjs');
-// const uuid = require('uuid');
-// const authRepository = require('./authRepository.js'); 
 
 const authCookieName = 'token';
 
@@ -61,9 +58,8 @@ async function createAuth(req, res) {
 }
 
 async function getMatch(req, res) {
-    console.log("in getMatch");
-  // const user = await findUser('token', req.cookies[authCookieName]);
-    const user = true;
+  console.log("in getMatch");
+  verifyAuth(req, res, user);
   if (user) {
     const record = await MatchBusiness.getNewMatch();
     res.send(record);
@@ -74,7 +70,14 @@ async function getMatch(req, res) {
 }
 async function postChat(req, res) {
     console.log("in postChat");
-  return;
+  verifyAuth(req, res, user);
+  if (user) {
+    const record = await ChatBusiness.createNewChat();
+    res.send(record);
+    return;
+  } else {
+    res.status(401).send({ msg: 'Unauthorized' });
+  }
 }
 
 async function login(req, res) {
@@ -114,5 +117,4 @@ async function verifyAuth(req, res, next) {
 }
 
 export {createAuth, login, logout, verifyAuth, getMatch, postChat};
-
 // /*authCookieName,*/
