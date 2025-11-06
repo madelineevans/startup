@@ -60,6 +60,10 @@ async function postChat(req, res) {
   return;
 }
 
+async function listMessages(req, res){
+    
+}
+
 async function login(req, res) {
   const user = await findUser('email', req.body.email);
   if (user) {
