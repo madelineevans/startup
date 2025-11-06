@@ -38,7 +38,7 @@ function fake_data_generator(data_type, opts = {}) {
     const age = new Date().getFullYear() - new Date(dob).getFullYear();
 
     return {
-      playerID: opts.playerId ?? `P-${Math.floor(Math.random() * 100000)}`,
+      playerId: opts.playerId ?? `P-${Math.floor(Math.random() * 100000)}`,
       dob,
       name: randomItem(names),
       age,
@@ -57,7 +57,7 @@ function fake_data_generator(data_type, opts = {}) {
     const matches_won = randomInt(0, matches_played); // ensure logical
 
     return {
-      playerID: opts.playerId ?? `P-${Math.floor(Math.random() * 100000)}`,
+      playerId: opts.playerId ?? `P-${Math.floor(Math.random() * 100000)}`,
       player_rating: randomInt(1, 10),
       matches_played,
       matches_won,
