@@ -10,6 +10,7 @@ import { v4 as uuidv4 } from 'uuid';
 const authCookieName = 'token';
 
 function setAuthCookie(res, authToken) {
+    console.log("in setAuthCookie");
   res.cookie(authCookieName, authToken, {
     maxAge: 1000 * 60 * 60 * 24 * 365,
     secure: true,
@@ -19,6 +20,7 @@ function setAuthCookie(res, authToken) {
 }
 
 async function findUser(field, value) {
+    console.log("in findUser");
   if (!value) return null;
 
   if (field === 'token') {
@@ -28,6 +30,7 @@ async function findUser(field, value) {
 }
 
 async function createAuth(req, res) {
+    console.log("in createAuth");
   if (await findUser('email', req.body.email)) {
     res.status(409).send({ msg: 'Existing user' });
   } else {
@@ -46,6 +49,7 @@ async function createAuth(req, res) {
 }
 
 async function getMatch(req, res) {
+    console.log("in getMatch");
   // const user = await findUser('token', req.cookies[authCookieName]);
     const user = true;
   if (user) {
@@ -57,10 +61,12 @@ async function getMatch(req, res) {
   }
 }
 async function postChat(req, res) {
+    console.log("in postChat");
   return;
 }
 
 async function login(req, res) {
+    console.log("in api login");
   const user = await findUser('email', req.body.email);
   if (user) {
     if (await bcrypt.compare(req.body.password, user.password)) {
@@ -75,6 +81,7 @@ async function login(req, res) {
 }
 
 async function logout(req, res) {
+    console.log("in api logout");
   const user = await findUser('token', req.cookies[authCookieName]);
   if (user) {
     delete user.token;
@@ -85,6 +92,7 @@ async function logout(req, res) {
 }
 
 async function verifyAuth(req, res, next) {
+    console.log("in verifyAuth");
   const user = await findUser('token', req.cookies[authCookieName]);
   if (user) {
     next();

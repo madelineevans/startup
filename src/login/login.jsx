@@ -6,11 +6,10 @@ import { useNavigate } from 'react-router-dom';
 export function Login() {
   const navigate = useNavigate();
   const [isLoggingIn, setIsLoggingIn] = useState(false);
-  const [isCreatingAccount, setIsCreatingAccount] = useState(false);
 
   const handleLogin = async () => {
+    console.log("in handleLogin");
     setIsLoggingIn(true);
-    // TODO: Implement login endpoint and logic
     try{
       const response = await fetch('/api/auth/login', {
         method: 'POST',
@@ -35,11 +34,11 @@ export function Login() {
       setIsLoggingIn(false);
     }
     // sessionStorage.setItem('userName', 'Billy-Joel');
-    navigate('/match');
+    //navigate('/match');
   }
 
   const handleCreateAccount = async () => {
-    setIsCreatingAccount(true);
+    //setIsCreatingAccount(true);
     navigate('/newAccount');
   }
 
@@ -71,10 +70,9 @@ export function Login() {
                 <span role="status">Login</span>
               </button>
               <button
-                className={`btn btn-secondary btn-sm ${isCreatingAccount ? 'spinning' : ''}`}
+                className={`btn btn-secondary btn-sm`}
                 type="button"
                 onClick={handleCreateAccount}
-                disabled={isCreatingAccount}
               >
                 <span className="spinner-border spinner-border-sm" aria-hidden="true"></span>
                 <span role="status">Create New Account</span>

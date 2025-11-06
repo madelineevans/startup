@@ -6,11 +6,69 @@ export function NewAccount() {
   const [isSpinning, setIsSpinning] = useState(false);
   const navigate = useNavigate();
 
-  const handleCreateAccount = () => {
+  const handleCreateAccount = async () => {
     setIsSpinning(true);
-    // TODO: Implement account creation endpoint
-    sessionStorage.setItem('userName', 'Billy-Joel');
-    navigate('/match');
+    try {
+      // Grab values from the DOM (your current style)
+      const firstName = document.getElementById('firstName')?.value?.trim() || '';
+      const lastName = document.getElementById('lastName')?.value?.trim() || '';
+      const birthDate = document.getElementById('birthDate')?.value?.trim() || '';
+      const email = document.getElementById('emailAddress')?.value?.trim() || '';
+      const password1 = document.getElementById('password1')?.value || '';
+      const password2 = document.getElementById('password2')?.value || '';
+
+      const skillLevel = document.getElementById('skillLevel')?.value || '';
+      const timePlayed = document.getElementById('timePlayed')?.value || '';
+      const playFrequency = document.getElementById('playFrequency')?.value || '';
+      const competitiveLevel = document.getElementById('competitiveLevel')?.value || '';
+      const foundSite = document.getElementById('foundSite')?.value || '';
+
+      // Simple validation fix later if want
+      // if (!email || !password1) {
+      //   alert('Please enter an email and password');
+      //   return;
+      // }
+      // if (password1 !== password2) {
+      //   alert('Passwords do not match');
+      //   return;
+      // }
+
+      const payload = {
+        email,
+        password: password1,
+        profile: {
+          firstName,
+          lastName,
+          birthDate,
+          survey: {
+            skillLevel,
+            timePlayed,
+            playFrequency,
+            competitiveLevel,
+            foundSite,
+          },
+        },
+      };
+
+      const response = await fetch('/api/auth/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      if (response.status === 200) {
+        const data = await response.json();
+        sessionStorage.setItem('userName', data.email);
+        navigate('/match');
+      } else {
+        const body = await response.json().catch(() => ({}));
+        alert(`⚠ Error: ${body.msg || 'Account creation failed'}`);
+      }
+    } catch (err) {
+      console.error('Account creation failed', err);
+    } finally {
+      setIsSpinning(false);
+    }
   };
 
   return (
@@ -52,7 +110,7 @@ export function NewAccount() {
             <h3>Initial Survey:</h3>
 
             <div>
-              <select className="form-select" aria-label="skillLevel">
+              <select id="skillLevel" className="form-select" aria-label="skillLevel">
                 <option defaultValue>Skill Level</option>
                 <option value="1">Never Played</option>
                 <option value="2">Beginner</option>
@@ -62,7 +120,7 @@ export function NewAccount() {
               </select>
             </div>
             <div>
-              <select className="form-select" aria-label="timePlayed">
+              <select id="timePlayed" className="form-select" aria-label="timePlayed">
                 <option defaultValue>Time Since Starting</option>
                 <option value="1">Never Played</option>
                 <option value="2">Couple Weeks</option>
@@ -72,7 +130,7 @@ export function NewAccount() {
               </select>
             </div>
             <div>
-              <select className="form-select" aria-label="playFrequency">
+              <select id="playFrequency" className="form-select" aria-label="playFrequency">
                 <option defaultValue>Frequency of Play</option>
                 <option value="1">Never Played</option>
                 <option value="2">Nothing Consistent</option>
@@ -82,7 +140,7 @@ export function NewAccount() {
               </select>
             </div>
             <div>
-              <select className="form-select" aria-label="competetiveLevel">
+              <select id="competitiveLevel" className="form-select" aria-label="competetiveLevel">
                 <option defaultValue>How competitive do you want to be?</option>
                 <option value="1">I just need someone to learn with</option>
                 <option value="2">I just want to have fun</option>
@@ -92,7 +150,7 @@ export function NewAccount() {
               </select>
             </div>
             <div>
-              <select className="form-select" aria-label="foundSite">
+              <select id="foundSite" className="form-select" aria-label="foundSite">
                 <option defaultValue>How did you hear about us?</option>
                 <option value="1">Through a friend</option>
                 <option value="2">Online</option>
