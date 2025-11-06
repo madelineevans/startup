@@ -102,19 +102,18 @@ export function Match() {
           <div>
             <strong>Age:</strong> {player.age} <br />
             <strong>Location:</strong> {player.location}<br />
-            <strong>Skill Level:</strong> {player.skillLevel}<br />
-            <strong>Signature move:</strong> {player.signatureMove}<br />
-            <strong>Competition Level:</strong> {player.competitionLevel}<br />
+            <strong>Skill Level:</strong> {player.skill_level}<br />
+            <strong>Signature move:</strong> {player.signature_move}<br />
+            <strong>Competition Level:</strong> {player.competition_level}<br />
           </div>
           <br />
           <h3>Player Stats</h3>
           <div>
-            <strong>Player Rating:</strong> {player.rating}<br />
-            <strong>Player Rating:</strong> {player.rating}<br />
+            <strong>Player Rating:</strong> {player.player_rating}<br />
             <strong>Matches Played This Week:</strong>
-            <span id="matchesPlayed">{player.matchesPlayed}</span><br />
+            <span id="matchesPlayed">{player.matches_played}</span><br />
             <strong>Matches Won This Week:</strong>{' '}
-            <span id="matchesWon">{player.matchesWon}</span><br />
+            <span id="matchesWon">{player.matches_won}</span><br />
           </div>
         </div>
 
