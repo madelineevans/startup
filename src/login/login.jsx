@@ -8,14 +8,37 @@ export function Login() {
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [isCreatingAccount, setIsCreatingAccount] = useState(false);
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     setIsLoggingIn(true);
     // TODO: Implement login endpoint and logic
-    sessionStorage.setItem('userName', 'Billy-Joel');
+    try{
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: document.getElementById('email').value,
+          password: document.getElementById('password').value,
+        }),
+      });
+
+      if (response.status === 200) {
+        const data = await response.json();
+        sessionStorage.setItem('userName', data.email); // or use your own field
+        navigate('/match');
+      } else {
+        const body = await response.json();
+        alert(`⚠ Error: ${body.msg}`);
+      }
+    } catch (err) {
+      console.error('Error during login:', err);
+    } finally {
+      setIsLoggingIn(false);
+    }
+    // sessionStorage.setItem('userName', 'Billy-Joel');
     navigate('/match');
   }
 
-  const handleCreateAccount = () => {
+  const handleCreateAccount = async () => {
     setIsCreatingAccount(true);
     navigate('/newAccount');
   }

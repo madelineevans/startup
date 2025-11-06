@@ -18,7 +18,7 @@ app.use(express.static('../public'));
 
 // Router for service endpoints
 const apiRouter = express.Router();
-app.use(`/`, apiRouter);
+app.use(`/api`, apiRouter);
 
 // auth routes
 apiRouter.post('/auth/create', handler.createAuth);     //new account
@@ -38,7 +38,7 @@ apiRouter.post('/chat/:playerID', handler.postChat)
 // apiRouter.post('/chat/send', handler.sendMessage);
 
 // Chat_list routes
-apiRouter.get('/chat/list', handler.listMessages);
+// apiRouter.get('/chat/list', handler.listMessages);
 
 // Default error handler
 app.use(function (err, req, res, next) {
