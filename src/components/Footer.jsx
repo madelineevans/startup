@@ -9,6 +9,22 @@ export function Footer() {
   // Helper function to check if current path matches
   const isActive = (path) => location.pathname === path;
 
+  const handleLogout = async () => {
+    console.log("in handleLogout");
+    try {
+      // Call your backend logout API
+      await fetch('/api/auth/logout', { method: 'DELETE', credentials: 'include' });
+    } catch (err) {
+      console.error('Logout failed:', err);
+      // even if offline or API error, continue to clear local state
+    } finally {
+      // clear any stored info
+      sessionStorage.removeItem('userName');
+      // redirect to login page
+      navigate('/login');
+    }
+  };
+
   return (
     <footer>
       <nav className="navbar navbar-expand-lg bg-body-tertiary fixed-bottom">
@@ -20,7 +36,7 @@ export function Footer() {
               <button
                 type="button"
                 className="nav-link active btn btn-link text-primary"
-                onClick={() => navigate('/login')}
+                onClick={handleLogout}
               >
                 Logout
               </button>
