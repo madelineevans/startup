@@ -203,12 +203,14 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Node.js/Express HTTP service** - I did not complete this part of the deliverable.
-- [ ] **Static middleware for frontend** - I did not complete this part of the deliverable.
-- [ ] **Calls to third party endpoints** - I did not complete this part of the deliverable.
-- [ ] **Backend service endpoints** - I did not complete this part of the deliverable.
-- [ ] **Frontend calls service endpoints** - I did not complete this part of the deliverable.
-- [ ] **Supports registration, login, logout, and restricted endpoint** - I did not complete this part of the deliverable.
+- [x] **Node.js/Express HTTP service** - We used Node.js and Express to implement and expose
+our backend service endpoints.
+- [x] **Static middleware for frontend** - We used static middleware such as exposing the public directory for
+incorrect paths as well as middleware for parsing json and cookies
+- [x] **Calls to third party endpoints** - We implemented calls to our third party endpoint for our map display and functionality
+- [x] **Backend service endpoints** - We have working our login, logout, createAccount, restricted, match, and map endpoints.
+- [x] **Frontend calls service endpoints** - We have implemented all of the endpoints indicated above in the frontend.
+- [x] **Supports registration, login, logout, and restricted endpoint** - Yes, our application supports registration, login, logout, and restricted enpoints.
 
 
 ## 🚀 DB deliverable
