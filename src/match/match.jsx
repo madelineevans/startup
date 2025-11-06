@@ -92,7 +92,7 @@ export function Match() {
     <div className="container-fluid px-4 d-flex flex-column min-vh-100">
       <header className="container-fluid px-4 d-flex justify-content-center align-items-center gap-4 py-3">
         <h1>
-          <img src="/question_mark.png" alt="PlayerImg" width="75" /> {player.username}
+          <img src="/question_mark.png" alt="PlayerImg" width="75" /> {player.name}
         </h1>
       </header>
 

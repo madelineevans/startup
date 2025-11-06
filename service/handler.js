@@ -65,6 +65,7 @@ async function createAuth(req, res) {
 
 async function getMatch(req, res) {
   console.log("in getMatch");
+  const user = await findUser('token', req.cookies[authCookieName]);
   if (user) {
     const record = await MatchBusiness.getNewMatch();
     res.send(record);
@@ -75,7 +76,7 @@ async function getMatch(req, res) {
 }
 async function postChat(req, res) {
     console.log("in postChat");
-  verifyAuth(req, res, user);
+  const user = await findUser('token', req.cookies[authCookieName]);
   if (user) {
     const record = await ChatBusiness.createNewChat();
     res.send(record);
