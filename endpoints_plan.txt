@@ -9,7 +9,7 @@ pages:
     - GET newMatch
         - return body:
         {
-            playerID: 'exampleID'
+            playerId: 'exampleID'
             name: 'name',
             age: 'player age'
             location: 'player location'
