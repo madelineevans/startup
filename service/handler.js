@@ -21,9 +21,14 @@ function setAuthCookie(res, authToken) {
 
 async function findUser(field, value) {
     console.log("in findUser");
-  if (!value) return null;
+    console.log("field:", field);
+    console.log("value:", value);
+  if (!value) {
+    return null;
+  }
 
   if (field === 'token') {
+    console.log("looking up by token");
     return authRepository.getUserByToken(value);
   }
   return authRepository.getUserByEmail(value);
@@ -81,6 +86,7 @@ async function postChat(req, res) {
 async function login(req, res) {
     console.log("in api login");
   const user = await findUser('email', req.body.email);
+  console.log("user:", user);
   if (user) {
     if (await bcrypt.compare(req.body.password, user.password)) {
       user.token = uuidv4();
