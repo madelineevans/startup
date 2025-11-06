@@ -1,0 +1,38 @@
+TABLES
+-------------
+CONVERSATION:
+    chatId: int
+    participants: string-player ids concatenated
+    blocked: boolean
+    created_at: luxon date-time object
+    updated_at: luxon date-time object
+
+MESSAGE:
+    chatId: int
+    created_at: luxon date-time object
+    text: string
+    playerId: string - player that sent the messageHistory
+
+PLAYER:
+    playerId: string
+    dob: luxon date-time object
+    first_name: string,
+    last_name: string,
+    location: string, ... is this a database object???
+    skill_level: int -> one of the 5 choices
+    time_since_starting: int -> one of the 5 choices
+    frequency_of_play: int -> one of the 5 choices
+    found_by: int -> one of the 5 choices
+    signature_move: string
+    competition_level: int -> one of the 5 choices
+
+STATS:
+    playerId: string
+    player_rating: float
+    matches_played: int
+    matches_won: int
+
+AUTH:
+    playerId: string
+    email: string
+    password: string

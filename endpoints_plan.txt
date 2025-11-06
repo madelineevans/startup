@@ -25,6 +25,14 @@ pages:
         {
             playerID: 'exampleID',
         }
+        - return body:
+        {
+            chatID: db.conversation
+            participants: db.conversation
+            created_at
+            
+        }
+        //player IDS comma separated list (FIND_IN_SET)
     - POST markAsSeen
         {
             playerID: 'exampleID',
