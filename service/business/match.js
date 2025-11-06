@@ -7,7 +7,6 @@ export class MatchBusiness {
         const score = await PlayerRepo.getPlayerScore(player.playerID);
         const record = {
             playerId: player.playerId,
-            dob: player.dob,
             name: player.name,
             age: player.age,
             location: player.location,

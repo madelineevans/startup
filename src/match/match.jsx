@@ -1,47 +1,16 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useNavigate, useNavigation, useParams } from 'react-router-dom';
 
+// if (!player) return <div>Loading player...</div>; //i am testing this line still
+
 async function fetchPlayerById(playerId) {
   // Replace with actual API call to player database
-  const players = {
-    1: { id: 1, username: 'Joe Mama', age: 28, location: 'Provo, UT', skillLevel: 'Advanced', signatureMove: 'The Smash', competitionLevel: 'Competitive', rating: 4.5, matchesPlayed: 15, matchesWon: 10, chatId: 1 },
-    2: { id: 2, username: 'PicklePlayer', age: 25, location: 'Provo, UT', skillLevel: 'Intermediate', signatureMove: 'The Drop Shot', competitionLevel: 'Casual', rating: 3.8, matchesPlayed: 12, matchesWon: 7, chatId: 2 },
-    3: { id: 3, username: 'AceGamer', age: 30, location: 'Provo, UT', skillLevel: 'Pro', signatureMove: 'The Volley', competitionLevel: 'Professional', rating: 4.9, matchesPlayed: 20, matchesWon: 18, chatId: 3 },
-    4: { id: 4, username: 'SmashMaster', age: 27, location: 'Provo, UT', skillLevel: 'Advanced', signatureMove: 'The Lob', competitionLevel: 'Competitive', rating: 4.2, matchesPlayed: 14, matchesWon: 9, chatId: 4 },
-    5: { id: 5, username: 'VolleyQueen', age: 32, location: 'Provo, UT', skillLevel: 'Pro', signatureMove: 'The Drop Shot', competitionLevel: 'Professional', rating: 4.7, matchesPlayed: 18, matchesWon: 15, chatId: 5 },
-  };
-  
   return players[playerId] || null;
-}
-
-function generatePlayer() {
-  const usernames = ['Alice12', 'Bob23', 'Charlie34', 'Diana56', 'Ethan78'];
-  const ages = [22, 25, 30, 28, 35];
-  const locations = ['New York, NY', 'Los Angeles, CA', 'Chicago, IL', 'Houston, TX', 'Miami, FL'];
-  const skillLevels = ['Beginner', 'Intermediate', 'Advanced', 'Pro'];
-  const signatureMoves = ['The Smash', 'The Drop Shot', 'The Lob', 'The Volley'];
-  const competitionLevels = ['Casual', 'Competitive', 'Professional'];
-  const matchesPlayed = Math.floor(Math.random() * 20);
-  const matchesWon = Math.floor(Math.random() * (matchesPlayed + 1));
-  const chatIds = [1, 2, 3, 4, 5];
-
-  return {
-    username: usernames[Math.floor(Math.random() * usernames.length)],
-    age: ages[Math.floor(Math.random() * ages.length)],
-    location: locations[Math.floor(Math.random() * locations.length)],
-    skillLevel: skillLevels[Math.floor(Math.random() * skillLevels.length)],
-    signatureMove: signatureMoves[Math.floor(Math.random() * signatureMoves.length)],
-    competitionLevel: competitionLevels[Math.floor(Math.random() * competitionLevels.length)],
-    rating: (Math.random() * 5).toFixed(1),
-    matchesPlayed,
-    matchesWon,
-    chatId: chatIds[Math.floor(Math.random() * chatIds.length)],
-  };
 }
 
 export function Match() {
   const { playerId } = useParams();
-  const [player, setPlayer] = useState(() => generatePlayer());
+  const [player, setPlayer] = useState(null);
   const [isNextSpinning, setIsNextSpinning] = useState(false);
   const [isChatSpinning, setIsChatSpinning] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -64,18 +33,51 @@ export function Match() {
     }
   }, [playerId]);
 
-  const handleNextPlayer = useCallback(() => {
+  const handleNextPlayer = async () => {
     setIsNextSpinning(true);
-    setPlayer(generatePlayer());
-    setIsNextSpinning(false);
-  }, []);
+    try{
+        const response = await fetch('/api/match', {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            playerId: document.getElementById('playerId').value,
+            name: document.getElementById('name').value,
+            age: document.getElementById('age').value,
+            location: document.getElementById('location').value,
+            skill_level: document.getElementById('skill_level').value,
+            signature_move: document.getElementById('signature_move').value,
+            competition_level: document.getElementById('competition_level').value,
+            player_rating: document.getElementById('player_rating').value,
+            matches_played: document.getElementById('matches_played').value,
+            matches_won: document.getElementById('matches_won').value,
+          }),
+        });
+
+        if (response.status === 200) {
+          const data = await response.json();
+          setPlayer(data);
+        } else {
+          const body = await response.json();
+          alert(`⚠ Error: ${body.msg}`);
+        }
+        setIsNextSpinning(false);
+      } catch (err) {
+        console.error('Unknown error in Match Handler:', err);
+      }
+    }
+  
+    const handleCreateAccount = async () => {
+      //setIsCreatingAccount(true);
+      navigate('/newAccount');
+    }
 
   const handleChat = useCallback(() => {
     setIsChatSpinning(true);
     // TODO: implement chat endpoint and logic
     // 1. does a session already exist? (this could be
     // true if the player was clicked on through the map or chat pages)
-    // 2. if not, create a new chat session between the two players
+    // 2. if not, create a new chat session between the two players (this needs to 
+    //  create a new chat id that is specific to the two players chat together)
     setIsChatSpinning(false);
     navigate(`/chat/${player.chatId}`);
   }, [player, navigate]);
