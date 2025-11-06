@@ -65,7 +65,6 @@ async function createAuth(req, res) {
 
 async function getMatch(req, res) {
   console.log("in getMatch");
-  verifyAuth(req, res, user);
   if (user) {
     const record = await MatchBusiness.getNewMatch();
     res.send(record);
