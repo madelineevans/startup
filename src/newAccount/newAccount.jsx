@@ -98,12 +98,12 @@ export function NewAccount() {
               <input type="text" id="emailAddress" name="emailAddress" className="form-control" />
             </div>
             <div>
-              <label htmlFor="passowrd1" className="form-label">Password:</label>
-              <input type="password" id="passowrd1" name="passowrd1" className="form-control" />
+              <label htmlFor="password1" className="form-label">Password:</label>
+              <input type="password" id="password1" name="password1" className="form-control" />
             </div>
             <div>
-              <label htmlFor="passowrd2" className="form-label">Verify Password:</label>
-              <input type="password" id="passowrd2" name="passowrd2" className="form-control" />
+              <label htmlFor="password2" className="form-label">Verify Password:</label>
+              <input type="password" id="password2" name="password2" className="form-control" />
             </div>
 
             <br />

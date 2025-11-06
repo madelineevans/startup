@@ -27,6 +27,7 @@ async function findUser(field, value) {
 }
 
 async function createAuth(req, res) {
+    console.log("in createAuth");
   const { email, password, profile } = req.body || {};
   if (!email || !password) return res.status(400).send({ msg: 'Email and password are required' });
   if (await findUser('email', email)) return res.status(409).send({ msg: 'Existing user' });

@@ -21,55 +21,52 @@ export function Match() {
   const isRouting = navigation.state !== 'idle';
 
   useEffect(() => {
-    if (playerId) {
+    let ignore = false;
+
+    async function load() {
       setIsLoading(true);
-      fetchPlayerById(parseInt(playerId))
-        .then(fetchedPlayer => {
-          if (fetchedPlayer) {
-            setPlayer(fetchedPlayer);
+      try {
+        if (playerId) {
+          const fetchedPlayer = await fetchPlayerById(parseInt(playerId));
+          if (!ignore) setPlayer(fetchedPlayer);
+        } else {
+          // no route param? ask the backend for a match
+          const res = await fetch('/api/match', { method: 'GET' });
+          if (res.ok) {
+            const data = await res.json();
+            if (!ignore) setPlayer(data);
           }
-        })
-        .finally(() => setIsLoading(false));
+        }
+      } finally {
+        if (!ignore) setIsLoading(false);
+      }
     }
+    load();
+    return () => { ignore = true; };
   }, [playerId]);
 
   const handleNextPlayer = async () => {
     setIsNextSpinning(true);
-    try{
-        const response = await fetch('/api/match', {
-          method: 'GET',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            playerId: document.getElementById('playerId').value,
-            name: document.getElementById('name').value,
-            age: document.getElementById('age').value,
-            location: document.getElementById('location').value,
-            skill_level: document.getElementById('skill_level').value,
-            signature_move: document.getElementById('signature_move').value,
-            competition_level: document.getElementById('competition_level').value,
-            player_rating: document.getElementById('player_rating').value,
-            matches_played: document.getElementById('matches_played').value,
-            matches_won: document.getElementById('matches_won').value,
-          }),
-        });
-
-        if (response.status === 200) {
-          const data = await response.json();
-          setPlayer(data);
-        } else {
-          const body = await response.json();
-          alert(`⚠ Error: ${body.msg}`);
-        }
-        setIsNextSpinning(false);
-      } catch (err) {
-        console.error('Unknown error in Match Handler:', err);
+    try {
+      const response = await fetch('/api/match', { method: 'GET' });
+      if (response.ok) {
+        const data = await response.json();
+        setPlayer(data);
+      } else {
+        const body = await response.json().catch(() => ({}));
+        alert(`⚠ Error: ${body.msg || 'Failed to get next match'}`);
       }
+    } catch (err) {
+      console.error('Unknown error in Match Handler:', err);
+    } finally {
+      setIsNextSpinning(false);
     }
+  };
   
-    const handleCreateAccount = async () => {
-      //setIsCreatingAccount(true);
-      navigate('/newAccount');
-    }
+  const handleCreateAccount = async () => {
+    //setIsCreatingAccount(true);
+    navigate('/newAccount');
+  }
 
   const handleChat = useCallback(() => {
     setIsChatSpinning(true);
@@ -79,10 +76,11 @@ export function Match() {
     // 2. if not, create a new chat session between the two players (this needs to 
     //  create a new chat id that is specific to the two players chat together)
     setIsChatSpinning(false);
+    if (!player) return;
     navigate(`/chat/${player.chatId}`);
   }, [player, navigate]);
 
-  if (isLoading) {
+  if (isLoading || !player) {
     return (
       <div className="container-fluid px-4 d-flex flex-column min-vh-100 justify-content-center align-items-center">
         <div>Loading player...</div>
@@ -113,7 +111,7 @@ export function Match() {
           <div>
             <strong>Player Rating:</strong> {player.rating}<br />
             <strong>Player Rating:</strong> {player.rating}<br />
-            <strong>Matches Played This Week:</strong>{' '}
+            <strong>Matches Played This Week:</strong>
             <span id="matchesPlayed">{player.matchesPlayed}</span><br />
             <strong>Matches Won This Week:</strong>{' '}
             <span id="matchesWon">{player.matchesWon}</span><br />
