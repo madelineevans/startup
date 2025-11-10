@@ -3,6 +3,8 @@ import {ChatBusiness} from './business/chat.js';
 import bcrypt from 'bcryptjs';
 import authRepository from './repo/auth.js';
 import { v4 as uuidv4 } from 'uuid';
+import { PlayerRepo } from './repo/player.js';
+import { ChatRepo } from './repo/chat.js';
 
 const authCookieName = 'token';
 
@@ -75,12 +77,21 @@ async function getMatch(req, res) {
   }
 }
 async function postChat(req, res) {
-    console.log("in postChat");
+  console.log("in postChat");
   const user = await findUser('token', req.cookies[authCookieName]);
+  const body = req.body || {};
+  
   if (user) {
-    const record = await ChatBusiness.createNewChat();
-    res.send(record);
-    return;
+    const existingChat = await ChatRepo.getChatByPlayers(body.playerId, body.player2_id);
+
+    if (existingChat) {
+      res.send(existingChat);
+      return;
+    } else {
+      const record = await ChatBusiness.createNewChat();
+      res.send(record);
+      return;
+    }
   } else {
     res.status(401).send({ msg: 'Unauthorized' });
   }

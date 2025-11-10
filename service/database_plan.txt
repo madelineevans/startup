@@ -18,7 +18,7 @@ PLAYER:
     dob: luxon date-time object
     first_name: string,
     last_name: string,
-    location: string, ... is this a database object???
+    location: string, ... is this a database object???... is this last availbleLocation?
     skill_level: int -> one of the 5 choices
     time_since_starting: int -> one of the 5 choices
     frequency_of_play: int -> one of the 5 choices

@@ -3,6 +3,12 @@ What API's do we need?
 pages:
 - login
     - auth (get auth)
+        - req body
+        {
+            email: 'exampleEmail'
+            password: 'hashedPassword'
+        }
+
 - newAccount
     - send (put? post?)
 - match
@@ -23,19 +29,28 @@ pages:
     - POST newChat
         - request body:
         {
-            playerID: 'exampleID',
+            playerId: 'exampleID',
+            player2_id: 'exampleId2'
         }
         - return body:
         {
             chatID: db.conversation
             participants: db.conversation
-            created_at
-            
+            messages: 
+                {
+                    // most recent 20 messages here
+                    //this will be an empty array if there is no chat history
+                    {
+                        player_id: 'player that sent message',
+                        sent_time: 'luxon date-time object',
+                        message: string
+                    }, ...
+                }
         }
         //player IDS comma separated list (FIND_IN_SET)
     - POST markAsSeen
         {
-            playerID: 'exampleID',
+            playerId: 'exampleID',
         }
 - map
     - GET allAvailbleLocations
