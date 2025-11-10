@@ -46,6 +46,7 @@ export function PlayerMap() {
   const tickTimerRef = useRef(null);
   const searchInputRef = useRef(null);
   const highlightRef = useRef(null);
+  const [weather, setWeather] = React.useState(null);
 
   const handleChatClick = useCallback((playerId) => {
     // change to a get from player profile database later
@@ -108,6 +109,27 @@ export function PlayerMap() {
         L.marker(userCenter, { title: 'You are here' })
           .addTo(mapDiv)
           .bindPopup("<b>You</b>");
+
+        (async () => {
+          try {
+            const pointResp = await fetch(`https://api.weather.gov/points/${userCenter[0]},${userCenter[1]}`);
+            if (!pointResp.ok) throw new Error(`Weather.gov points API error: ${pointResp.status}`);
+            const pointData = await pointResp.json();
+            const forecastUrl = pointData.properties.forecast;
+
+            const forecastResp = await fetch(forecastUrl);
+            if (!forecastResp.ok) throw new Error(`Weather.gov forecast error: ${forecastResp.status}`);
+            const forecastData = await forecastResp.json();
+
+            const currentPeriod = forecastData.properties.periods[0];
+            const weatherInfo = `${currentPeriod.shortForecast}, ${currentPeriod.temperature}°${currentPeriod.temperatureUnit}`;
+
+            setWeather(weatherInfo);
+          } catch (err) {
+            console.error('Failed to fetch weather:', err);
+            setWeather('Weather data unavailable');
+          }
+        })();
       },
       (error) => {
         console.log('Geolocation error:', error);
@@ -192,6 +214,14 @@ export function PlayerMap() {
       <header className="container-fluid px-4 text-center py-3">
         <h1>Map</h1>
       </header>
+
+      {weather && (
+        <div className="weather-box container text-center my-2">
+          <div className="alert alert-info d-inline-block px-3 py-2 m-0">
+            <strong>Current Weather:</strong> {weather}
+          </div>
+        </div>
+      )}
 
       <main className="container flex-grow-1 d-flex flex-column align-items-center" style={{ paddingBottom: '80px' }}>
         <div className="w-100 mb-3" style={{ maxWidth: '600px' }}>
