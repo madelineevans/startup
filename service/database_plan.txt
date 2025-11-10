@@ -13,12 +13,18 @@ MESSAGE:
     text: string
     playerId: string - player that sent the messageHistory
 
+LOCATION:
+    playerId: string
+    lat: double
+    lng: double
+    updated_at: timestamptz
+    expires_at: timestamptz
+
 PLAYER:
     playerId: string
     dob: luxon date-time object
     first_name: string,
     last_name: string,
-    location: string, ... is this a database object???... is this last availbleLocation?
     skill_level: int -> one of the 5 choices
     time_since_starting: int -> one of the 5 choices
     frequency_of_play: int -> one of the 5 choices

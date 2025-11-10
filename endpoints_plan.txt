@@ -55,7 +55,7 @@ pages:
 - map
     - GET allAvailbleLocations
     - (make a toggle thats like location seen)
-    - POST turnOnLocation Puts just the location for three hours but does not move location
+    - POST postLocation Puts just the location for three hours but does not move location
     - GET playerMatch (opens player match page based from their pin)
 - chat
     - Get messageHistory(chat)
