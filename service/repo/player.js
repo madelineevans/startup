@@ -11,6 +11,9 @@ export class PlayerRepo {
     // fake_data_generator will be replaced with a db call
     return fake_data_generator("score", { playerId });
   }
+  static async markAsSeen(playerId, seenId){
+    return null;
+  }
 }
 
 function fake_data_generator(data_type, opts = {}) {

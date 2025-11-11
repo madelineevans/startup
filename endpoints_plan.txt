@@ -48,10 +48,6 @@ pages:
                 }
         }
         //player IDS comma separated list (FIND_IN_SET)
-    - POST markAsSeen
-        {
-            playerId: 'exampleID',
-        }
 - map
     - GET allAvailbleLocations
     - (make a toggle thats like location seen)

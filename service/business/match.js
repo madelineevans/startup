@@ -17,6 +17,7 @@ export class MatchBusiness {
             matches_played: score.matches_played,
             matches_won: score.matches_won,
         };
+        await PlayerRepo.markAsSeen();
         return record;
     }
 }
