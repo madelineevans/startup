@@ -19,6 +19,16 @@ function setAuthCookie(res, authToken) {
   });
 }
 
+function setPlayerIdCookie(res, playerId) {
+    console.log("in setAuthCookie");
+  res.cookie('playerId', playerId, {
+    maxAge: 1000 * 60 * 60 * 24 * 365,
+    secure: true,
+    httpOnly: true,
+    sameSite: 'strict',
+  });
+}
+
 async function findUser(field, value) {
     console.log("in findUser");
     console.log("field:", field);
@@ -61,11 +71,12 @@ async function createAuth(req, res) {
     createdAt: new Date(),
   };
 
-  await authRepository.addUser(user);
+  const generated_id = await authRepository.addUser(user);
   setAuthCookie(res, user.token);
-  res.send({ email: user.email });
+  setPlayerIdCookie(res, generated_id);
+  res.send({ email: user.email, playerId: generated_id});
 }
-// TODO: test
+
 async function getMatch(req, res) {
   console.log("in getMatch");
   const user = await findUser('token', req.cookies[authCookieName]);
@@ -91,7 +102,6 @@ async function postChat(req, res) {
     res.status(401).send({ msg: 'Unauthorized' });
   }
 }
-
 // TODO: test
 async function fetchChatHistory(req, res) {
   console.log("in fetchChatHistory");
@@ -123,19 +133,19 @@ async function sendMessage(req, res) {
 }
 
 //TODO: finish endpoint
-async function listChats(req, res) {
-  console.log("in listMessages");
-  const user = await findUser('token', req.cookies[authCookieName]);
-  const body = req.body || {};
+// async function listChats(req, res) {
+//   console.log("in listChats");
+//   const user = await findUser('token', req.cookies[authCookieName]);
+//   const body = req.body || {};
 
-  if (user) {
-    const record = await ChatBusiness.listMessages(body);
-    res.send(record);
-    return;
-  } else {
-    res.status(401).send({ msg: 'Unauthorized' });
-  }
-}
+//   if (user) {
+//     const record = await ChatBusiness.listMessages(body);
+//     res.send(record);
+//     return;
+//   } else {
+//     res.status(401).send({ msg: 'Unauthorized' });
+//   }
+// }
 
 async function postLocation(req, res) {
   console.log("in postLocation");
@@ -237,5 +247,5 @@ async function verifyAuth(req, res, next) {
 
 export {createAuth, login, logout, verifyAuth, getMatch, postChat, 
   postLocation, fetchAllPlayers, fetchPlayerById, deleteLocation, 
-  fetchChatHistory, sendMessage, listChats};
-// /*authCookieName, listMessages*/
+  fetchChatHistory, sendMessage};
+// /*authCookieName, listChats*/

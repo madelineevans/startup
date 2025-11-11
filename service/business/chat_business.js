@@ -14,7 +14,7 @@ export class ChatBusiness {
             };
             return record;
         } else {
-            const record = await ChatBusiness.createNewChat();
+            const record = await ChatRepo.createNewChat();
             return record;
         }
     }

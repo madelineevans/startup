@@ -25,7 +25,7 @@ apiRouter.post('/auth/create', handler.createAuth);     //new account
 apiRouter.post('/auth/login', handler.login);
 apiRouter.delete('/auth/logout', handler.logout);
 
-// Match routes ---figure out implementation here
+// Match routes
 apiRouter.get('/match', handler.verifyAuth, handler.getMatch);
 apiRouter.post('/chat/:playerId', handler.postChat)
 
@@ -40,7 +40,7 @@ apiRouter.get('/chat/history', handler.fetchChatHistory);
 apiRouter.post('/chat/send', handler.sendMessage);
 
 // Chat_list routes
-apiRouter.get('/chat/list', handler.listChats);
+// apiRouter.get('/chat/list', handler.listChats);
 
 // Default error handler
 app.use(function (err, req, res, next) {
