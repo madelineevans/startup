@@ -1,4 +1,4 @@
-const express = require('express');
+import express from 'express';
 const app = express();
 app.get('/foo', (req, res) => {
     console.log('Received request at /foo');

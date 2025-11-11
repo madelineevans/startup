@@ -245,7 +245,7 @@ async function verifyAuth(req, res, next) {
   }
 }
 
-export {createAuth, login, logout, verifyAuth, getMatch, postChat, 
+export default {createAuth, login, logout, verifyAuth, getMatch, postChat, 
   postLocation, fetchAllPlayers, fetchPlayerById, deleteLocation, 
   fetchChatHistory, sendMessage};
 // /*authCookieName, listChats*/

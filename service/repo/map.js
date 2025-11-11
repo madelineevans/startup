@@ -1,4 +1,4 @@
-const DB = require('../db/database.js');
+import DB from '../db/database.js';
 
 export class MapRepo {
     static async listActive() {

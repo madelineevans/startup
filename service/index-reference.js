@@ -1,9 +1,9 @@
-const cookieParser = require('cookie-parser');
-const bcrypt = require('bcryptjs');
-const express = require('express');
-const uuid = require('uuid');
+import cookieParser from 'cookie-parser';
+import bcrypt from 'bcryptjs';
+import express from 'express';
+import uuid from 'uuid';
 const app = express();
-const DB = require('./database.js');
+import DB from './db/database.js';
 
 const authCookieName = 'token';
 

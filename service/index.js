@@ -1,8 +1,7 @@
-const cookieParser = require('cookie-parser');
-const express = require('express');
+import cookieParser from 'cookie-parser';
+import express from 'express';
 const app = express();
-
-const handler = require('./handler.js');
+import handler from './handler.js';
 
 // The service port may be set on the command line
 const port = process.argv.length > 2 ? process.argv[2] : 4000;

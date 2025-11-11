@@ -1,6 +1,6 @@
 //all the interactions with the database will be here
 
-const DB = require('../db/database.js');
+import DB from '../db/database.js';
 
 class AuthRepository {
   async getUserByEmail(email) {
@@ -20,4 +20,4 @@ class AuthRepository {
   }
 }
 
-module.exports = new AuthRepository();
+export default new AuthRepository();

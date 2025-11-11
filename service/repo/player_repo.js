@@ -1,5 +1,5 @@
 // const { data } = require('react-router-dom');
-const DB = require('../db/database.js');
+import DB from '../db/database.js';
 
 export class PlayerRepo {
   static async getPlayerInfo(playerId) {

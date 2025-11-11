@@ -1,8 +1,9 @@
 {
-  "name": "simon-service",
+  "name": "service",
   "version": "1.0.0",
   "description": "This demonstrates a service for a web application.",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "start": "node index.js"
   },
