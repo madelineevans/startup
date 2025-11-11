@@ -5,8 +5,17 @@ export class ChatRepo {
   static async fetchChatHistoryByPlayers(playerId1, playerId2) {
     // find chatid by player ids
   }
+  // do first
   static async createNewChat(player1Id, player2Id){
-    return null;
+    const participants = player1Id + "," + player2Id;
+    const record = {
+      participants: participants,
+      blocked: false,
+      created_at: new Date(),
+      updated_at: new Date(),
+    }
+    const result = await DB.createNewChat(record);
+    return result.insertedId;
   }
   static async getPlayerScore(playerId) {
     // fake_data_generator will be replaced with a db call

@@ -26,7 +26,7 @@ apiRouter.delete('/auth/logout', handler.logout);
 
 // Match routes
 apiRouter.get('/match', handler.verifyAuth, handler.getMatch);
-apiRouter.post('/chat/:playerId', handler.postChat)
+apiRouter.post('/chat', handler.postChat)
 
 // Map routes
 apiRouter.post('/map/location', handler.postLocation);//handler.verifyAuth, handler.postLocation);

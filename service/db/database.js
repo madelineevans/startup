@@ -5,7 +5,7 @@ const url = `mongodb+srv://${config.userName}:${config.password}@${config.hostna
 const client = new MongoClient(url);
 const db = client.db('startup');
 const userCollection = db.collection('user');
-const scoreCollection = db.collection('score');
+const conversationCollection = db.collection('conversation');
 
 // This will asynchronously test the connection and exit the process if it fails
 (async function testConnection() {
@@ -40,9 +40,15 @@ async function updateUser(user) {
   return userCollection.updateOne({ email }, { $set: rest });
 }
 
+async function createNewChat(chatRecord) {
+  const result = await conversationCollection.insertOne(chatRecord)
+  return result;
+}
+
 export default {
   getUser,
   getUserByToken,
   addUser,
   updateUser,
+  createNewChat,
 };

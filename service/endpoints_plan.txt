@@ -15,7 +15,7 @@ pages:
     - GET newMatch
         - return body:
         {
-            playerId: 'exampleID'
+            player_id: 'exampleID'
             name: 'name',
             age: 'player age'
             location: 'player location'
@@ -29,7 +29,7 @@ pages:
     - POST newChat
         - request body:
         {
-            playerId: 'exampleID',
+            player_id: 'exampleID',
             player2_id: 'exampleId2'
         }
         - return body:

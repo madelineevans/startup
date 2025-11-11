@@ -3,7 +3,7 @@ import {ChatRepo} from "../repo/chat_repo.js";
 
 export class ChatBusiness {
     static async postChat(record){
-        const existingChat = await ChatRepo.fetchChatHistoryByPlayers(record.playerId, record.player2_id);
+        const existingChat = await ChatRepo.fetchChatHistoryByPlayers(record.player_id, record.player2_id);
         
         if (existingChat) {
             const messages = await ChatRepo.fetchChatHistoryById(existingChat.chatId);
@@ -14,7 +14,12 @@ export class ChatBusiness {
             };
             return record;
         } else {
-            const record = await ChatRepo.createNewChat();
+            const return_val = await ChatRepo.createNewChat();
+            const record = {
+                chatId: return_val,
+                // participant_ids: existingChat.participant_ids,
+                // messages: {},
+            }
             return record;
         }
     }
