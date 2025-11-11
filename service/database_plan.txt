@@ -17,7 +17,6 @@ LOCATION:
     playerId: string
     lat: double
     lng: double
-    updated_at: timestamptz
     expires_at: timestamptz
 
 PLAYER:

@@ -94,6 +94,7 @@ async function postChat(req, res) {
 
 async function postLocation(req, res) {
   console.log("in postLocation");
+  console.log("req.body:", req.body);
   try{
     const { lat, lng } = req.body || {};
     if (typeof lat !== 'number' || typeof lng !== 'number') {
@@ -101,9 +102,10 @@ async function postLocation(req, res) {
     }
 
     const result = await MapBusiness.shareOrRefresh({
-      userId: req.user.id,
+      userId: req.user.playerId,
       lat,
       lng,
+      expiresAt: Date.now() + 3 * 60 * 60 * 1000,
   });
   
   return res.json(result); // { ok: true, expiresAt }
@@ -116,7 +118,7 @@ async function postLocation(req, res) {
 async function deleteLocation(req, res) {
   console.log("in deleteLocation");
   try {
-    await MapBusiness.disable({ userId: req.user.id });
+    await MapBusiness.disable({ userId: req.user.playerId });
     return res.json({ ok: true });
   } catch (e) {
     console.error(e);
@@ -127,14 +129,8 @@ async function deleteLocation(req, res) {
 async function fetchAllPlayers(req, res) {
   console.log("in fetchAllPlayers");
   try {
-    const lat = parseFloat(req.query.lat);
-    const lng = parseFloat(req.query.lng);
-    if (Number.isNaN(lat) || Number.isNaN(lng)) {
-      return res.status(400).json({ msg: 'lat and lng query params are required' });
-    }
-
-    const players = await MapBusiness.getNearby({ lat, lng });
-    // returns [{ id, name, lat, lng, ts }]
+    const players = await MapBusiness.getAll();
+    // returns [{ id, name, lat, lng, expiresAt }]
     return res.json({ players });
   } catch (e) {
     console.error(e);

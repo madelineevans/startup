@@ -30,10 +30,10 @@ apiRouter.get('/match', handler.verifyAuth, handler.getMatch);
 apiRouter.post('/chat/:playerID', handler.postChat)
 
 // Map routes
-apiRouter.post('/map/location', handler.verifyAuth, handler.postLocation);
-apiRouter.delete('/map/location', handler.verifyAuth, handler.deleteLocation);
+apiRouter.post('/map/location', handler.postLocation);//handler.verifyAuth, handler.postLocation);
+apiRouter.delete('/map/location', handler.postLocation);//handler.verifyAuth, handler.deleteLocation);
 apiRouter.get('/map/players', handler.fetchAllPlayers);
-apiRouter.get('/map/player/:id', handler.verifyAuth, handler.fetchPlayerById);   //pass in id here? where?
+//apiRouter.get('/map/player/:id', handler.verifyAuth, handler.fetchPlayerById);   //in case we don't just get one player from all players
 
 // Chat routes
 // apiRouter.get('/chat/history', handler.fetchChatHistoryById); //pass in id here? where?
