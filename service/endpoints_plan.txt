@@ -71,6 +71,13 @@ pages:
             ok: true, 
             expiresAt: ts 3hrs from starting
         }
+    - delete postLocation manually remove location
+        - request body:
+        {
+            playerId: 'exampleId",
+            lat: '4447',
+            lng: '1230.0'
+        }
     - GET playerMatch (opens player match page based from their pin)
 - chat
     - Get messageHistory(chat)
