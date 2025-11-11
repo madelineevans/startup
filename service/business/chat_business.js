@@ -2,8 +2,8 @@ import {PlayerRepo} from "../repo/player_repo.js";
 import {ChatRepo} from "../repo/chat_repo.js";
 
 export class ChatBusiness {
-    static async postChat(record){
-        const existingChat = await ChatRepo.fetchChatHistoryByPlayers(record.player_id, record.player2_id);
+    static async postChat(chat_record){
+        const existingChat = await ChatRepo.fetchChatHistoryByPlayers(chat_record.player_id, chat_record.player2_id);
         
         if (existingChat) {
             const messages = await ChatRepo.fetchChatHistoryById(existingChat.chatId);
@@ -14,7 +14,7 @@ export class ChatBusiness {
             };
             return record;
         } else {
-            const return_val = await ChatRepo.createNewChat();
+            const return_val = await ChatRepo.createNewChat(chat_record.player_id, chat_record.player2_id);
             const record = {
                 chatId: return_val,
                 // participant_ids: existingChat.participant_ids,
