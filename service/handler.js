@@ -109,7 +109,6 @@ async function postLocation(req, res) {
 
     const result = await MapBusiness.shareOrRefresh({
       userId: req.user.id,
-      name: req.user.name,
       lat,
       lng,
   });
