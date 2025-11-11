@@ -50,8 +50,27 @@ pages:
         //player IDS comma separated list (FIND_IN_SET)
 - map
     - GET allAvailbleLocations
+        - return body:
+        {
+            playerId: 'exampleID',
+            name: 'name',
+            lat: '4447',
+            lng: '1230.0',
+            expires_at: ts that's 3 hours from when set
+        }
     - (make a toggle thats like location seen)
     - POST postLocation Puts just the location for three hours but does not move location
+        - request body:
+        {
+            playerId: 'exampleId",
+            lat: '4447',
+            lng: '1230.0'
+        }
+        -return body:
+        {
+            ok: true, 
+            expiresAt: ts 3hrs from starting
+        }
     - GET playerMatch (opens player match page based from their pin)
 - chat
     - Get messageHistory(chat)
