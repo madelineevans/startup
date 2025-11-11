@@ -1,5 +1,5 @@
-import {PlayerRepo} from "../repo/player.js";
-import {ChatRepo} from "../repo/chat.js";
+import {PlayerRepo} from "../repo/player_repo.js";
+import {ChatRepo} from "../repo/chat_repo.js";
 
 export class ChatBusiness {
     static async postChat(record){

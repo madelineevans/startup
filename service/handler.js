@@ -1,10 +1,10 @@
-import {MatchBusiness} from './business/match.js';
+import {MatchBusiness} from './business/match_business.js';
 import {ChatBusiness} from './business/chat_business.js';
 import bcrypt from 'bcryptjs';
 import authRepository from './repo/auth.js';
 import { v4 as uuidv4 } from 'uuid';
-import { PlayerRepo } from './repo/player.js';
-import { ChatRepo } from './repo/chat.js';
+import { PlayerRepo } from './repo/player_repo.js';
+import { ChatRepo } from './repo/chat_repo.js';
 import { MapBusiness } from './business/map.js';
 
 const authCookieName = 'token';

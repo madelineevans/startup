@@ -1,6 +1,6 @@
 // business/map.js
 import { MapRepo } from '../repo/map.js'; //or other repo import
-import { playerRepo } from '../repo/player.js';
+import { playerRepo } from '../repo/player_repo.js';
 
 const THREE_HOURS_MS = 3 * 60 * 60 * 1000;
 

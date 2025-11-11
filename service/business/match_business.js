@@ -1,4 +1,4 @@
-import {PlayerRepo} from "../repo/player.js";
+import {PlayerRepo} from "../repo/player_repo.js";
 
 export class MatchBusiness {
 
