@@ -2,7 +2,7 @@
 // const DB = require('../database.js');
 
 export class ChatRepo {
-  static async getChatByPlayers(playerId1, playerId2) {
+  static async fetchChatHistoryByPlayers(playerId1, playerId2) {
       // find chatid by player ids
   }
   static async getPlayerScore(playerId) {
@@ -13,6 +13,9 @@ export class ChatRepo {
     return null;
   }
   static async getChatById(chatId){
+    return null;
+  }
+  static async sendMessage(chatId, message){
     return null;
   }
 }

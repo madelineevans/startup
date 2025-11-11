@@ -65,7 +65,7 @@ async function createAuth(req, res) {
   setAuthCookie(res, user.token);
   res.send({ email: user.email });
 }
-
+// TODO: test
 async function getMatch(req, res) {
   console.log("in getMatch");
   const user = await findUser('token', req.cookies[authCookieName]);
@@ -77,7 +77,7 @@ async function getMatch(req, res) {
     res.status(401).send({ msg: 'Unauthorized' });
   }
 }
-
+// TODO: test
 async function postChat(req, res) {
   console.log("in postChat");
   const user = await findUser('token', req.cookies[authCookieName]);
@@ -92,8 +92,9 @@ async function postChat(req, res) {
   }
 }
 
-async function fetchChatHistoryById(req, res) {
-  console.log("in postChat");
+// TODO: test
+async function fetchChatHistory(req, res) {
+  console.log("in fetchChatHistory");
   const user = await findUser('token', req.cookies[authCookieName]);
   const body = req.body || {};
 
@@ -105,14 +106,15 @@ async function fetchChatHistoryById(req, res) {
     res.status(401).send({ msg: 'Unauthorized' });
   }
 }
-//TODO: finish endpoint
+// TODO: test
 async function sendMessage(req, res) {
-  console.log("in postChat");
+  console.log("in sendMessage");
   const user = await findUser('token', req.cookies[authCookieName]);
   const body = req.body || {};
 
   if (user) {
-    const record = await ChatBusiness.sendMessage(body);
+  // if (true) {
+    const record = await ChatBusiness.sendMessage(body.chatId, body.message);
     res.send(record);
     return;
   } else {
@@ -121,8 +123,8 @@ async function sendMessage(req, res) {
 }
 
 //TODO: finish endpoint
-async function listMessages(req, res) {
-  console.log("in postChat");
+async function listChats(req, res) {
+  console.log("in listMessages");
   const user = await findUser('token', req.cookies[authCookieName]);
   const body = req.body || {};
 
@@ -235,5 +237,5 @@ async function verifyAuth(req, res, next) {
 
 export {createAuth, login, logout, verifyAuth, getMatch, postChat, 
   postLocation, fetchAllPlayers, fetchPlayerById, deleteLocation, 
-  fetchChatHistoryById, sendMessage, listMessages};
-// /*authCookieName,*/
+  fetchChatHistory, sendMessage, listChats};
+// /*authCookieName, listMessages*/

@@ -74,7 +74,7 @@ pages:
     - GET playerMatch (opens player match page based from their pin)
 - chat
     - Get messageHistory(chat)
-    - POST sendChat(chatId, message)
+    - POST sendMessage(chatId, message)
         - req body
         {
             chatId,
@@ -82,7 +82,8 @@ pages:
         }
         return body
         {
-            
-        }
+            chatId: existingChat.chatId,
+            successful: message_success
+        };
 - chat_list
     - GET allChats
