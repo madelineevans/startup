@@ -7,6 +7,10 @@ export class PlayerRepo {
     // note: calculate age from dob and include in return record
     return fake_data_generator("player", { playerId });
   }
+  static async getNamesByIds(playerIds) {
+    // fake_data_generator will be replaced with a db call
+    return fake_data_generator("names", { playerIds });  
+  }
   static async getPlayerScore(playerId) {
     // fake_data_generator will be replaced with a db call
     return fake_data_generator("score", { playerId });
@@ -50,6 +54,14 @@ function fake_data_generator(data_type, opts = {}) {
       found_by: randomItem(foundBy),
       signature_move: randomItem(moves),
       competition_level: randomItem(competitionLevels),
+    };
+  }
+
+  if (data_type === "names") {
+    const names = ["Alex Carter", "Jamie Lee", "Taylor Morgan", "Jordan Smith", "Casey Brown"];
+    return {
+      playerId: opts.playerId ?? `P-${Math.floor(Math.random() * 100000)}`,
+      name: randomItem(names),
     };
   }
 

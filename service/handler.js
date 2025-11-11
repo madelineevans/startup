@@ -5,6 +5,7 @@ import authRepository from './repo/auth.js';
 import { v4 as uuidv4 } from 'uuid';
 import { PlayerRepo } from './repo/player.js';
 import { ChatRepo } from './repo/chat.js';
+import { MapBusiness } from './business/map.js';
 
 const authCookieName = 'token';
 
@@ -76,6 +77,7 @@ async function getMatch(req, res) {
     res.status(401).send({ msg: 'Unauthorized' });
   }
 }
+
 async function postChat(req, res) {
   console.log("in postChat");
   const user = await findUser('token', req.cookies[authCookieName]);
@@ -90,8 +92,73 @@ async function postChat(req, res) {
   }
 }
 
+async function postLocation(req, res) {
+  console.log("in postLocation");
+  try{
+    const { lat, lng } = req.body || {};
+    if (typeof lat !== 'number' || typeof lng !== 'number') {
+      return res.status(400).send({ msg: 'Latitude and longitude must be numbers' });
+    }
+
+    const result = await MapBusiness.shareOrRefresh({
+      userId: req.user.id,
+      lat,
+      lng,
+  });
+  
+  return res.json(result); // { ok: true, expiresAt }
+  } catch (e) {
+    console.error(e);
+    return res.status(500).json({ msg: 'Internal error' });
+  }
+}
+
+async function deleteLocation(req, res) {
+  console.log("in deleteLocation");
+  try {
+    await MapBusiness.disable({ userId: req.user.id });
+    return res.json({ ok: true });
+  } catch (e) {
+    console.error(e);
+    return res.status(500).json({ msg: 'Internal error' });
+  }
+}
+
+async function fetchAllPlayers(req, res) {
+  console.log("in fetchAllPlayers");
+  try {
+    const lat = parseFloat(req.query.lat);
+    const lng = parseFloat(req.query.lng);
+    if (Number.isNaN(lat) || Number.isNaN(lng)) {
+      return res.status(400).json({ msg: 'lat and lng query params are required' });
+    }
+
+    const players = await MapBusiness.getNearby({ lat, lng });
+    // returns [{ id, name, lat, lng, ts }]
+    return res.json({ players });
+  } catch (e) {
+    console.error(e);
+    return res.status(500).json({ msg: 'Internal error' });
+  }
+}
+
+async function fetchPlayerById(req, res) {
+  console.log("in fetchPlayerById");
+  try {
+    const id = req.params.id || req.query.id; // allow both, but prefer /map/player/:id
+    if (!id) return res.status(400).json({ msg: 'id required' });
+
+    const player = await MapBusiness.getById({ userId: id });
+    if (!player) return res.status(404).json({ msg: 'not found' });
+    return res.json(player);
+  } catch (e) {
+    console.error(e);
+    return res.status(500).json({ msg: 'Internal error' });
+  }
+}
+
 async function login(req, res) {
-    console.log("in api login");
+  console.log("in api login");
   const user = await findUser('email', req.body.email);
   console.log("user:", user);
   if (user) {
@@ -127,5 +194,5 @@ async function verifyAuth(req, res, next) {
   }
 }
 
-export {createAuth, login, logout, verifyAuth, getMatch, postChat};
+export {createAuth, login, logout, verifyAuth, getMatch, postChat, postLocation, fetchAllPlayers, fetchPlayerById, deleteLocation};
 // /*authCookieName,*/
