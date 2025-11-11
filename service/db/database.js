@@ -40,25 +40,9 @@ async function updateUser(user) {
   return userCollection.updateOne({ email }, { $set: rest });
 }
 
-async function addScore(score) {
-  return scoreCollection.insertOne(score);
-}
-
-function getHighScores() {
-  const query = { score: { $gt: 0, $lt: 900 } };
-  const options = {
-    sort: { score: -1 },
-    limit: 10,
-  };
-  const cursor = scoreCollection.find(query, options);
-  return cursor.toArray();
-}
-
 export default {
   getUser,
   getUserByToken,
   addUser,
   updateUser,
-  addScore,
-  getHighScores,
 };

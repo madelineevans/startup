@@ -3,7 +3,7 @@ import DB from '../db/database.js';
 
 export class ChatRepo {
   static async fetchChatHistoryByPlayers(playerId1, playerId2) {
-      // find chatid by player ids
+    // find chatid by player ids
   }
   static async createNewChat(player1Id, player2Id){
     return null;
