@@ -80,18 +80,11 @@ async function postChat(req, res) {
   console.log("in postChat");
   const user = await findUser('token', req.cookies[authCookieName]);
   const body = req.body || {};
-  
-  if (user) {
-    const existingChat = await ChatRepo.getChatByPlayers(body.playerId, body.player2_id);
 
-    if (existingChat) {
-      res.send(existingChat);
-      return;
-    } else {
-      const record = await ChatBusiness.createNewChat();
-      res.send(record);
-      return;
-    }
+  if (user) {
+    const record = await ChatBusiness.postChat(body);
+    res.send(record);
+    return;
   } else {
     res.status(401).send({ msg: 'Unauthorized' });
   }
