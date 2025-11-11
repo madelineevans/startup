@@ -1,12 +1,13 @@
 import {PlayerRepo} from "../repo/player_repo.js";
 import {ChatRepo} from "../repo/chat_repo.js";
 
+
 export class ChatBusiness {
     static async postChat(chat_record){
         const existingChat = await ChatRepo.fetchChatHistoryByPlayers(chat_record.player_id, chat_record.player2_id);
         
         if (existingChat) {
-            const messages = await ChatRepo.fetchChatHistoryById(existingChat.chatId);
+            const messages = await ChatRepo.fetchMessageHistoryById(chatId);
             const record = {
                 chatId: existingChat.chatId,
                 participant_ids: existingChat.participant_ids,
@@ -25,12 +26,12 @@ export class ChatBusiness {
     }
 
     static async fetchChatHistoryById(chatId){
-        const existingChat = await ChatRepo.getChatById(record.playerId, record.player2_id);
-        const messages = await ChatRepo.fetchChatHistoryById(chatId);
+        const existingChat = await ChatRepo.getChatById(chatId);
+        const messages = await ChatRepo.fetchMessageHistoryById(chatId);
         if (existingChat) {
             const record = {
-                chatId: existingChat.chatId,
-                participant_ids: existingChat.participant_ids,
+                chatId: existingChat._id,
+                participants: existingChat.participants,
                 messages: messages,
             };
             return record;

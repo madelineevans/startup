@@ -1,4 +1,4 @@
-import { MongoClient } from 'mongodb';
+import { MongoClient, ObjectId } from 'mongodb';
 import config from './dbConfig.json' with {type: 'json'};
 
 const url = `mongodb+srv://${config.userName}:${config.password}@${config.hostname}`;
@@ -45,10 +45,37 @@ async function createNewChat(chatRecord) {
   return result;
 }
 
+async function fetchMessageHistoryById(chatId, num_messages, skip_count) {
+  const result = await conversationCollection
+    .find({ chatId: chatId })
+    .skip(skip_count)
+    .limit(num_messages)
+    .toArray();
+
+  return result;
+}
+
+async function fetchChatHistoryByPlayers(player1, player2) {
+  const chat = await conversationCollection.findOne({
+    participants: { $all: [player1, player2] }
+  });
+  return chat;
+}
+
+async function fetchChatHistoryById(chatId) {
+  const chat = await conversationCollection.findOne({
+    _id: ObjectId.createFromHexString(chatId)
+  });
+  return chat;
+}
+
 export default {
   getUser,
   getUserByToken,
   addUser,
   updateUser,
   createNewChat,
+  fetchMessageHistoryById,
+  fetchChatHistoryById,
+  fetchChatHistoryByPlayers,
 };

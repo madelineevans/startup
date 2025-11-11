@@ -77,6 +77,7 @@ async function createAuth(req, res) {
   res.send({ email: user.email, playerId: generated_id});
 }
 
+// todo: connect to db
 async function getMatch(req, res) {
   console.log("in getMatch");
   const user = await findUser('token', req.cookies[authCookieName]);
@@ -106,10 +107,10 @@ async function postChat(req, res) {
 async function fetchChatHistory(req, res) {
   console.log("in fetchChatHistory");
   const user = await findUser('token', req.cookies[authCookieName]);
-  const body = req.body || {};
+  const chat_id = req.params.chatId;
 
   if (user) {
-    const record = await ChatBusiness.fetchChatHistoryById(body.chatId);
+    const record = await ChatBusiness.fetchChatHistoryById(chat_id);
     res.send(record);
     return;
   } else {
