@@ -35,7 +35,7 @@ pages:
         - return body:
         {
             chatID: db.conversation
-            participants: db.conversation
+            participant_ids: db.conversation
             messages: 
                 {
                     // most recent 20 messages here
@@ -55,5 +55,15 @@ pages:
     - GET playerMatch (opens player match page based from their pin)
 - chat
     - Get messageHistory(chat)
+    - POST sendChat(chatId, message)
+        - req body
+        {
+            chatId,
+            messageText
+        }
+        return body
+        {
+            
+        }
 - chat_list
     - GET allChats

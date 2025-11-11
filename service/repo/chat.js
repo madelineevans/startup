@@ -3,11 +3,17 @@
 
 export class ChatRepo {
   static async getChatByPlayers(playerId1, playerId2) {
-      // find chat by ids
+      // find chatid by player ids
   }
   static async getPlayerScore(playerId) {
     // fake_data_generator will be replaced with a db call
     return fake_data_generator("score", { playerId });
+  }
+  static async fetchChatHistoryById(chatId){
+    return null;
+  }
+  static async getChatById(chatId){
+    return null;
   }
 }
 /**

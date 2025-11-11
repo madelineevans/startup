@@ -1,5 +1,5 @@
 import {MatchBusiness} from './business/match.js';
-import {ChatBusiness} from './business/chat.js';
+import {ChatBusiness} from './business/chat_business.js';
 import bcrypt from 'bcryptjs';
 import authRepository from './repo/auth.js';
 import { v4 as uuidv4 } from 'uuid';
@@ -85,6 +85,49 @@ async function postChat(req, res) {
 
   if (user) {
     const record = await ChatBusiness.postChat(body);
+    res.send(record);
+    return;
+  } else {
+    res.status(401).send({ msg: 'Unauthorized' });
+  }
+}
+
+async function fetchChatHistoryById(req, res) {
+  console.log("in postChat");
+  const user = await findUser('token', req.cookies[authCookieName]);
+  const body = req.body || {};
+
+  if (user) {
+    const record = await ChatBusiness.fetchChatHistoryById(body.chatId);
+    res.send(record);
+    return;
+  } else {
+    res.status(401).send({ msg: 'Unauthorized' });
+  }
+}
+//TODO: finish endpoint
+async function sendMessage(req, res) {
+  console.log("in postChat");
+  const user = await findUser('token', req.cookies[authCookieName]);
+  const body = req.body || {};
+
+  if (user) {
+    const record = await ChatBusiness.sendMessage(body);
+    res.send(record);
+    return;
+  } else {
+    res.status(401).send({ msg: 'Unauthorized' });
+  }
+}
+
+//TODO: finish endpoint
+async function listMessages(req, res) {
+  console.log("in postChat");
+  const user = await findUser('token', req.cookies[authCookieName]);
+  const body = req.body || {};
+
+  if (user) {
+    const record = await ChatBusiness.listMessages(body);
     res.send(record);
     return;
   } else {
@@ -194,5 +237,7 @@ async function verifyAuth(req, res, next) {
   }
 }
 
-export {createAuth, login, logout, verifyAuth, getMatch, postChat, postLocation, fetchAllPlayers, fetchPlayerById, deleteLocation};
+export {createAuth, login, logout, verifyAuth, getMatch, postChat, 
+  postLocation, fetchAllPlayers, fetchPlayerById, deleteLocation, 
+  fetchChatHistoryById, sendMessage, listMessages};
 // /*authCookieName,*/
