@@ -174,7 +174,7 @@ async function postLocation(req, res) {
 async function deleteLocation(req, res) {
   console.log("in deleteLocation");
   try {
-    await MapBusiness.disable({ userId: req.user.playerId });
+    await MapBusiness.disable({ userId: req.user.token });
     return res.json({ ok: true });
   } catch (e) {
     console.error(e);
@@ -240,6 +240,7 @@ async function verifyAuth(req, res, next) {
     console.log("in verifyAuth");
   const user = await findUser('token', req.cookies[authCookieName]);
   if (user) {
+    req.user = user; // <-- Attach user to req delete if change mind
     next();
   } else {
     res.status(401).send({ msg: 'Unauthorized' });

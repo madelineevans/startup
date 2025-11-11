@@ -1,5 +1,6 @@
 // business/map.js
-import { MapRepo } from '../repo/map.js'; //or other repo import
+import { MapRepo } from '../repo/map.js';
+import { PlayerRepo } from '../repo/player_repo.js';
 
 const THREE_HOURS_MS = 3 * 60 * 60 * 1000;
 
@@ -24,10 +25,12 @@ export const MapBusiness = {
   },
 
   async disable({ userId }) {
+    console.log("in MapBusiness.disable for userId:", userId);
     await MapRepo.remove(userId);
   },
 
   async getAll() {
+    console.log("in MapBusiness.getAll");
     const live = await MapRepo.listActive(); // [{ userId, lat, lng, expiresAt }]
     const now = Date.now();
     const THREE_HOURS_MS = 3 * 60 * 60 * 1000;

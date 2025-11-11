@@ -1,71 +1,90 @@
-import DB from '../db/database.js';
+// repo/map.js
+// Placeholder repo; swap to real DB later.
 
-export class MapRepo {
-    static async listActive() {
-        // fake_data_generator will be replaced with a db call
-        console.log("MapRepo.getAllActive called");
-        return fake_data_generator("map_active");
-    }
+const store = new Map(); // userId -> { userId, lat, lng, expiresAt, updatedAt }
 
-    // static async getById(playerId) {
-    //     // fake_data_generator will be replaced with a db call
-    //     console.log(`MapRepo.getById called with userId: ${playerId}`);
-    //     return fake_data_generator("map_by_id", { playerId });
-    // }   
-
-    static async upsert({playerId, lat, lng, expiresAt}) {
-        console.log(`updated location for userId: ${playerId}`);
-        //we will at an update to the database
-    }
-
-    static async remove(playerId) {
-        console.log(`removed location for userId: ${playerId}`);
-        //we will at an update to the database
-    }
-
+// --- Fake data generator (local to this file) ---
+function fake_data_generator(data_type, opts = {}) {
+  function randomItem(arr) {
+    return arr[Math.floor(Math.random() * arr.length)];
+  }
+  function randomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+  // return a NUMBER, not string
+  function randomCoord(base, range) {
+    return Number((base + (Math.random() - 0.5) * range).toFixed(6));
   }
 
-  // utils/fake_data_generator.js
-    export function fake_data_generator(data_type, opts = {}) {
-        function randomItem(arr) {
-            return arr[Math.floor(Math.random() * arr.length)];
-        }
+  const now = Date.now();
 
-        function randomInt(min, max) {
-            return Math.floor(Math.random() * (max - min + 1)) + min;
-        }
+  if (data_type === "map_active") {
+    const names = ["Alex Carter", "Jamie Lee", "Taylor Morgan", "Jordan Smith", "Casey Brown"];
+    return {
+      userId: opts.userId ?? `P-${randomInt(1000, 9999)}`,
+      name: randomItem(names),
+      lat: randomCoord(40.2338, 0.05),
+      lng: randomCoord(-111.6585, 0.05),
+      expiresAt: now + 3 * 60 * 60 * 1000, // 3 hours
+    };
+  }
 
-        function randomCoord(base, range) {
-            return (base + (Math.random() - 0.5) * range).toFixed(6);
-        }
+  if (data_type === "map_by_id") {
+    const names = ["Alex Carter", "Jamie Lee", "Taylor Morgan", "Jordan Smith", "Casey Brown"];
+    return {
+      userId: opts.userId ?? `P-${randomInt(1000, 9999)}`,
+      name: randomItem(names),
+      lat: randomCoord(40.2338, 0.03),
+      lng: randomCoord(-111.6585, 0.03),
+      expiresAt: now + 3 * 60 * 60 * 1000,
+    };
+  }
 
-        const now = Date.now();
+  return null;
+}
 
-        if (data_type === "map_active") {
-            const names = ["Alex Carter", "Jamie Lee", "Taylor Morgan", "Jordan Smith", "Casey Brown"];
-            return {
-            userId: opts.playerId ?? `P-${randomInt(1000, 9999)}`,
-            name: randomItem(names),
-            lat: randomCoord(40.2338, 0.05),  // ~a few km around Provo as example
-            lng: randomCoord(-111.6585, 0.05),
-            expiresAt: now + 3 * 60 * 60 * 1000, // 3 hours
-            };
-        }
+export class MapRepo {
+  // Return an ARRAY
+  static async listActive() {
+    console.log("MapRepo.listActive called");
 
-        if (data_type === "map_by_id") {
-            const names = ["Alex Carter", "Jamie Lee", "Taylor Morgan", "Jordan Smith", "Casey Brown"];
-            const name = randomItem(names);
-            const lat = randomCoord(40.2338, 0.03);
-            const lng = randomCoord(-111.6585, 0.03);
-
-            return {
-            userId: opts.playerId ?? `P-${randomInt(1000, 9999)}`,
-            name,
-            lat,
-            lng,
-            expiresAt: now + 3 * 60 * 60 * 1000,
-            };
-        }
-
-        return null;
+    // If nothing in memory yet, seed a few fake players for testing
+    if (store.size === 0) {
+      for (let i = 0; i < 5; i++) {
+        const p = fake_data_generator("map_active");
+        store.set(p.userId, p);
+      }
     }
+
+    // Sweep out any expired rows (just for realism in tests)
+    const now = Date.now();
+    for (const [id, v] of store) {
+      if (!v.expiresAt || v.expiresAt <= now) store.delete(id);
+    }
+
+    return Array.from(store.values()); // <-- array!
+  }
+
+  static async get(userId) {
+    return store.get(userId) || null;
+  }
+
+  // Keep param names consistent with business layer: userId
+  static async upsert({ userId, lat, lng, expiresAt }) {
+    const now = Date.now();
+    const existing = store.get(userId) || {};
+    const updated = {
+      ...existing,
+      userId,
+      lat: Number(lat),
+      lng: Number(lng),
+      expiresAt: Number(expiresAt),
+    };
+    store.set(userId, updated);
+    console.log(`MapRepo.upsert -> updated location for userId: ${userId}`);
+  }
+
+  static async remove(userId) {
+    console.log("MapRepo.remove called for userId:", userId);
+  }
+}
