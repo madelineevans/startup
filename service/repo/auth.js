@@ -1,6 +1,6 @@
 //all the interactions with the database will be here
 
-const DB = require('../database.js');
+const DB = require('../db/database.js');
 
 class AuthRepository {
   async getUserByEmail(email) {

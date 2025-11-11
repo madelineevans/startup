@@ -1,5 +1,5 @@
 // const { data } = require('react-router-dom');
-// const DB = require('../database.js');
+const DB = require('../db/database.js');
 
 export class ChatRepo {
   static async fetchChatHistoryByPlayers(playerId1, playerId2) {
