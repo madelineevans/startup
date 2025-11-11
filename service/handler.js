@@ -88,7 +88,7 @@ async function getMatch(req, res) {
     res.status(401).send({ msg: 'Unauthorized' });
   }
 }
-// TODO: test
+// TODO: repo
 async function postChat(req, res) {
   console.log("in postChat");
   const user = await findUser('token', req.cookies[authCookieName]);
