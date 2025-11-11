@@ -1,3 +1,5 @@
+const DB = require('../db/database.js');
+
 export class MapRepo {
     static async listActive() {
         // fake_data_generator will be replaced with a db call
