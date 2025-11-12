@@ -107,7 +107,7 @@ export function PlayerMap() {
   const [weather, setWeather] = React.useState(null);
   const [sharing, setSharing] = React.useState(false);
 
-  const handleChatClick = useCallback((playerId) => {
+  const handleViewClick = useCallback((playerId) => {
     console.log(`Clicked viewPlayer with id: ${playerId}`);
     navigate(`/match/${playerId}`);
   }, [navigate]);
@@ -219,6 +219,7 @@ export function PlayerMap() {
           const seen = new Set(players.map(p => p.id));
 
           players.forEach(p => {
+            console.log("processing player with id:", p.id);
             const m = markersRef.current.get(p.id);
             if (m) {
               m.setLatLng([p.lat, p.lng]);
@@ -230,7 +231,8 @@ export function PlayerMap() {
               popupDiv.appendChild(document.createElement('br'));
               const btn = L.DomUtil.create('button', 'btn btn-sm btn-primary mt-1', popupDiv);
               btn.innerText = 'View Player';
-              btn.onclick = () => handleChatClick(p.id);
+              console.log("creating view button for playerId:", p.id);
+              btn.onclick = () => handleViewClick(p.id);
               marker.bindPopup(popupDiv);
               markersRef.current.set(p.id, marker);
             }
@@ -264,7 +266,7 @@ export function PlayerMap() {
       markerLayerRef.current = null;
       markersRef.current.clear();
     };
-  }, [navigate, handleChatClick]);
+  }, [navigate, handleViewClick]);
 
   return (
     <div className="container-fluid px-4 d-flex flex-column min-vh-100">
