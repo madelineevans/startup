@@ -25,13 +25,13 @@ export class PlayerRepo {
 }
 
 function fake_data_generator(data_type, opts = {}) {
-  const seed = [
-    { userId: 'P-1001', name: 'Joe Mamma'},
-    { userId: 'P-1002', name: 'test2'},
-    { userId: 'P-1003', name: 'Mae Evans'},
-    { userId: 'P-1004', name: 'Chloe Sneddon'},
-    { userId: 'P-1005', name: 'Pickle Player'},
-  ];
+  const seed = {
+    'P-1001': { name: 'Joe Mamma' },
+    'P-1002': { name: 'test2' },
+    'P-1003': { name: 'Mae Evans' },
+    'P-1004': { name: 'Chloe Sneddon' },
+    'P-1005': { name: 'Pickle Player' },
+  };
 
   function randomItem(arr) {
     return arr[Math.floor(Math.random() * arr.length)];
@@ -45,10 +45,6 @@ function fake_data_generator(data_type, opts = {}) {
     const d = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
     return d.toISOString().split("T")[0];
   }
-
-  const seededPlayer = opts.playerId
-    ? seed.find(p => p.userId === opts.playerId)
-    : null;
 
   if (data_type === "player") {
     const names = ["Alex Carter", "Jamie Lee", "Taylor Morgan", "Jordan Smith", "Casey Brown"];
@@ -64,7 +60,7 @@ function fake_data_generator(data_type, opts = {}) {
     return {
       playerId: opts.playerId ?? `P-${Math.floor(Math.random() * 100000)}`,
       dob,
-      name: seededPlayer ? seededPlayer.name : randomItem(names),
+      name: seed[opts.playerId]?.name ?? randomItem(names),
       age,
       location: randomItem(locations),
       skill_level: randomItem(skills),
@@ -78,9 +74,23 @@ function fake_data_generator(data_type, opts = {}) {
 
   if (data_type === "names") {
     const names = ["Alex Carter", "Jamie Lee", "Taylor Morgan", "Jordan Smith", "Casey Brown"];
+
+    // return array of { playerId, name } for given IDs
+    const n = [];
+
+    if (Array.isArray(opts.playerIds) && opts.playerIds.length > 0) {
+      for (const playerId of opts.playerIds) {
+        const seededName = seed[playerId]?.name;
+        const name = seededName ?? randomItem(names); // use seeded or random
+        n.push({ playerId, name });
+      }
+      return n;
+    }
+
+    // if no playerIds provided, return all seeded + some random extras
     return {
       playerId: opts.playerId ?? `P-${Math.floor(Math.random() * 100000)}`,
-      name: randomItem(names),
+      name: seededPlayer ? seededPlayer.name : randomItem(names),
     };
   }
 

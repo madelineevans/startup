@@ -40,14 +40,17 @@ export const MapBusiness = {
 
     // batch fetch names once
     const ids = active.map(p => p.userId);
-    const profiles = await PlayerRepo.getNamesByIds(ids); 
+    const profiles = await PlayerRepo.getNamesByIds(ids);
+    const profileById = new Map(profiles.map(pr => [pr.playerId, pr])); 
     // Expect e.g. { [playerId]: { first_name, last_name } }
 
     return active.map(p => {
-        const prof = profiles[p.userId] || {};
-        const name = [prof.first_name, prof.last_name].filter(Boolean).join(' ') || 'Player';
-        console.log("name for userId", p.userId, "is", name);
-        return { id: p.userId, name: name, lat: p.lat, lng: p.lng, expiresAt: p.expiresAt };
+      const prof = profileById.get(p.userId);
+      const name = prof?.name || [prof?.first_name, prof?.last_name].filter(Boolean).join(' ') || 'Player';
+
+      console.log("name for userId", p.userId, "is", name);
+
+      return { id: p.userId, name, lat: p.lat, lng: p.lng, expiresAt: p.expiresAt};
     });
   },
 
