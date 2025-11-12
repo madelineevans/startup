@@ -155,9 +155,8 @@ async function postLocation(req, res) {
     if (typeof lat !== 'number' || typeof lng !== 'number') {
       return res.status(400).send({ msg: 'Latitude and longitude must be numbers' });
     }
-
     const result = await MapBusiness.shareOrRefresh({
-      userId: req.user.playerId,
+      userId: req.user.token,
       lat,
       lng,
       expiresAt: Date.now() + 3 * 60 * 60 * 1000,
