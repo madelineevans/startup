@@ -1,1 +1,4 @@
 1. Error Handling
+2. Encrypt cookies
+    - ask chatgpt "authentication ensure the endpoints are protected"
+3. clean up expired cookies

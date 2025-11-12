@@ -18,7 +18,8 @@ function setAuthCookie(res, authToken) {
     sameSite: 'strict',
   });
 }
-// done
+
+// TODO: change this to set playerId in the session not in a cookie
 function setPlayerIdCookie(res, playerId) {
     console.log("in setAuthCookie");
   res.cookie('playerId', playerId, {
@@ -28,6 +29,7 @@ function setPlayerIdCookie(res, playerId) {
     sameSite: 'strict',
   });
 }
+
 // done
 async function findUser(field, value) {
     console.log("in findUser");
@@ -43,6 +45,7 @@ async function findUser(field, value) {
   }
   return authRepository.getUserByEmail(value);
 }
+
 // separate tables in db (auth, player, stats)
 async function createAuth(req, res) {
     console.log("in createAuth");
@@ -117,7 +120,7 @@ async function fetchChatHistory(req, res) {
     res.status(401).send({ msg: 'Unauthorized' });
   }
 }
-// TODO: connect to db, websocket
+// done
 async function sendMessage(req, res) {
   console.log("in sendMessage");
   const user = await findUser('token', req.cookies[authCookieName]);
@@ -138,8 +141,7 @@ async function listChats(req, res) {
   const user = await findUser('token', req.cookies[authCookieName]);
 
   if (user) {
-    // const record = await ChatBusiness.listMessages(body);
-    const record = {};
+    const record = await ChatBusiness.listMessages(String(user._id));
     res.send(record);
     return;
   } else {

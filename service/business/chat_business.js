@@ -24,6 +24,10 @@ export class ChatBusiness {
             return record;
         }
     }
+    static async listMessages(playerId){
+        const all_chats = await ChatRepo.getAllChatsForPlayer(playerId);
+        return all_chats;
+    }
 
     static async fetchChatHistoryById(chatId){
         const existingChat = await ChatRepo.getChatById(chatId);
