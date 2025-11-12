@@ -75,6 +75,13 @@ async function sendMessage(record) {
   return result;
 }
 
+async function getAllChatsForPlayer(playerId) {
+  const result = await conversationCollection.find({
+    participants: { $regex: playerId }
+  }).toArray();
+  return result
+}
+
 export default {
   getUser,
   getUserByToken,
@@ -85,4 +92,5 @@ export default {
   fetchChatHistoryById,
   fetchChatHistoryByPlayers,
   sendMessage,
+  getAllChatsForPlayer,
 };

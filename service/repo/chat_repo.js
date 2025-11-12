@@ -6,6 +6,10 @@ export class ChatRepo {
     const chat_data = await DB.fetchChatHistoryByPlayers(playerId1, playerId2);
     return chat_data;
   }
+  static async getAllChatsForPlayer(playerId){
+    const chats = await DB.getAllChatsForPlayer(playerId);
+    return chats;
+  }
 
   static async fetchMessageHistoryById(chatId, num_messages = 20, page_num = 1){
     const skip_count = num_messages * (page_num-1);
