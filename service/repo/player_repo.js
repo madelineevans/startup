@@ -18,9 +18,21 @@ export class PlayerRepo {
   static async markAsSeen(playerId, seenId){
     return null;
   }
+  static async getPlayerById(playerId){
+    // fake_data_generator will be replaced with a db call
+    return fake_data_generator("player", { playerId });
+  }
 }
 
 function fake_data_generator(data_type, opts = {}) {
+  const seed = [
+    { userId: 'P-1001', name: 'Joe Mamma'},
+    { userId: 'P-1002', name: 'test2'},
+    { userId: 'P-1003', name: 'Mae Evans'},
+    { userId: 'P-1004', name: 'Chloe Sneddon'},
+    { userId: 'P-1005', name: 'Pickle Player'},
+  ];
+
   function randomItem(arr) {
     return arr[Math.floor(Math.random() * arr.length)];
   }
@@ -33,6 +45,10 @@ function fake_data_generator(data_type, opts = {}) {
     const d = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
     return d.toISOString().split("T")[0];
   }
+
+  const seededPlayer = opts.playerId
+    ? seed.find(p => p.userId === opts.playerId)
+    : null;
 
   if (data_type === "player") {
     const names = ["Alex Carter", "Jamie Lee", "Taylor Morgan", "Jordan Smith", "Casey Brown"];
@@ -48,7 +64,7 @@ function fake_data_generator(data_type, opts = {}) {
     return {
       playerId: opts.playerId ?? `P-${Math.floor(Math.random() * 100000)}`,
       dob,
-      name: randomItem(names),
+      name: seededPlayer ? seededPlayer.name : randomItem(names),
       age,
       location: randomItem(locations),
       skill_level: randomItem(skills),

@@ -7,11 +7,11 @@ function seedIfEmpty() {
   if (store.size > 0) return;
   const now = Date.now();
   const seed = [
-    { userId: 'P-1001', name: 'Alex Carter',   lat: rnd(40.2338, 0.03), lng: rnd(-111.6585, 0.03) },
-    { userId: 'P-1002', name: 'Jamie Lee',     lat: rnd(40.2338, 0.03), lng: rnd(-111.6585, 0.03) },
-    { userId: 'P-1003', name: 'Taylor Morgan', lat: rnd(40.2338, 0.03), lng: rnd(-111.6585, 0.03) },
-    { userId: 'P-1004', name: 'Jordan Smith',  lat: rnd(40.2338, 0.03), lng: rnd(-111.6585, 0.03) },
-    { userId: 'P-1005', name: 'Casey Brown',   lat: rnd(40.2338, 0.03), lng: rnd(-111.6585, 0.03) },
+    { userId: 'P-1001', name: 'Joe Mamma',   lat: rnd(40.2338, 0.03), lng: rnd(-111.6585, 0.03) },
+    { userId: 'P-1002', name: 'test2',     lat: rnd(40.2338, 0.03), lng: rnd(-111.6585, 0.03) },
+    { userId: 'P-1003', name: 'Mae Evans', lat: rnd(40.2338, 0.03), lng: rnd(-111.6585, 0.03) },
+    { userId: 'P-1004', name: 'Chloe Sneddon',  lat: rnd(40.2338, 0.03), lng: rnd(-111.6585, 0.03) },
+    { userId: 'P-1005', name: 'Pickle Player',   lat: rnd(40.2338, 0.03), lng: rnd(-111.6585, 0.03) },
   ];
   for (const p of seed) {
     store.set(p.userId, { ...p, updatedAt: now, expiresAt: now + 3 * 60 * 60 * 1000 });
