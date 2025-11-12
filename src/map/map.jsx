@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useCallback } from 'react';
+import React, { useEffect, useRef, useCallback, use } from 'react';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import './map.css';
@@ -92,6 +92,7 @@ async function apiDeleteLocation() {
 
 export function PlayerMap() {
   const navigate = useNavigate();
+  const [pendingViewId, setPendingViewId] = React.useState(null);
   const mapRef = useRef(null);
   const markerLayerRef = useRef(null);
   const markersRef = useRef(new window.Map());
@@ -109,8 +110,9 @@ export function PlayerMap() {
 
   const handleViewClick = useCallback((playerId) => {
     console.log(`Clicked viewPlayer with id: ${playerId}`);
-    navigate(`/match/${playerId}`);
-  }, [navigate]);
+    setPendingViewId(playerId); // defer actual navigation to React
+    //navigate(`/match/${playerId}`);
+  }, [/*navigate*/]);
 
   function focusPlayerByName(query) {
     if (!query || !mapRef.current) return;
@@ -165,20 +167,24 @@ export function PlayerMap() {
   }
 
   useEffect(() => {
+    if (pendingViewId) {
+      navigate(`/match/${pendingViewId}`);
+      setPendingViewId(null);
+    }
+  }, [pendingViewId, navigate]);
+
+  useEffect(() => {
     let mapDiv; // so we can clean it up
 
     (async () => {
-      // ✅ await the Promise
       const baseCenter = await get_curr_loc();
 
       // init map AFTER we have real coords
       mapDiv = L.map('map').setView(baseCenter, 13);
       mapRef.current = mapDiv;
 
-      // tiles
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(mapDiv);
 
-      // layer for players
       const layer = L.layerGroup().addTo(mapDiv);
       markerLayerRef.current = layer;
 
@@ -232,7 +238,18 @@ export function PlayerMap() {
               const btn = L.DomUtil.create('button', 'btn btn-sm btn-primary mt-1', popupDiv);
               btn.innerText = 'View Player';
               console.log("creating view button for playerId:", p.id);
-              btn.onclick = () => handleViewClick(p.id);
+              L.DomEvent.on(btn, 'click', (e) => {
+                // stop Leaflet/map from eating the click
+                L.DomEvent.stopPropagation(e);
+                L.DomEvent.preventDefault(e);
+                console.log("Button clicked for playerId:", p.id);
+                handleViewClick(p.id);
+              });
+              // btn.addEventListener('click', () => {
+              //   console.log("Button clicked for playerId:", p.id);
+              //   handleViewClick(p.id);
+              // });
+              btn.style.pointerEvents = 'auto';
               marker.bindPopup(popupDiv);
               markersRef.current.set(p.id, marker);
             }
@@ -259,14 +276,12 @@ export function PlayerMap() {
       if (refreshTimerRef.current) clearInterval(refreshTimerRef.current);
       if (watchIdRef.current) navigator.geolocation.clearWatch(watchIdRef.current);
       if (autoOffTimerRef.current) clearTimeout(autoOffTimerRef.current);
-      if (mapRef.current) {
-        mapRef.current.remove();
-      }
+      if (mapRef.current) { mapRef.current.remove() }
       mapRef.current = null;
       markerLayerRef.current = null;
       markersRef.current.clear();
     };
-  }, [navigate, handleViewClick]);
+  }, []);//navigate, handleViewClick]);
 
   return (
     <div className="container-fluid px-4 d-flex flex-column min-vh-100">
