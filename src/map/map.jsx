@@ -7,6 +7,18 @@ import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
+function norm(s) {
+  return (s || '').trim().toLowerCase();
+}
+
+function matchScore(name, q) {
+  const n = norm(name);
+  if (!q || !n.includes(q)) return 0;
+  if (n === q) return 3;           // exact match
+  if (n.startsWith(q)) return 2;   // prefix match
+  return 1;                        // substring match
+}
+
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: markerIcon2x,
@@ -15,26 +27,67 @@ L.Icon.Default.mergeOptions({
 });
 
 function get_curr_loc() {
-  // replace with actual geolocation API call or stored user location
-  return [40.2338, -111.6585 ];
+  return new Promise((resolve, reject) => {
+    if (!navigator.geolocation) {
+      console.warn('Geolocation not supported, using fallback.');
+      return resolve([40.2338, -111.6585]); // fallback (Provo-ish)
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const { latitude, longitude } = pos.coords;
+        resolve([latitude, longitude]);
+      },
+      (err) => {
+        console.warn('Geolocation error:', err);
+        // fallback location if user blocks or errors
+        resolve([40.2338, -111.6585]);
+      },
+      { enableHighAccuracy: true, timeout: 5000 }
+    );
+  });
 }
 
-async function fetchPlayersNear() {
-  // Replace with api call to player database
-  return [
-    { id: 1, name: 'Joe Mama',   lat: 40.2400,  lng: -111.6500 },
-    { id: 2, name: 'PicklePlayer', lat: 40.2338,  lng: -111.6585 },
-    { id: 3, name: 'AceGamer',     lat: 40.2445,  lng: -111.6602 },
-    { id: 4, name: 'SmashMaster',  lat: 40.2261,  lng: -111.6501 },
-    { id: 5, name: 'VolleyQueen',  lat: 40.2389,  lng: -111.6705 },
-  ];
+// --- helpers ---
+function throttle(fn, wait) {
+  let last = 0;
+  let t;
+  return (...args) => {
+    const now = Date.now();
+    const remain = wait - (now - last);
+    clearTimeout(t);
+    if (remain <= 0) {
+      last = now;
+      fn(...args);
+    } else {
+      t = setTimeout(() => {
+        last = Date.now();
+        fn(...args);
+      }, remain);
+    }
+  };
 }
 
-function jitterLatLng(lat, lng, meters = 12) {
-  // mimic how we'll want the to be live locations
-  const dLat = (Math.random() - 0.5) * (meters / 111);
-  const dLng = (Math.random() - 0.5) * (meters / (111 * Math.cos((lat * Math.PI) / 180)));
-  return [lat + dLat, lng + dLng];
+// --- API calls ---
+async function apiFetchPlayersNear([lat, lng]) {
+  const r = await fetch(`/api/map/players?lat=${lat}&lng=${lng}`);
+  if (!r.ok) throw new Error('players fetch failed');
+  const data = await r.json();
+  return data.players ?? [];
+}
+async function apiPostLocation({ lat, lng }) {
+  const r = await fetch(`/api/map/location`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ lat, lng }),
+  });
+  if (!r.ok) throw new Error('share on failed');
+  return r.json(); // { ok, expiresAt }
+}
+async function apiDeleteLocation() {
+  const r = await fetch(`/api/map/location`, { method: 'DELETE' });
+  if (!r.ok) throw new Error('share off failed');
+  return r.json();
 }
 
 export function PlayerMap() {
@@ -43,38 +96,59 @@ export function PlayerMap() {
   const markerLayerRef = useRef(null);
   const markersRef = useRef(new window.Map());
   const playersRef = useRef([]);
-  const tickTimerRef = useRef(null);
   const searchInputRef = useRef(null);
   const highlightRef = useRef(null);
-  const [weather, setWeather] = React.useState(null);
 
-  const handleChatClick = useCallback((playerId) => {
-    // change to a get from player profile database later
+  const refreshTimerRef = useRef(null);
+  const watchIdRef = useRef(null);
+  const autoOffTimerRef = useRef(null);
+  const userMarkerRef = useRef(null);
+
+  const [weather, setWeather] = React.useState(null);
+  const [sharing, setSharing] = React.useState(false);
+
+  const handleViewClick = useCallback((playerId) => {
     console.log(`Clicked viewPlayer with id: ${playerId}`);
     navigate(`/match/${playerId}`);
   }, [navigate]);
 
   function focusPlayerByName(query) {
     if (!query || !mapRef.current) return;
-    const q = query.trim().toLowerCase();
 
-    // find first name that includes the query
-    const match = playersRef.current.find(p => p.name.toLowerCase().includes(q));
-    if (!match) {
-      // could todo: show a toast/alert here
+    const q = norm(query);
+    const center = mapRef.current.getCenter();
+
+    // score candidates
+    const candidates = playersRef.current
+      .map(p => ({
+        p,
+        score: matchScore(p.name, q),
+        // tie-breaker: distance to current map center
+        dist: Math.hypot((p.lat - center.lat), (p.lng - center.lng)),
+      }))
+      .filter(x => x.score > 0)
+      .sort((a, b) => (b.score - a.score) || (a.dist - b.dist));
+
+    if (candidates.length === 0) {
+      // no match found
+      alert(`No player found matching "${query}"`);
       return;
     }
 
-    const marker = markersRef.current.get(match.id);
+    const { p } = candidates[0]; // best match
+
+    const marker = markersRef.current.get(p.id);
     if (!marker) return;
 
-    mapRef.current.setView([match.lat, match.lng], Math.max(mapRef.current.getZoom(), 15), { animate: true });
+    // zoom & show popup
+    mapRef.current.setView([p.lat, p.lng], Math.max(mapRef.current.getZoom(), 15), { animate: true });
     marker.openPopup();
 
+    // quick highlight pulse
     if (highlightRef.current) {
       mapRef.current.removeLayer(highlightRef.current);
     }
-    highlightRef.current = L.circleMarker([match.lat, match.lng], {
+    highlightRef.current = L.circleMarker([p.lat, p.lng], {
       radius: 18,
       color: '#2a81ea',
       weight: 3,
@@ -91,115 +165,100 @@ export function PlayerMap() {
   }
 
   useEffect(() => {
-    // Initialize map with default center and zoom
-    const baseCenter = get_curr_loc();
-    const mapDiv = L.map('map').setView(baseCenter, 13);
-    mapRef.current = mapDiv;
+    let mapDiv; // so we can clean it up
 
-    // Add tile layer
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19,
-    }).addTo(mapDiv);
+    (async () => {
+      // ✅ await the Promise
+      const baseCenter = await get_curr_loc();
 
-    // Try to get user's actual location
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((pos) => {
-        const userCenter = [pos.coords.latitude, pos.coords.longitude];
-        mapDiv.setView(userCenter, 13);
-        L.marker(userCenter, { title: 'You are here' })
-          .addTo(mapDiv)
-          .bindPopup("<b>You</b>");
+      // init map AFTER we have real coords
+      mapDiv = L.map('map').setView(baseCenter, 13);
+      mapRef.current = mapDiv;
 
-        (async () => {
+      // tiles
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(mapDiv);
+
+      // layer for players
+      const layer = L.layerGroup().addTo(mapDiv);
+      markerLayerRef.current = layer;
+
+      // try geolocation for weather (optional)
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(async (pos) => {
+          const userCenter = [pos.coords.latitude, pos.coords.longitude];
+          mapDiv.setView(userCenter, 13);
+          const m = L.marker(userCenter, { title: 'You are here' })
+            .addTo(mapDiv)
+            .bindPopup("<b>You</b>");
+          userMarkerRef.current = m;
+
           try {
             const pointResp = await fetch(`https://api.weather.gov/points/${userCenter[0]},${userCenter[1]}`);
             if (!pointResp.ok) throw new Error(`Weather.gov points API error: ${pointResp.status}`);
             const pointData = await pointResp.json();
             const forecastUrl = pointData.properties.forecast;
-
             const forecastResp = await fetch(forecastUrl);
             if (!forecastResp.ok) throw new Error(`Weather.gov forecast error: ${forecastResp.status}`);
             const forecastData = await forecastResp.json();
-
             const currentPeriod = forecastData.properties.periods[0];
-            const weatherInfo = `${currentPeriod.shortForecast}, ${currentPeriod.temperature}°${currentPeriod.temperatureUnit}`;
-
-            setWeather(weatherInfo);
+            setWeather(`${currentPeriod.shortForecast}, ${currentPeriod.temperature}°${currentPeriod.temperatureUnit}`);
           } catch (err) {
             console.error('Failed to fetch weather:', err);
             setWeather('Weather data unavailable');
           }
-        })();
-      },
-      (error) => {
-        console.log('Geolocation error:', error);
-      },
-      { enableHighAccuracy: true, timeout: 5000 }
-      );
-    }
+        }, (error) => console.log('Geolocation error:', error), { enableHighAccuracy: true, timeout: 5000 });
+      }
 
-    const layer = L.layerGroup().addTo(mapDiv);
-    markerLayerRef.current = layer;
+      // refresh loop
+      async function refreshPlayers() {
+        try {
+          if (!mapRef.current) return;
+          const c = mapRef.current.getCenter();
+          const players = await apiFetchPlayersNear([c.lat, c.lng]);
+          playersRef.current = players.map(p => ({ ...p }));
+          const seen = new Set(players.map(p => p.id));
 
-    function addPlayerMarker(player) {
-      const marker = L.marker([player.lat, player.lng]).addTo(layer);
-      const popupDiv = L.DomUtil.create('div');
-      const title = L.DomUtil.create('strong', '', popupDiv);
-      title.innerText = player.name;
+          players.forEach(p => {
+            console.log("processing player with id:", p.id);
+            const m = markersRef.current.get(p.id);
+            if (m) {
+              m.setLatLng([p.lat, p.lng]);
+            } else {
+              const marker = L.marker([p.lat, p.lng]).addTo(markerLayerRef.current);
+              const popupDiv = L.DomUtil.create('div');
+              const title = L.DomUtil.create('strong', '', popupDiv);
+              title.innerText = p.name ?? 'Player';
+              popupDiv.appendChild(document.createElement('br'));
+              const btn = L.DomUtil.create('button', 'btn btn-sm btn-primary mt-1', popupDiv);
+              btn.innerText = 'View Player';
+              console.log("creating view button for playerId:", p.id);
+              btn.onclick = () => handleViewClick(p.id);
+              marker.bindPopup(popupDiv);
+              markersRef.current.set(p.id, marker);
+            }
+          });
 
-      popupDiv.appendChild(document.createElement('br'));
+          // remove disappeared
+          for (const [id, marker] of markersRef.current) {
+            if (!seen.has(id)) {
+              mapRef.current.removeLayer(marker);
+              markersRef.current.delete(id);
+            }
+          }
+        } catch (e) {
+          console.error('refreshPlayers failed', e);
+        }
+      }
 
-      const btn = L.DomUtil.create('button', 'btn btn-sm btn-primary mt-1', popupDiv);
-      btn.innerText = 'View Player';
-      btn.onclick = () => handleChatClick(player.id);
-
-      marker.bindPopup(popupDiv);
-      markersRef.current.set(player.id, marker);
-    }
-
-    (async () => {
-      const players = await fetchPlayersNear();
-      playersRef.current = players.map((p) => ({...p }));
-
-      const bounds = L.latLngBounds([]);
-      players.forEach((p) => {
-        addPlayerMarker(p);
-        bounds.extend([p.lat, p.lng]);
-      });
-
-      if (bounds.isValid()) mapDiv.fitBounds(bounds.pad(0.2));
+      refreshPlayers();
+      refreshTimerRef.current = setInterval(refreshPlayers, 12000);
     })();
 
-    const movers = new Set();
-
-    function chooseMovers() {
-      const all = playersRef.current.map(p => p.id);
-      while (movers.size < Math.ceil(all.length / 2)) {
-        movers.add(all[Math.floor(Math.random() * all.length)]);
-      }
-    }
-    chooseMovers();
-
-    function tick() {
-      playersRef.current.forEach((p) => {
-        if (!movers.has(p.id)) return;
-        const [lat, lng] = jitterLatLng(p.lat, p.lng, 30 + Math.random() * 50);
-        p.lat = lat;
-        p.lng = lng;
-
-        const marker = markersRef.current.get(p.id);
-        if (marker) marker.setLatLng([lat, lng]);
-      });
-
-      tickTimerRef.current = setTimeout(tick, 800 + Math.random() * 1200);
-    }
-    tickTimerRef.current = setTimeout(tick, 1000);
-
-    // Cleanup
+    // ✅ return cleanup from useEffect (not inside the IIFE)
     return () => {
-      if (tickTimerRef.current) {
-        clearTimeout(tickTimerRef.current);
-      }
+      if (refreshTimerRef.current) clearInterval(refreshTimerRef.current);
+      if (watchIdRef.current) navigator.geolocation.clearWatch(watchIdRef.current);
+      if (autoOffTimerRef.current) clearTimeout(autoOffTimerRef.current);
       if (mapRef.current) {
         mapRef.current.remove();
       }
@@ -207,7 +266,7 @@ export function PlayerMap() {
       markerLayerRef.current = null;
       markersRef.current.clear();
     };
-  }, [navigate]);
+  }, [navigate, handleViewClick]);
 
   return (
     <div className="container-fluid px-4 d-flex flex-column min-vh-100">
@@ -223,6 +282,63 @@ export function PlayerMap() {
         </div>
       )}
 
+      {/* Share toggle */}
+      <div className="container text-center my-2">
+        <div className="form-check form-switch d-inline-flex align-items-center gap-2">
+          <input
+            className="form-check-input"
+            type="checkbox"
+            id="shareSwitch"
+            checked={sharing}
+            onChange={async (e) => {
+              const enable = e.target.checked;
+              if (enable) {
+                if (!navigator.geolocation) {
+                  alert('Geolocation not supported');
+                  return;
+                }
+                const send = throttle(async (coords) => {
+                  try { await apiPostLocation({ lat: coords.latitude, lng: coords.longitude }); }
+                  catch (err) { console.error('share on failed', err); }
+                }, 10000);
+
+                watchIdRef.current = navigator.geolocation.watchPosition(
+                  (pos) => {
+                    if (userMarkerRef.current) {
+                      userMarkerRef.current.setLatLng([pos.coords.latitude, pos.coords.longitude]);
+                    }
+                    send(pos.coords);
+                  },
+                  (err) => {
+                    console.error('geo error', err);
+                    setSharing(false);
+                    if (watchIdRef.current) navigator.geolocation.clearWatch(watchIdRef.current);
+                    alert('Could not get location.');
+                  },
+                  { enableHighAccuracy: true, maximumAge: 5000, timeout: 10000 }
+                );
+
+                setSharing(true);
+              } else {
+                setSharing(false);
+                if (watchIdRef.current) {
+                  navigator.geolocation.clearWatch(watchIdRef.current);
+                  watchIdRef.current = null;
+                }
+                if (autoOffTimerRef.current) {
+                  clearTimeout(autoOffTimerRef.current);
+                  autoOffTimerRef.current = null;
+                }
+                try { await apiDeleteLocation(); } catch (err) { console.error('share off failed', err); }
+              }
+            }}
+          />
+          <label className="form-check-label" htmlFor="shareSwitch">
+            {sharing ? 'Sharing location (3h max)' : 'Share my location'}
+          </label>
+        </div>
+      </div>
+
       <main className="container flex-grow-1 d-flex flex-column align-items-center" style={{ paddingBottom: '80px' }}>
         <div className="w-100 mb-3" style={{ maxWidth: '600px' }}>
           <label htmlFor="search" className="form-label">Find a friend:</label>
@@ -234,11 +350,7 @@ export function PlayerMap() {
               name="varSearch"
               className="form-control"
               placeholder="Type a name, e.g., AceGamer"
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') {
-                  focusPlayerByName(e.currentTarget.value);
-                }
-              }}
+              onKeyDown={(e) => { if (e.key === 'Enter') { focusPlayerByName(e.currentTarget.value); } }}
             />
             <button
               type="button"

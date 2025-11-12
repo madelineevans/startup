@@ -84,12 +84,26 @@ async function createAuth(req, res) {
 async function getMatch(req, res) {
   console.log("in getMatch");
   const user = await findUser('token', req.cookies[authCookieName]);
-  if (user) {
-    const record = await MatchBusiness.getNewMatch();
+  if (!user) {
+    return res.status(401).send({ msg: 'Unauthorized' });
+  }
+
+  try {
+    const playerId = req.params.id || req.query.id; // allow both, but prefer /match/:id
+    let record;
+    if (playerId) {
+      record = await MatchBusiness.getMatchById(playerId);
+    } else {
+      record = await MatchBusiness.getNewMatch();
+    }
+
+    if (!record) {
+      return res.status(404).send({ msg: 'Match not found' });
+    }
     res.send(record);
-    return;
-  } else {
-    res.status(401).send({ msg: 'Unauthorized' });
+  } catch (e) {
+    console.error("error in getMatch:", e);
+    res.status(500).send({ msg: 'Server error' });
   }
 }
 // done
@@ -157,9 +171,8 @@ async function postLocation(req, res) {
     if (typeof lat !== 'number' || typeof lng !== 'number') {
       return res.status(400).send({ msg: 'Latitude and longitude must be numbers' });
     }
-
     const result = await MapBusiness.shareOrRefresh({
-      userId: req.user.playerId,
+      userId: req.user.token,
       lat,
       lng,
       expiresAt: Date.now() + 3 * 60 * 60 * 1000,

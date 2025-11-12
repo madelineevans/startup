@@ -26,6 +26,21 @@ pages:
             matches_played: '11'
             matches_won: '10'
         }
+    - GET matchById
+        - id as a parameter
+        - return body:
+        {
+            player_id: 'exampleID'
+            name: 'name',
+            age: 'player age'
+            location: 'player location'
+            skill_level: 'intermediate'
+            signature_move: 'sig move',
+            competition_level: 'competitive'
+            player_rating: '3'
+            matches_played: '11'
+            matches_won: '10'
+        }
     - POST newChat
         - request body:
         {

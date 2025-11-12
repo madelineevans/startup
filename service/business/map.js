@@ -13,7 +13,7 @@ function haversineMeters(lat1, lng1, lat2, lng2) {
 
 export const MapBusiness = {
   async shareOrRefresh({ userId, lat, lng, expiresAt }) {
-
+    console.log("in MapBusiness.shareOrRefresh for userId:", userId);
     await MapRepo.upsert({
       userId,
       lat,
@@ -46,14 +46,16 @@ export const MapBusiness = {
     return active.map(p => {
         const prof = profiles[p.userId] || {};
         const name = [prof.first_name, prof.last_name].filter(Boolean).join(' ') || 'Player';
-        return { id: p.userId, name, lat: p.lat, lng: p.lng, expiresAt: p.expiresAt };
+        console.log("name for userId", p.userId, "is", name);
+        return { id: p.userId, name: name, lat: p.lat, lng: p.lng, expiresAt: p.expiresAt };
     });
   },
 
-  async getNearby({ lat, lng, maxMeters = 5000 }) { //in case we want to adjust
+  async getNearby({ lat, lng, maxMeters = 20000 }) { //in case we want to adjust
+    console.log("in MapBusiness.getNearby");
     const live = await MapRepo.listActive(); // [{userId, lat, lng, expiresAt}]
     // distance filter first
-    const nearby = live.filter(p => haversineMeters(lat, lng, p.lat, p.lng) <= maxMeters);
+    const nearby = live; //add this back when db --> .filter(p => haversineMeters(lat, lng, p.lat, p.lng) <= maxMeters);
 
     // batch fetch names once
     const ids = nearby.map(p => p.userId);
@@ -63,7 +65,8 @@ export const MapBusiness = {
     return nearby.map(p => {
       const prof = profiles[p.userId] || {};
       const name = [prof.first_name, prof.last_name].filter(Boolean).join(' ') || 'Player';
-      return { id: p.userId, name, lat: p.lat, lng: p.lng, expiresAt: p.expiresAt };
+      console.log("name for userId", p.userId, "is", name);
+      return { id: p.userId, name: name, lat: p.lat, lng: p.lng, expiresAt: p.expiresAt };
     });
   },
 
