@@ -8,7 +8,6 @@ CONVERSATION:
     updated_at: luxon date-time object
 
 MESSAGE:
-    messageId: string
     chatId: string
     created_at: luxon date-time object
     text: string

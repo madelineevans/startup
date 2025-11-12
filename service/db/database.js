@@ -6,6 +6,7 @@ const client = new MongoClient(url);
 const db = client.db('startup');
 const userCollection = db.collection('user');
 const conversationCollection = db.collection('conversation');
+const messageCollection = db.collection('message');
 
 // This will asynchronously test the connection and exit the process if it fails
 (async function testConnection() {
@@ -69,6 +70,11 @@ async function fetchChatHistoryById(chatId) {
   return chat;
 }
 
+async function sendMessage(record) {
+  const result = await messageCollection.insertOne(record);
+  return result;
+}
+
 export default {
   getUser,
   getUserByToken,
@@ -78,4 +84,5 @@ export default {
   fetchMessageHistoryById,
   fetchChatHistoryById,
   fetchChatHistoryByPlayers,
+  sendMessage,
 };

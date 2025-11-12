@@ -39,7 +39,7 @@ apiRouter.get('/chat/history/:chatId', handler.fetchChatHistory);
 apiRouter.post('/chat/send', handler.sendMessage);
 
 // Chat_list routes
-// apiRouter.get('/chat/list', handler.listChats);
+apiRouter.get('/chat/list', handler.listChats);
 
 // Default error handler
 app.use(function (err, req, res, next) {

@@ -40,10 +40,10 @@ export class ChatBusiness {
         }
     }
 
-    static async sendMessage(chatId, message){
-        const existingChat = await ChatRepo.getChatById(record.playerId, record.player2_id);
+    static async sendMessage(chatId, playerId, message){
+        const existingChat = await ChatRepo.getChatById(chatId);
         if(existingChat){
-            const message_success = await ChatRepo.sendMessage(chatId, message);
+            const message_success = await ChatRepo.sendMessage(chatId, playerId, message);
             const record = {
                 chatId: existingChat.chatId,
                 successful: message_success

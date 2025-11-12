@@ -43,8 +43,19 @@ export class ChatRepo {
     return chat_data;
   }
 
-  static async sendMessage(chatId, message){
-    return null;
+  static async sendMessage(chatId, playerId, message){
+    const record = {
+      chatId: chatId,
+      created_at: new Date(),
+      text: message,
+      player_id: playerId
+    }
+    const result = await DB.sendMessage(record);
+    if (result.acknowledged){
+      return true;
+    } else {
+        return false;
+    }
   }
 }
 /**

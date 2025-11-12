@@ -8,7 +8,7 @@ import { ChatRepo } from './repo/chat_repo.js';
 import { MapBusiness } from './business/map.js';
 
 const authCookieName = 'token';
-
+// done
 function setAuthCookie(res, authToken) {
     console.log("in setAuthCookie");
   res.cookie(authCookieName, authToken, {
@@ -18,7 +18,7 @@ function setAuthCookie(res, authToken) {
     sameSite: 'strict',
   });
 }
-
+// done
 function setPlayerIdCookie(res, playerId) {
     console.log("in setAuthCookie");
   res.cookie('playerId', playerId, {
@@ -28,7 +28,7 @@ function setPlayerIdCookie(res, playerId) {
     sameSite: 'strict',
   });
 }
-
+// done
 async function findUser(field, value) {
     console.log("in findUser");
     console.log("field:", field);
@@ -43,7 +43,7 @@ async function findUser(field, value) {
   }
   return authRepository.getUserByEmail(value);
 }
-
+// separate tables in db (auth, player, stats)
 async function createAuth(req, res) {
     console.log("in createAuth");
   const { email, password, profile } = req.body || {};
@@ -89,7 +89,7 @@ async function getMatch(req, res) {
     res.status(401).send({ msg: 'Unauthorized' });
   }
 }
-// TODO: repo
+// done
 async function postChat(req, res) {
   console.log("in postChat");
   const user = await findUser('token', req.cookies[authCookieName]);
@@ -103,7 +103,7 @@ async function postChat(req, res) {
     res.status(401).send({ msg: 'Unauthorized' });
   }
 }
-// TODO: test
+// done
 async function fetchChatHistory(req, res) {
   console.log("in fetchChatHistory");
   const user = await findUser('token', req.cookies[authCookieName]);
@@ -117,15 +117,14 @@ async function fetchChatHistory(req, res) {
     res.status(401).send({ msg: 'Unauthorized' });
   }
 }
-// TODO: test
+// TODO: connect to db, websocket
 async function sendMessage(req, res) {
   console.log("in sendMessage");
   const user = await findUser('token', req.cookies[authCookieName]);
   const body = req.body || {};
 
   if (user) {
-  // if (true) {
-    const record = await ChatBusiness.sendMessage(body.chatId, body.message);
+    const record = await ChatBusiness.sendMessage(body.chat_id, body.player_id, body.message);
     res.send(record);
     return;
   } else {
@@ -134,19 +133,19 @@ async function sendMessage(req, res) {
 }
 
 //TODO: finish endpoint
-// async function listChats(req, res) {
-//   console.log("in listChats");
-//   const user = await findUser('token', req.cookies[authCookieName]);
-//   const body = req.body || {};
+async function listChats(req, res) {
+  console.log("in listChats");
+  const user = await findUser('token', req.cookies[authCookieName]);
 
-//   if (user) {
-//     const record = await ChatBusiness.listMessages(body);
-//     res.send(record);
-//     return;
-//   } else {
-//     res.status(401).send({ msg: 'Unauthorized' });
-//   }
-// }
+  if (user) {
+    // const record = await ChatBusiness.listMessages(body);
+    const record = {};
+    res.send(record);
+    return;
+  } else {
+    res.status(401).send({ msg: 'Unauthorized' });
+  }
+}
 
 async function postLocation(req, res) {
   console.log("in postLocation");
@@ -181,7 +180,7 @@ async function deleteLocation(req, res) {
     return res.status(500).json({ msg: 'Internal error' });
   }
 }
-
+// todo: test
 async function fetchAllPlayers(req, res) {
   console.log("in fetchAllPlayers");
   try {
@@ -193,7 +192,7 @@ async function fetchAllPlayers(req, res) {
     return res.status(500).json({ msg: 'Internal error' });
   }
 }
-
+// todo: test
 async function fetchPlayerById(req, res) {
   console.log("in fetchPlayerById");
   try {
@@ -208,7 +207,7 @@ async function fetchPlayerById(req, res) {
     return res.status(500).json({ msg: 'Internal error' });
   }
 }
-
+// done
 async function login(req, res) {
   console.log("in api login");
   const user = await findUser('email', req.body.email);
@@ -224,7 +223,7 @@ async function login(req, res) {
   }
   res.status(401).send({ msg: 'Unauthorized' });
 }
-
+// done
 async function logout(req, res) {
     console.log("in api logout");
   const user = await findUser('token', req.cookies[authCookieName]);
@@ -235,7 +234,7 @@ async function logout(req, res) {
   res.clearCookie(authCookieName);
   res.status(204).end();
 }
-
+// done
 async function verifyAuth(req, res, next) {
     console.log("in verifyAuth");
   const user = await findUser('token', req.cookies[authCookieName]);
@@ -249,5 +248,5 @@ async function verifyAuth(req, res, next) {
 
 export default {createAuth, login, logout, verifyAuth, getMatch, postChat, 
   postLocation, fetchAllPlayers, fetchPlayerById, deleteLocation, 
-  fetchChatHistory, sendMessage};
+  fetchChatHistory, sendMessage, listChats};
 // /*authCookieName, listChats*/
