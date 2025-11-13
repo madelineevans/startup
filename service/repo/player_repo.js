@@ -9,7 +9,7 @@ export class PlayerRepo {
   }
   static async getNamesByIds(playerIds) {
     // fake_data_generator will be replaced with a db call
-    return fake_data_generator("names", { playerIds });  
+    return await DB.getNamesByIds(playerIds);
   }
   static async getPlayerScore(playerId) {
     // fake_data_generator will be replaced with a db call

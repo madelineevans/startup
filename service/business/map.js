@@ -53,31 +53,4 @@ export const MapBusiness = {
       return { id: p.userId, name, lat: p.lat, lng: p.lng, expiresAt: p.expiresAt};
     });
   },
-
-  async getNearby({ lat, lng, maxMeters = 20000 }) { //in case we want to adjust
-    console.log("in MapBusiness.getNearby");
-    const live = await MapRepo.listActive(); // [{userId, lat, lng, expiresAt}]
-    // distance filter first
-    const nearby = live; //add this back when db --> .filter(p => haversineMeters(lat, lng, p.lat, p.lng) <= maxMeters);
-
-    // batch fetch names once
-    const ids = nearby.map(p => p.userId);
-    const profiles = await PlayerRepo.getNamesByIds(ids); 
-    // Expect e.g. { [playerId]: { first_name, last_name } }
-
-    return nearby.map(p => {
-      const prof = profiles[p.userId] || {};
-      const name = [prof.first_name, prof.last_name].filter(Boolean).join(' ') || 'Player';
-      console.log("name for userId", p.userId, "is", name);
-      return { id: p.userId, name: name, lat: p.lat, lng: p.lng, expiresAt: p.expiresAt };
-    });
-  },
-
-//   async getById({ userId }) {    //should just be a local search thing because already have all data on the map
-//     const p = await MapRepo.get(userId);
-//     if (!p) return null;
-//     const now = Date.now();
-//     if (!p.enabled || now > p.expiresAt) return null;
-//     return { id: p.userId, lat: p.lat, lng: p.lng, ts: p.ts };
-//   },
 };

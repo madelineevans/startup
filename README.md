@@ -217,8 +217,8 @@ incorrect paths as well as middleware for parsing json and cookies
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Stores data in MongoDB** - I did not complete this part of the deliverable.
-- [ ] **Stores credentials in MongoDB** - I did not complete this part of the deliverable.
+- [x] **Stores data in MongoDB** - We successfully store the user profile information, and location from the map page in the database right now.
+- [x] **Stores credentials in MongoDB** - We successfully store the username and password in the database and retrieve those for login and as needed.
 
 ## 🚀 WebSocket deliverable
 

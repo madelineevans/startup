@@ -20,6 +20,12 @@ const locationCollection = db.collection('location');
   }
 })();
 
+async function getNamesByIds(playerIds) {
+  return await userCollection
+    .find({ playerId: { $in: playerIds } }, { projection: { playerId: 1, name: 1, _id: 0 } })
+    .toArray();
+}
+
 function getUser(email) {
   return userCollection.findOne({ email: email });
 }
@@ -103,6 +109,7 @@ async function removeLocation(userId) {
 
 export default {
   getUser,
+  getPlayerInfo,
   getUserByToken,
   addUser,
   updateUser,
@@ -116,4 +123,5 @@ export default {
   getLocationByUserId,
   updateLocation,
   removeLocation,
+  getNamesByIds,
 };

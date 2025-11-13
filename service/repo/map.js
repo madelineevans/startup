@@ -16,10 +16,10 @@ export class MapRepo {
   static async update(user) {
     const now = Date.now();
     const location = {
-      userId,
-      lat: Number(lat),
-      lng: Number(lng),
-      expiresAt: Number(expiresAt) || (now + 3 * 60 * 60 * 1000),
+      _id: user.userId,
+      lat: Number(user.lat),
+      lng: Number(user.lng),
+      expiresAt: Number(user.expiresAt) || (now + 3 * 60 * 60 * 1000),
     };
     return await DB.updateLocation(location);
   }
