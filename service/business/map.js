@@ -14,13 +14,13 @@ function haversineMeters(lat1, lng1, lat2, lng2) {
 export const MapBusiness = {
   async shareOrRefresh({ userId, lat, lng, expiresAt }) {
     console.log("in MapBusiness.shareOrRefresh for userId:", userId);
-    await MapRepo.upsert({
+    const user = {
       userId,
       lat,
       lng,
       expiresAt,
-    });
-
+    }
+    await MapRepo.update(user);
     return { ok: true, expiresAt };
   },
 

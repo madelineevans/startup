@@ -7,6 +7,7 @@ const db = client.db('startup');
 const userCollection = db.collection('user');
 const conversationCollection = db.collection('conversation');
 const messageCollection = db.collection('message');
+const locationCollection = db.collection('location');
 
 // This will asynchronously test the connection and exit the process if it fails
 (async function testConnection() {
@@ -82,6 +83,24 @@ async function getAllChatsForPlayer(playerId) {
   return result
 }
 
+async function getLocations(filter) {
+  return await locationCollection.find(filter).toArray();
+}
+
+async function getLocationByUserId(userId) {
+  return await locationCollection.findOne({ userId: userId });
+}
+
+async function updateLocation(location) {
+  const filter = { userId: location.userId };
+  const update = { $set: location };
+  return await locationCollection.updateOne(filter, update, { upsert: true });
+}
+
+async function removeLocation(userId) {
+  return await locationCollection.deleteOne({ userId: userId });
+}
+
 export default {
   getUser,
   getUserByToken,
@@ -93,4 +112,8 @@ export default {
   fetchChatHistoryByPlayers,
   sendMessage,
   getAllChatsForPlayer,
+  getLocations,
+  getLocationByUserId,
+  updateLocation,
+  removeLocation,
 };
