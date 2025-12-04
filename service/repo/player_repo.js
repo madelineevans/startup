@@ -5,7 +5,7 @@ export class PlayerRepo {
   static async getPlayerInfo(playerId) {
     // fake_data_generator will be replaced with a db call
     // note: calculate age from dob and include in return record
-    return fake_data_generator("player", { playerId });
+    return await DB.getPlayerInfo(playerId);
   }
   static async getNamesByIds(playerIds) {
     // fake_data_generator will be replaced with a db call
@@ -20,7 +20,7 @@ export class PlayerRepo {
   }
   static async getPlayerById(playerId){
     // fake_data_generator will be replaced with a db call
-    return fake_data_generator("player", { playerId });
+    return await DB.getPlayerInfo(playerId);
   }
 }
 

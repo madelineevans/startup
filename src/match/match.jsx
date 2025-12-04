@@ -46,9 +46,11 @@ export function Match() {
   }, [playerId]);
 
   const handleNextPlayer = async () => {
+    console.log("in handleNextPlayer");
     setIsNextSpinning(true);
     try {
       const response = await fetch('/api/match', { method: 'GET' });
+      console.log("response:", response);
       if (response.ok) {
         const data = await response.json();
         setPlayer(data);
