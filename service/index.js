@@ -2,6 +2,13 @@ import cookieParser from 'cookie-parser';
 import express from 'express';
 const app = express();
 import handler from './handler.js';
+import { setupPeerProxy } from './peerproxy.js';
+
+const server = app.listen(port, () => {
+  console.log(`Listening on port ${port}`);
+});
+
+setupPeerProxy(server);
 
 // The service port may be set on the command line
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
