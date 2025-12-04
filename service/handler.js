@@ -32,15 +32,15 @@ function setPlayerIdCookie(res, playerId) {
 
 // done
 async function findUser(field, value) {
-    console.log("in findUser");
-    console.log("field:", field);
-    console.log("value:", value);
+    // console.log("in findUser");
+    // console.log("field:", field);
+    // console.log("value:", value);
   if (!value) {
     return null;
   }
 
   if (field === 'token') {
-    console.log("looking up by token");
+    //console.log("looking up by token");
     return authRepository.getUserByToken(value);
   }
   return authRepository.getUserByEmail(value);
@@ -84,6 +84,7 @@ async function createAuth(req, res) {
 async function getMatch(req, res) {
   console.log("in getMatch");
   const user = await findUser('token', req.cookies[authCookieName]);
+  console.log("user:", user);
   if (!user) {
     return res.status(401).send({ msg: 'Unauthorized' });
   }
@@ -96,7 +97,7 @@ async function getMatch(req, res) {
     } else {
       record = await MatchBusiness.getNewMatch();
     }
-
+    console.log("fetched match record:", record);
     if (!record) {
       return res.status(404).send({ msg: 'Match not found' });
     }
@@ -251,7 +252,7 @@ async function logout(req, res) {
 }
 // done
 async function verifyAuth(req, res, next) {
-    console.log("in verifyAuth");
+    //console.log("in verifyAuth");
   const user = await findUser('token', req.cookies[authCookieName]);
   if (user) {
     req.user = user; // <-- Attach user to req delete if change mind

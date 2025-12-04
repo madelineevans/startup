@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 export function Login() {
+  console.log("in Login function login.jsx");
   const navigate = useNavigate();
   const [isLoggingIn, setIsLoggingIn] = useState(false);
 

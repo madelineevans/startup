@@ -3,11 +3,21 @@ import DB from '../db/database.js';
 
 export class PlayerRepo {
   static async getPlayerInfo(playerId) {
+    console.log("in getPlayerInfo with playerId:", playerId);
     // fake_data_generator will be replaced with a db call
     // note: calculate age from dob and include in return record
     return await DB.getPlayerInfo(playerId);
   }
+  static async getRandomPlayer() {
+    // Get a random player from the database
+    console.log("in getRandomPlayer");
+    const players = await DB.getAllPlayers(); // You need to implement this in your DB layer
+    if (!players || players.length === 0) return null;
+    const randomIndex = Math.floor(Math.random() * players.length);
+    return players[randomIndex];
+  }
   static async getNamesByIds(playerIds) {
+    console.log("in getNamesByIds with playerIds:", playerIds);
     // fake_data_generator will be replaced with a db call
     return await DB.getNamesByIds(playerIds);
   }
@@ -19,6 +29,7 @@ export class PlayerRepo {
     return null;
   }
   static async getPlayerById(playerId){
+    console.log("in getPlayerById with playerId:", playerId);
     // fake_data_generator will be replaced with a db call
     return await DB.getPlayerInfo(playerId);
   }

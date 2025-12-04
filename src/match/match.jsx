@@ -5,7 +5,10 @@ import { useNavigate, useNavigation, useParams } from 'react-router-dom';
 
 async function fetchPlayerById(playerId) {
   // Replace with actual API call to player database
-  return players[playerId] || null;
+  console.log("fetching player by id for match page:", playerId);
+  const res = await fetch(`/api/player/${playerId}`);
+  if (!res.ok) return null;
+  return await res.json();
 }
 
 export function Match() {
@@ -24,13 +27,16 @@ export function Match() {
     let ignore = false;
 
     async function load() {
+      console.log("loading match player data");
       setIsLoading(true);
       try {
         if (playerId) {
+          console.log("match load: playerId route param found:", playerId);
           const fetchedPlayer = await fetchPlayerById(parseInt(playerId));
           if (!ignore) setPlayer(fetchedPlayer);
         } else {
           // no route param? ask the backend for a match
+          console.log("match load: no playerId route param, fetching match from backend");
           const res = await fetch('/api/match', { method: 'GET' });
           if (res.ok) {
             const data = await res.json();
@@ -49,6 +55,7 @@ export function Match() {
     console.log("in handleNextPlayer");
     setIsNextSpinning(true);
     try {
+      console.log("fetching next player to match with");
       const response = await fetch('/api/match', { method: 'GET' });
       console.log("response:", response);
       if (response.ok) {

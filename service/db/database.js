@@ -107,6 +107,10 @@ async function removeLocation(userId) {
   return await locationCollection.deleteOne({ userId: userId });
 }
 
+async function getAllPlayers() {
+  return await userCollection.find({}).toArray();
+}
+
 export default {
   getUser,
   getPlayerInfo,
@@ -124,4 +128,5 @@ export default {
   updateLocation,
   removeLocation,
   getNamesByIds,
+  getAllPlayers,
 };
