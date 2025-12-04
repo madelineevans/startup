@@ -26,6 +26,7 @@ cp service/*.js build
 cp service/*.json build
 cp -r service/business build/business
 cp -r service/repo build/repo
+cp -r service/db build/db
 
 # Step 2
 printf "\n----> Clearing out previous distribution on the target\n"

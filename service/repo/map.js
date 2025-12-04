@@ -16,7 +16,7 @@ export class MapRepo {
   static async update(user) {
     const now = Date.now();
     const location = {
-      _id: user.userId,
+      userId: user.userId,
       lat: Number(user.lat),
       lng: Number(user.lng),
       expiresAt: Number(user.expiresAt) || (now + 3 * 60 * 60 * 1000),
