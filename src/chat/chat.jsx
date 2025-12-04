@@ -48,6 +48,7 @@ export function Chat() {
   }, []);
 
   const socketRef = React.useRef(null);
+  const chatboxRef = React.useRef(null);
 
   React.useEffect(() => {
     const ws = new WebSocket(`ws://${window.location.host}/ws?chatId=${chatIdNum}`);
