@@ -58,7 +58,3 @@ app.use(function (err, req, res, next) {
 app.use((_req, res) => {
   res.sendFile('index.html', { root: 'public' });
 });
-
-const httpService = app.listen(port, () => {
-  console.log(`Listening on port ${port}`);
-});
