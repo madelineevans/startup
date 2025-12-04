@@ -1,36 +1,37 @@
-const { WebSocketServer } = require('ws');
+import { WebSocketServer } from 'ws';
 
-function peerProxy(httpServer) {
-  // Create a websocket object
-  const socketServer = new WebSocketServer({ server: httpServer });
+export function setupPeerProxy(server) {
+    const wss = new WebSocketServer({ server, path: '/ws' });
+ 
+    const chatRooms = new Map(); // Map of chat room IDs to sets of connected clients
 
-  socketServer.on('connection', (socket) => {
-    socket.isAlive = true;
-
-    // Forward messages to everyone except the sender
-    socket.on('message', function message(data) {
-      socketServer.clients.forEach((client) => {
-        if (client !== socket && client.readyState === WebSocket.OPEN) {
-          client.send(data);
+    wss.on('connection', (ws, req) => {
+        // Parse chatId from query string, e.g. ws://host/ws?chatId=123
+        const url = new URL(req.url, `http://${req.headers.host}`);
+        const chatId = url.searchParams.get('chatId');
+        if (!chatId) {
+            ws.close();
+            return;
         }
-      });
-    });
 
-    // Respond to pong messages by marking the connection alive
-    socket.on('pong', () => {
-      socket.isAlive = true;
-    });
-  });
+        if (!chatRooms.has(chatId)) chatRooms.set(chatId, []);
+        chatRooms.get(chatId).push(ws);
 
-  // Periodically send out a ping message to make sure clients are alive
-  setInterval(() => {
-    socketServer.clients.forEach(function each(client) {
-      if (client.isAlive === false) return client.terminate();
+        ws.on('message', (msg) => {
+            // Broadcast message to all clients in the same chat room
+            for (const client of chatRooms.get(chatId)) {
+                if (client !== ws && client.readyState === ws.OPEN) {
+                    client.send(msg);
+                }
+            }
+        });
 
-      client.isAlive = false;
-      client.ping();
+        ws.on('close', () => {
+            const room = chatRooms.get(chatId);
+            if (room) {
+                chatRooms.set(chatId, room.filter(client => client !== ws));
+                if (chatRooms.get(chatId).length === 0) chatRooms.delete(chatId);
+            }
+        });
     });
-  }, 10000);
 }
-
-module.exports = { peerProxy };
