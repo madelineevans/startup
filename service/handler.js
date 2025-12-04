@@ -261,7 +261,14 @@ async function verifyAuth(req, res, next) {
   }
 }
 
+async function getPlayerNames(req, res) {
+  const { ids } = req.body;
+  if (!Array.isArray(ids)) return res.status(400).send({ msg: 'Invalid ids' });
+  const names = await PlayerRepo.getNamesByIds(ids);
+  res.send(names);
+}
+
 export default {createAuth, login, logout, verifyAuth, getMatch, postChat, 
   postLocation, fetchAllPlayers, fetchPlayerById, deleteLocation, 
-  fetchChatHistory, sendMessage, listChats};
+  fetchChatHistory, sendMessage, listChats, getPlayerNames};
 // /*authCookieName, listChats*/

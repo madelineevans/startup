@@ -26,6 +26,9 @@ app.use(express.static('public'));
 const apiRouter = express.Router();
 app.use(`/api`, apiRouter);
 
+//just get a name by id
+apiRouter.post('/player/names', handler.getPlayerNames);
+
 // auth routes
 apiRouter.post('/auth/create', handler.createAuth);     //new account
 apiRouter.post('/auth/login', handler.login);

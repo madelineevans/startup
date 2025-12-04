@@ -2,71 +2,6 @@ import React from 'react';
 import './chat.css';
 import { useNavigate, useParams, Navigate } from 'react-router-dom';
 
-// --- Mock WebSocket -----------------------------------------
-function mockReplyTo(text) {
-  const lower = text.toLowerCase();
-  if (lower.includes('time') || lower.includes('when')) return "Saturday morning works for me!";
-  if (lower.includes('where')) return "How about the City Park courts?";
-  if (lower.includes('hello') || lower.includes('hi')) return "Hey hey!";
-  if (lower.includes('pickle')) return "Dill with it! 🥒";
-  return "Sounds good!";
-}
-
-function useMockSocket(chatIdNum, onMessage) {
-  const ref = React.useRef(null);
-
-  React.useEffect(() => {
-    let closed = false;
-
-    ref.current = {
-      // send a message to the "server"
-      send(payload) {
-        try {
-          const data = JSON.parse(payload);
-          if (data?.type === 'message') {
-            // simulate server broadcasting message to others
-            // simulate a reply from the other player
-            setTimeout(() => {
-              if (closed) return;
-              console.log('Id:', chatIdNum);
-              console.log('Mock WS received message from:', get_chat_name(chatIdNum));
-              onMessage({
-                id: Date.now() + 1,
-                sender: get_chat_name(chatIdNum),
-                text: mockReplyTo(data.text),
-                ts: new Date().toISOString(),
-              });
-            }, 800);
-          }
-        } catch {
-          // ignore malformed payloads
-        }
-      },
-      close() { closed = true; },
-      get readyState() { return 1; }, // mimic WebSocket.OPEN
-    };
-
-    // simulate random typing
-    const randomPing = setInterval(() => {
-      if (closed) return;
-      onMessage({
-        id: Date.now() + Math.floor(Math.random() * 1000),
-        sender: get_chat_name(chatIdNum),
-        text: "👍",
-        ts: new Date().toISOString(),
-      });
-    }, 30000);
-
-    return () => {
-      closed = true;
-      clearInterval(randomPing);
-      ref.current = null;
-    };
-  }, [chatIdNum, onMessage]);
-
-  return ref;
-}
-
 function get_chat_name(chatIdNum) {
   if (chatIdNum === 1) return 'Joe Mamma';
   if (chatIdNum === 2) return 'PicklePlayer';
@@ -76,19 +11,22 @@ function get_chat_name(chatIdNum) {
   return 'Unknown User';
 }
 
-async function fetchChatHistory(chatIdNum, userName = 'You') {
-  // Replace with real api call to GET chat history based on Id
-  return [
-  { id: 1, sender: get_chat_name(chatIdNum), text: 'Hey! Want to play pickleball this weekend?' },
-  { id: 2, sender: userName, text: "Sounds fun! What's your availability?" },
-  ];
-}
+// async function fetchChatHistory(chatIdNum) {
+//   const res = await fetch(`/api/chat/history/${chatIdNum}`);
+//   const data = await res.json();
+//   return data.messages || [];
+//   // Replace with real api call to GET chat history based on Id
+//   // return [
+//   // { id: 1, sender: get_chat_name(chatIdNum), text: 'Hey! Want to play pickleball this weekend?' },
+//   // { id: 2, sender: userName, text: "Sounds fun! What's your availability?" },
+//   // ];
+// }
 
-async function sendChatMessage(chatIdNum, sender, text) {
-  // Replace with real POST/PUT call to chat history
-  console.log(`Pretending to send message: "${text}" from ${sender} to chat ${chatIdNum}`);
-  return { id: Date.now(), sender, text };
-}
+// async function sendChatMessage(chatIdNum, sender, text) {
+//   // Replace with real POST/PUT call to chat history
+//   console.log(`Pretending to send message: "${text}" from ${sender} to chat ${chatIdNum}`);
+//   return { id: Date.now(), sender, text };
+// }
 
 export function Chat() {
   const navigate = useNavigate();
@@ -100,8 +38,8 @@ export function Chat() {
     return <Navigate to="/chat_list" replace />;
   }
 
-  const chatName = get_chat_name(chatIdNum);
   const userName = sessionStorage.getItem('userName') || 'You';
+  const [chatName, setChatName] = React.useState('');
   const [messages, setMessages] = React.useState([]);
   const [newMessage, setNewMessage] = React.useState('');
 
@@ -109,21 +47,50 @@ export function Chat() {
     setMessages((prev) => (prev.some(m => m.id === msg.id) ? prev : [...prev, msg]));
   }, []);
 
-  const socketRef = useMockSocket(chatIdNum, handleIncoming);
-  const chatboxRef = React.useRef(null);
+  const socketRef = React.useRef(null);
 
   React.useEffect(() => {
-    if (chatboxRef.current) {
-      chatboxRef.current.scrollTo({ top: chatboxRef.current.scrollHeight });
-    }
-  }, [messages]);
+    const ws = new WebSocket(`ws://${window.location.host}/ws?chatId=${chatIdNum}`);
+    socketRef.current = ws;
+
+    ws.onmessage = (event) => {
+      try {
+        const msg = JSON.parse(event.data);
+        handleIncoming(msg);
+      } catch {
+        // ignore malformed messages
+      }
+    };
+
+    ws.onerror = (error) => {
+      console.error('WebSocket error:', error);
+    };
+
+    return () => {
+      ws.close();
+    };
+  }, [chatIdNum, handleIncoming]);
 
   React.useEffect(() => {
-    let ignore = false;
-    fetchChatHistory(chatIdNum, userName).then((data) => {
-      if (!ignore) setMessages(data);
-    });
-    return () => { ignore = true; };
+    // Fetch chat history first
+    fetch(`/api/chat/history/${chatIdNum}`)
+      .then(res => res.json())
+      .then(async data => {
+        setMessages(data.messages || []);
+        // Get the other participant's ID
+        const userId = sessionStorage.getItem('userId');
+        const otherId = data.participants.find(p => p !== userId);
+        if (otherId) {
+          // Fetch the name from your new endpoint
+          const res = await fetch('/api/player/names', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ ids: [otherId] }),
+          });
+          const names = await res.json();
+          setChatName(names[0]?.name || 'Chat');
+        }
+      });
   }, [chatIdNum]);
 
   const handleSend = async (e) => {
@@ -131,25 +98,26 @@ export function Chat() {
     const trimmed = newMessage.trim();
     if (!trimmed) return;
 
-    const sentMessage = { id: Date.now(), sender: userName, text: trimmed };
+    const sentMessage = { 
+      chat_id: chatIdNum,
+      player_id: sessionStorage.getItem('userId'),
+      message: trimmed
+    };
     setMessages((prev) => [...prev, sentMessage]);
     setNewMessage('');
 
     try {
-      socketRef.current?.send(
-        JSON.stringify({
-          type: 'message',
-          chatId: chatIdNum,
-          sender: userName,
-          text: trimmed,
-        })
-      );
+      socketRef.current?.send(JSON.stringify(sentMessage));
     } catch (e) {
-      console.error('Mock WS send failed:', e);
+      console.error('WS send failed:', e);
     }
 
     try {
-      await sendChatMessage(chatIdNum, userName, trimmed);
+      await fetch(`/api/chat/send`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(sentMessage),
+      });
     } catch (error) {
       console.error('Error sending message to API:', error);
     }
