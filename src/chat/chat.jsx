@@ -18,7 +18,7 @@ export function Chat() {
 
   // Normalize userId; stored as string in sessionStorage, but backend usually uses numbers
   const userIdStr = sessionStorage.getItem('userId');
-  const userId = userIdStr ? Number(userIdStr) : null;
+  const userId = userIdStr ? String(userIdStr) : null;
   const userName = sessionStorage.getItem('userName') || 'You';
 
   const [chatName, setChatName] = React.useState('Chat');
