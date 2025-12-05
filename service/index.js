@@ -37,7 +37,6 @@ apiRouter.delete('/auth/logout', handler.logout);
 // Match routes
 apiRouter.get('/match', handler.verifyAuth, handler.getMatch);
 apiRouter.get('/match/:id', handler.verifyAuth, handler.getMatch);
-apiRouter.post('/chat', handler.postChat)
 
 // Map routes
 apiRouter.post('/map/location', handler.verifyAuth, handler.postLocation);
@@ -49,6 +48,7 @@ apiRouter.get('/map/players', handler.fetchAllPlayers);
 apiRouter.get('/chat/list', handler.listChats);
 apiRouter.post('/chat/send', handler.sendMessage);
 apiRouter.get('/chat/:chatId', handler.fetchChatHistory);
+apiRouter.post('/create/chat', handler.postChat)
 
 // Default error handler
 app.use(function (err, req, res, next) {

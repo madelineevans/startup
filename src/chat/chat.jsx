@@ -7,13 +7,18 @@ export function Chat() {
   console.log("Rendering Chat component");
   const navigate = useNavigate();
   const { chatId } = useParams();
-  const chatIdNum = Number(chatId);
 
-  if (!chatId || Number.isNaN(chatIdNum)) {
+  // If there's no chatId in the URL, bounce back to chat list
+  if (!chatId) {
     return <Navigate to="/chat_list" replace />;
   }
 
-  const userId = sessionStorage.getItem('userId');
+  // Keep chatId as a string (matches backend: { "chatId": "69326c451e7138de38945fcc" })
+  const chatIdStr = chatId;
+
+  // Normalize userId; stored as string in sessionStorage, but backend usually uses numbers
+  const userIdStr = sessionStorage.getItem('userId');
+  const userId = userIdStr ? String(userIdStr) : null;
   const userName = sessionStorage.getItem('userName') || 'You';
 
   const [chatName, setChatName] = React.useState('Chat');
@@ -26,12 +31,15 @@ export function Chat() {
   // Handle incoming WS messages
   const handleIncoming = React.useCallback((msg) => {
     // msg should look like: { id, chat_id, player_id, message }
-    setMessages(prev => [...prev, msg]);
+    setMessages((prev) => [...prev, msg]);
   }, []);
 
   // WebSocket connection
   React.useEffect(() => {
-    const wsUrl = `ws://${window.location.host}/ws?chatId=${chatIdNum}`;
+    const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
+    const wsUrl = `${protocol}://${window.location.host}/ws?chatId=${encodeURIComponent(
+      chatIdStr
+    )}`;
     console.log('Connecting to WebSocket:', wsUrl);
 
     const ws = new WebSocket(wsUrl);
@@ -62,13 +70,13 @@ export function Chat() {
     return () => {
       ws.close();
     };
-  }, [chatIdNum, handleIncoming]);
+  }, [chatIdStr, handleIncoming]);
 
   // Fetch initial history + set chatName
   React.useEffect(() => {
     (async () => {
       try {
-        const res = await fetch(`/api/chat/${chatIdNum}`);
+        const res = await fetch(`/api/chat/${encodeURIComponent(chatIdStr)}`);
         const data = await res.json();
 
         // Expecting data.messages as an array of:
@@ -77,9 +85,12 @@ export function Chat() {
 
         // participants: [userId, otherUserId]
         const myId = userId;
-        const otherId = data.participants?.find(p => p !== myId);
+        const participants = data.participants || [];
 
-        if (otherId) {
+        // If backend uses numeric IDs, this will work fine.
+        const otherId = participants.find((p) => p !== myId);
+
+        if (otherId != null) {
           const nameRes = await fetch('/api/player/names', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -94,7 +105,7 @@ export function Chat() {
         console.error('Error fetching chat history:', err);
       }
     })();
-  }, [chatIdNum, userId]);
+  }, [chatIdStr, userId]);
 
   // Auto-scroll to bottom when messages change
   React.useEffect(() => {
@@ -106,17 +117,17 @@ export function Chat() {
   const handleSend = async (e) => {
     e.preventDefault();
     const trimmed = newMessage.trim();
-    if (!trimmed) return;
+    if (!trimmed || !userId) return;
 
     const sentMessage = {
-      id: Date.now(),           // TODO: FIX?
-      chat_id: chatIdNum,
-      player_id: userId,
+      id: Date.now(), // temporary client-side ID
+      chat_id: chatIdStr, // keep as string
+      player_id: userId,  // number
       message: trimmed,
     };
 
     // Optimistic UI update
-    setMessages(prev => [...prev, sentMessage]);
+    setMessages((prev) => [...prev, sentMessage]);
     setNewMessage('');
 
     // Send via WebSocket
@@ -162,7 +173,11 @@ export function Chat() {
             return (
               <div
                 key={msg.id ?? index}
-                className={isMe ? 'chat-message chat-message--me' : 'chat-message chat-message--other'}
+                className={
+                  isMe
+                    ? 'chat-message chat-message--me'
+                    : 'chat-message chat-message--other'
+                }
               >
                 <strong>{isMe ? userName : chatName}:</strong> {msg.message}
               </div>
@@ -170,7 +185,10 @@ export function Chat() {
           })}
         </div>
 
-        <form onSubmit={handleSend} className="d-flex align-items-center gap-2 mt-2">
+        <form
+          onSubmit={handleSend}
+          className="d-flex align-items-center gap-2 mt-2"
+        >
           <input
             type="text"
             placeholder="Type your message"
