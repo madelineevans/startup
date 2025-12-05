@@ -71,6 +71,7 @@ async function fetchChatHistoryByPlayers(player1, player2) {
 }
 
 async function fetchChatHistoryById(chatId) {
+  console.log("fetchChatHistoryById id =", chatId);
   const chat = await conversationCollection.findOne({
     _id: ObjectId.createFromHexString(chatId)
   });

@@ -123,11 +123,13 @@ async function postChat(req, res) {
 }
 // done
 async function fetchChatHistory(req, res) {
-  console.log("in fetchChatHistory");
+  console.log("in handler fetchChatHistory");
   const user = await findUser('token', req.cookies[authCookieName]);
   const chat_id = req.params.chatId;
 
   if (user) {
+    console.log("request: ", req.params);
+    console.log("chat_id:", chat_id);
     const record = await ChatBusiness.fetchChatHistoryById(chat_id);
     res.send(record);
     return;
@@ -156,7 +158,9 @@ async function listChats(req, res) {
   const user = await findUser('token', req.cookies[authCookieName]);
 
   if (user) {
+    console.log("user: ", user, "user id:", String(user._id));
     const record = await ChatBusiness.listMessages(String(user._id));
+    console.log("listChats record:", record);
     res.send(record);
     return;
   } else {

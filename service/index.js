@@ -46,11 +46,9 @@ apiRouter.get('/map/players', handler.fetchAllPlayers);
 //apiRouter.get('/map/player/:id', handler.verifyAuth, handler.fetchPlayerById);   //in case we don't just get one player from all players
 
 // Chat routes
-apiRouter.get('/chat/:chatId', handler.fetchChatHistory);
-apiRouter.post('/chat/send', handler.sendMessage);
-
-// Chat_list routes
 apiRouter.get('/chat/list', handler.listChats);
+apiRouter.post('/chat/send', handler.sendMessage);
+apiRouter.get('/chat/:chatId', handler.fetchChatHistory);
 
 // Default error handler
 app.use(function (err, req, res, next) {

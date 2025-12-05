@@ -17,7 +17,9 @@ async function fetchPlayerById(playerId) {
 }
 
 export function Chat_list() {
+  console.log("in Chat_list component");
   const [chatList, setChatList] = useState([]);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   // Fetch chat list on component mount
@@ -27,6 +29,7 @@ export function Chat_list() {
       if (data) {
         setChatList(data);
       }
+      setLoading(false);
     }
     loadChatList();
   }, []);
@@ -44,14 +47,16 @@ export function Chat_list() {
 
       <main className="container-fluid px-4 flex-grow-1 d-flex flex-column align-items-center">
         <div className="mb-3">
-          {chatList.length === 0 ? (
+          {loading ? (
             <p>Loading chats...</p>
+          ) : chatList.length === 0 ? (
+            <p>No chats yet. Go find some friends!</p>
           ) : (
             chatList.map((chat) => (
               <button
-                key={chat.id}
+                key={chat._id}
                 className="btn btn-primary mb-2 w-100"
-                onClick={() => handleChatClick(chat.id)}
+                onClick={() => handleChatClick(chat._id)}
               >
                 Chat with {chat.name}
               </button>
