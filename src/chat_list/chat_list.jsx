@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 async function getChatList() {
   console.log("fetching chatlist");
   const res = await fetch(`/api/chat/list`);
+  console.log("chatlist response:", res);
   if (!res.ok) return null;
   return await res.json();
 }
@@ -23,6 +24,7 @@ export function Chat_list() {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
+  console.log("currentUserId:", sessionStorage.getItem('userId'));
   const currentUserId = sessionStorage.getItem('userId');
 
   // Fetch chat list on component mount
@@ -36,12 +38,14 @@ export function Chat_list() {
 
         data.forEach(chat => {
           chat.participants.forEach(pId => {
+            console.log("participant id:", pId);
             if (!currentUserId || pId !== currentUserId) {
               otherIds.add(pId);
             }
           });
         });
 
+        console.log("otherIds to fetch names for:", otherIds);
         if (otherIds.size > 0) {
           try {
             const res = await fetch('/api/player/names', {
@@ -52,11 +56,13 @@ export function Chat_list() {
 
             if (res.ok) {
               // assuming backend returns something like: { "id1": "Alice", "id2": "Bob" }
+              console.log("fetchPlayerNames response: ", res);
               const namesArray = await res.json();
               const namesMap = {};
               namesArray.forEach(({ playerId, name }) => {
                 namesMap[playerId] = name;
               });
+              console.log("fetched player names:", namesMap);
               setPlayerNames(namesMap);
             } else {
               console.error("Failed to fetch player names");

@@ -267,9 +267,11 @@ async function verifyAuth(req, res, next) {
 }
 
 async function getPlayerNames(req, res) {
+  console.log("in handler getPlayerNames");
   const { ids } = req.body;
   if (!Array.isArray(ids)) return res.status(400).send({ msg: 'Invalid ids' });
   const names = await PlayerRepo.getNamesByIds(ids);
+  console.log("names:", names);
   res.send(names);
 }
 
