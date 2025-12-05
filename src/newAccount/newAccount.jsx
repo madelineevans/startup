@@ -59,6 +59,7 @@ export function NewAccount() {
       if (response.status === 200) {
         const data = await response.json();
         sessionStorage.setItem('userName', data.email);
+        sessionStorage.setItem('userId', data.id);
         navigate('/match');
       } else {
         const body = await response.json().catch(() => ({}));

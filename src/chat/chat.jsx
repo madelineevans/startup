@@ -166,8 +166,12 @@ export function Chat() {
         </span>
       </header>
 
-      <main className="container-fluid px-4">
-        <div id="chatbox" ref={chatboxRef} className="mb-3">
+      <main className="container-fluid px-4 d-flex flex-column flex-grow-1">
+        <div
+          id="chatbox"
+          ref={chatboxRef}
+          className="flex-grow-1 mb-3 p-3 chatbox"
+        >
           {messages.map((msg, index) => {
             const isMe = msg.player_id === userId;
             return (
@@ -196,17 +200,11 @@ export function Chat() {
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
           />
-          <button
-            type="submit"
-            className="btn btn-primary"
-            disabled={!newMessage.trim()}
-            style={{ whiteSpace: 'nowrap' }}
-          >
+          <button type="submit" className="btn btn-primary" disabled={!newMessage.trim()}>
             Send
           </button>
         </form>
       </main>
-
       <footer>
         <nav className="navbar navbar-expand-lg bg-body-tertiary fixed-bottom">
           <div className="container-fluid">
