@@ -19,20 +19,57 @@ async function fetchPlayerById(playerId) {
 export function Chat_list() {
   console.log("in Chat_list component");
   const [chatList, setChatList] = useState([]);
+  const [playerNames, setPlayerNames] = useState({}); //id -> name
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+
+  const currentUserId = sessionStorage.getItem('userId');
 
   // Fetch chat list on component mount
   useEffect(() => {
     async function loadChatList() {
       const data = await getChatList();
+      console.log("chat list data:", data);
       if (data) {
         setChatList(data);
+        const otherIds = new Set();
+
+        data.forEach(chat => {
+          chat.participants.forEach(pId => {
+            if (!currentUserId || pId !== currentUserId) {
+              otherIds.add(pId);
+            }
+          });
+        });
+
+        if (otherIds.size > 0) {
+          try {
+            const res = await fetch('/api/player/names', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ ids: Array.from(otherIds) }),
+            });
+
+            if (res.ok) {
+              // assuming backend returns something like: { "id1": "Alice", "id2": "Bob" }
+              const namesArray = await res.json();
+              const namesMap = {};
+              namesArray.forEach(({ playerId, name }) => {
+                namesMap[playerId] = name;
+              });
+              setPlayerNames(namesMap);
+            } else {
+              console.error("Failed to fetch player names");
+            }
+          } catch (err) {
+            console.error("Error fetching player names", err);
+          }
+        }
       }
       setLoading(false);
     }
     loadChatList();
-  }, []);
+  }, [currentUserId]);
 
   const handleChatClick = useCallback((chatId) => {
     console.log(`Clicked chat with id: ${chatId}`);
@@ -52,15 +89,24 @@ export function Chat_list() {
           ) : chatList.length === 0 ? (
             <p>No chats yet. Go find some friends!</p>
           ) : (
-            chatList.map((chat) => (
-              <button
-                key={chat._id}
-                className="btn btn-primary mb-2 w-100"
-                onClick={() => handleChatClick(chat._id)}
-              >
-                Chat with {chat.name}
-              </button>
-            ))
+            chatList.map((chat) => {
+              let otherParticipantId =
+                chat.participants.find(pId => pId !== currentUserId) ||
+                chat.participants[0];
+
+              const otherName =
+                playerNames[otherParticipantId] || 'Unknown player';
+
+              return (
+                <button
+                  key={chat._id}
+                  className="btn btn-primary mb-2 w-100"
+                  onClick={() => handleChatClick(chat._id)}
+                >
+                  Chat with {otherName}
+                </button>
+              );
+            })
           )}
         </div>
       </main>

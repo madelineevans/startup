@@ -158,7 +158,7 @@ async function listChats(req, res) {
   const user = await findUser('token', req.cookies[authCookieName]);
 
   if (user) {
-    console.log("user: ", user, "user id:", String(user._id));
+    //console.log("user: ", user, "user id:", String(user._id));
     const record = await ChatBusiness.listMessages(String(user._id));
     console.log("listChats record:", record);
     res.send(record);
