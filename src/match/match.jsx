@@ -11,6 +11,24 @@ async function fetchPlayerById(playerId) {
   return await res.json();
 }
 
+async function createNewChat(playerId) {
+  console.log("creating new chat with:", playerId);
+  const userId = sessionStorage.getItem('userId');
+
+  const body = {
+    player_id: userId, 
+    player2_id: playerId
+  }
+  const res = await fetch(`/api/create/chat`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+
+  if (!res.ok) return null;
+  return await res.json();
+}
+
 export function Match() {
   const { playerId } = useParams();
   const [player, setPlayer] = useState(null);
@@ -77,18 +95,32 @@ export function Match() {
     navigate('/newAccount');
   }
 
-  const handleChat = useCallback(() => {
-    console.log("in handleChat, going to chat page: ", player.chatId);
-    setIsChatSpinning(true);
-    // TODO: implement chat endpoint and logic
-    // 1. does a session already exist? (this could be
-    // true if the player was clicked on through the map or chat pages)
-    // 2. if not, create a new chat session between the two players (this needs to 
-    //  create a new chat id that is specific to the two players chat together)
+  const handleChat = useCallback(async () => {
+  if (!player) return;
+
+  console.log("in handleChat, going to chat page: ");
+  setIsChatSpinning(true);
+
+  try {
+    // ⬅️ Await the API call
+    const newChat = await createNewChat(player.id);
+
+    console.log("newChat:", newChat);
+
+    if (!newChat || !newChat.chatId) {
+      alert("⚠ Could not create chat");
+      return;
+    }
+
+    // ⬅️ Navigate only AFTER chatId is available
+    navigate(`/chat/${newChat.chatId}`);
+  } catch (err) {
+    console.error("Error creating chat:", err);
+    alert("⚠ Error creating chat");
+  } finally {
     setIsChatSpinning(false);
-    if (!player) return;
-    navigate(`/chat/${player.chatId}`);
-  }, [player, navigate]);
+  }
+}, [player, navigate]);
 
   if (isLoading || !player) {
     return (

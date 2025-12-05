@@ -48,7 +48,7 @@ apiRouter.get('/map/players', handler.fetchAllPlayers);
 apiRouter.get('/chat/list', handler.listChats);
 apiRouter.post('/chat/send', handler.sendMessage);
 apiRouter.get('/chat/:chatId', handler.fetchChatHistory);
-apiRouter.post('/chat', handler.postChat)
+apiRouter.post('/create/chat', handler.postChat)
 
 // Default error handler
 app.use(function (err, req, res, next) {

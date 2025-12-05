@@ -7,11 +7,9 @@ export class ChatBusiness {
         const existingChat = await ChatRepo.fetchChatHistoryByPlayers(chat_record.player_id, chat_record.player2_id);
         
         if (existingChat) {
-            const messages = await ChatRepo.fetchMessageHistoryById(chatId);
+            const messages = await ChatRepo.fetchMessageHistoryById(chat_record.chatId);
             const record = {
-                chatId: existingChat.chatId,
-                participant_ids: existingChat.participant_ids,
-                messages: messages,
+                chatId: String(existingChat._id),
             };
             return record;
         } else {
