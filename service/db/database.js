@@ -21,8 +21,15 @@ const locationCollection = db.collection('location');
 })();
 
 async function getNamesByIds(playerIds) {
+  const cleanIds = playerIds
+    .filter(id => id) // remove null/undefined
+    .map(id => new ObjectId(id)); // convert to ObjectId
+
   return await userCollection
-    .find({ playerId: { $in: playerIds } }, { projection: { playerId: 1, name: 1, _id: 0 } })
+    .find(
+      { _id: { $in: cleanIds } },
+      { projection: { _id: 1, 'profile.firstName': 1, 'profile.lastName': 1 } }
+    )
     .toArray();
 }
 
