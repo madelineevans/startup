@@ -237,7 +237,7 @@ async function login(req, res) {
       user.token = uuidv4();
       await authRepository.updateUser(user);
       setAuthCookie(res, user.token);
-      res.send({ email: user.email });
+      res.send({ email: user.email, id: user._id });
       return;
     }
   }
