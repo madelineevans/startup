@@ -24,8 +24,9 @@ export function Chat_list() {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  console.log("currentUserId:", sessionStorage.getItem('userId'));
+  //console.log("currentUserId:", sessionStorage.getItem('userId'));
   const currentUserId = sessionStorage.getItem('userId');
+  console.log("currentUserId ", currentUserId);
 
   // Fetch chat list on component mount
   useEffect(() => {
