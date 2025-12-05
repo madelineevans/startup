@@ -46,7 +46,7 @@ apiRouter.get('/map/players', handler.fetchAllPlayers);
 //apiRouter.get('/map/player/:id', handler.verifyAuth, handler.fetchPlayerById);   //in case we don't just get one player from all players
 
 // Chat routes
-apiRouter.get('/chat/history/:chatId', handler.fetchChatHistory);
+apiRouter.get('/chat/:chatId', handler.fetchChatHistory);
 apiRouter.post('/chat/send', handler.sendMessage);
 
 // Chat_list routes

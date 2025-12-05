@@ -68,8 +68,7 @@ export function Chat() {
   React.useEffect(() => {
     (async () => {
       try {
-        console.log('Fetching chat history for chatId:', chatIdNum);
-        const res = await fetch(`/api/chat/history/${chatIdNum}`);
+        const res = await fetch(`/api/chat/${chatIdNum}`);
         const data = await res.json();
 
         // Expecting data.messages as an array of:
