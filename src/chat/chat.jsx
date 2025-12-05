@@ -4,6 +4,7 @@ import './chat.css';
 import { useNavigate, useParams, Navigate } from 'react-router-dom';
 
 export function Chat() {
+  console.log("Rendering Chat component");
   const navigate = useNavigate();
   const { chatId } = useParams();
   const chatIdNum = Number(chatId);
@@ -67,6 +68,7 @@ export function Chat() {
   React.useEffect(() => {
     (async () => {
       try {
+        console.log('Fetching chat history for chatId:', chatIdNum);
         const res = await fetch(`/api/chat/history/${chatIdNum}`);
         const data = await res.json();
 

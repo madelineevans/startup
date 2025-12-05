@@ -78,6 +78,7 @@ export function Match() {
   }
 
   const handleChat = useCallback(() => {
+    console.log("in handleChat, going to chat page: ", player.chatId);
     setIsChatSpinning(true);
     // TODO: implement chat endpoint and logic
     // 1. does a session already exist? (this could be

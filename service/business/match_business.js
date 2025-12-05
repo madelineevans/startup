@@ -19,7 +19,7 @@ export class MatchBusiness {
     static async getNewMatch(){
         console.log("in getNewMatch");
         const player = await PlayerRepo.getRandomPlayer();
-        console.log("random player fetched:", player);
+        //console.log("random player fetched:", player);
         const score = await PlayerRepo.getPlayerScore(player._id);
         const profile = player.profile ?? {};
         const survey = profile.survey ?? {};
@@ -36,7 +36,7 @@ export class MatchBusiness {
             matches_played: score.matches_played,
             matches_won: score.matches_won,
         };
-        console.log("random player returning:", record);
+        //console.log("random player returning:", record);
         await PlayerRepo.markAsSeen();
         return record;
     }

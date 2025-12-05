@@ -97,7 +97,7 @@ async function getMatch(req, res) {
     } else {
       record = await MatchBusiness.getNewMatch();
     }
-    console.log("fetched match record:", record);
+    //console.log("fetched match record:", record);
     if (!record) {
       return res.status(404).send({ msg: 'Match not found' });
     }
