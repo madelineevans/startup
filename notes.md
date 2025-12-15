@@ -547,3 +547,117 @@ select {
 select:focus {
   background-color: skyblue;
 }
+
+
+## Final Study-guide:
+
+## What is the default port for HTTP/HTTPS/SSH?
+http: port 80
+Https: Port 443
+ssh: port 22
+
+## What does an HTTP status code in the range of 300/400/500 indicate?
+300-399: redirection
+  301: moved permanently
+  302: found
+  304: not modified
+400-499: client errors
+  400: bad request
+  401: unauthorized
+  403: forbidden
+  404: not found
+500-599: server errors
+  500: internal server error
+  502: bad gateway
+  503: service unavailable
+
+## What does the HTTP header content-type allow you to do?
+tells the recipient what format the data is in, knows how to correctly interpret or display the content.
+- specify the media type (text/html, application/json, image/png)
+- indicate the character encoding (UTF-8)\
+- ensure correct handling by clients and servers
+
+prevents misinterpretation of data, supports apis by clearly defining payload formats, helps avoid security issues
+
+## What does a “Secure cookie”/”Http-only cookie”/”Same-site cookie” do? https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies
+_______________
+**secure cookie**
+is only sent of https connections
+- prevents the cookie from being transmitted over unencrypted http
+- protects the cookie from being intercepted by network attackers
+
+use cases:
+- session tokens
+- authentication cookies
+- anything sensitive
+______________
+**httpOnly cookie**
+- prevents client-side scripts from reading or modifying the cookie
+- mitigates xss (cross-site scripting) attacks from stealing session cookies
+
+key point:
+the cookie is still sent with http requests- its only protected from Javascript access.
+_____________________
+**sameSite cookie**
+The sameSite attribute controls whether cookies are sent with cross-site requests, preventing CSRF attacks.
+Modes:
+- samesite=strict
+  - cookie is not sent with any cross-site requests
+  - most secure option
+  - may break workflows requiring third-party login redirects
+- sameSite=lax (default in most browsers)
+  - cookies are sent for top-level navigation GET requests
+  - prevents most CSRF attacks while maintaining usability
+- sameSite = None
+  - cookie is sent with cross-site requests
+  - must also include secure
+  - used for 3rd party contexts
+_____________________
+## Assuming the following Express middleware, what would be the console.log output for an HTTP GET request with a URL path of /api/document?
+```javascript 
+app.use((req, res, next) => {
+  console.log("Method:", req.method);
+  console.log("Path:", req.path);
+  console.log("Original URL:", req.originalUrl);
+  next();
+}); 
+```
+incoming request GET /api/document
+
+Method: GET
+Path: /api/document
+Original URL: /api/document
+
+## Given the following Express service code: What does the following front end JavaScript that performs a fetch return?
+
+## Given the following MongoDB query, select all of the matching documents {name:Mark}
+
+## How should user passwords be stored?
+
+## Assuming the following node.js websocket code in the back end, and the following front end websocket code, what will the front end log to the console?
+
+## What is the websocket protocol intended to provide?
+
+## What do the following acronyms stand for? JSX, JS, AWS, NPM, NVM
+
+## Assuming an HTML document with a body element. What text content will the following React component generate?  The react component will use parameters.
+
+## Given a set of React components that include each other, what will be generated
+
+## What does a React component with React.useState do?
+
+## What are React Hooks used for?
+
+## What does the State Hook/Context Hook/Ref Hook/Effect Hook/Performance Hook do? https://react.dev/reference/react/hooks
+
+## Given React Router code, select statements that are true.
+
+## What does the package.json file do?
+
+## What does the fetch function do?
+
+## What does node.js do?
+
+## What does pm2 do?
+
+## What does Vite do?
